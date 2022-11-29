@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/Univalle.svg</file>
+    <file>icons/PSI.svg</file>
     <file>icons/IconoConfiAzul.png.svg</file>
     <file>icons/PSI.jpeg</file>
     <file>icons/Univalle.jpeg</file>
