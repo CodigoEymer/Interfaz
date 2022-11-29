@@ -1,0 +1,18 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/IconoConfiAzul.png.svg</file>
+    <file>icons/PSI.jpeg</file>
+    <file>icons/Univalle.jpeg</file>
+    <file>icons/IconoConfiAzul.png.svg</file>
+    <file>icons/IconoHomeAzul.svg</file>
+    <file>icons/IconoMisionAzul.svg</file>
+    <file>icons/SimboloPcDrones.svg</file>
+    <file>icons/IconoReporteAzul.svg</file>
+    <file>icons/IconoReporteGris.svg</file>
+    <file>icons/IconoUsuario.svg</file>
+    <file>icons/MasterDrones.svg</file>
+    <file>icons/IconoConfiGris.svg</file>
+    <file>icons/IconoHomeGris.svg</file>
+    <file>icons/IconoMisionGris.svg</file>
+  </qresource>
+</RCC>
