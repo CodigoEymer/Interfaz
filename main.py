@@ -70,13 +70,21 @@ class MainWindow(QMainWindow):
 
     def armar(self):
 	self.label_29.setText("comando armar enviado")
-	rospy.wait_for_service('/mavros/set_mode')
-	try:
-	    flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
-	    #http://wiki.ros.org/mavros/CustomModes for custom modes
-	    isModeChanged = flightModeService(custom_mode='STABILIZE') #return true or false
-	except rospy.ServiceException, e:
-	    print "service set_mode call failed:
+
+        rospy.wait_for_service('/mavros/set_mode')
+        try:
+            flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
+            #http://wiki.ros.org/mavros/CustomModes for custom modes
+            isModeChanged = flightModeService(custom_mode='STABILIZE') #return true or false
+        except rospy.ServiceException, e:
+            print "service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e
+
+        rospy.wait_for_service('/mavros/cmd/arming')
+        try:
+            armService = rospy.ServiceProxy('/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
+            armService(True)
+        except rospy.ServiceException, e:
+            print "Service arm call failed: %s"%e
 
 if __name__ == "__main__":
     app = QApplication([])
