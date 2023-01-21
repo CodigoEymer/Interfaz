@@ -87,7 +87,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
        <string notr="true">background-color: rgb(203, 218, 216);</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="mainWindowWidget">
        <property name="sizePolicy">
@@ -256,14 +256,14 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                           <string>Home</string>
                          </property>
                          <property name="styleSheet">
-                          <string notr="true">background-color: rgb(3, 33, 77);</string>
+                          <string notr="true"/>
                          </property>
                          <property name="text">
                           <string/>
                          </property>
                          <property name="icon">
                           <iconset resource="resources.qrc">
-                           <normaloff>:/icons/icons/IconoHomeGris.svg</normaloff>:/icons/icons/IconoHomeGris.svg</iconset>
+                           <normaloff>:/icons/icons/IconoConfiAzul.png.svg</normaloff>:/icons/icons/IconoConfiAzul.png.svg</iconset>
                          </property>
                          <property name="iconSize">
                           <size>
@@ -501,7 +501,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>2</number>
+                    <number>3</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -1109,7 +1109,17 @@ border-radius: 10px;</string>
                                 <property name="frameShadow">
                                  <enum>QFrame::Raised</enum>
                                 </property>
-                                <layout class="QVBoxLayout" name="verticalLayout_40"/>
+                                <layout class="QVBoxLayout" name="verticalLayout_40">
+                                 <item>
+                                  <widget class="QWebView" name="webView">
+                                   <property name="url">
+                                    <url>
+                                     <string>about:blank</string>
+                                    </url>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
                                </widget>
                               </item>
                              </layout>
@@ -2251,7 +2261,7 @@ background-color: rgb(111, 110, 110);</string>
                                   <rect>
                                    <x>0</x>
                                    <y>0</y>
-                                   <width>551</width>
+                                   <width>317</width>
                                    <height>210</height>
                                   </rect>
                                  </property>
@@ -2650,41 +2660,6 @@ background-color: rgb(111, 110, 110);</string>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_68">
                            <item>
-                            <widget class="QFrame" name="frame_44">
-                             <property name="frameShape">
-                              <enum>QFrame::StyledPanel</enum>
-                             </property>
-                             <property name="frameShadow">
-                              <enum>QFrame::Raised</enum>
-                             </property>
-                             <layout class="QHBoxLayout" name="horizontalLayout_38">
-                              <item>
-                               <widget class="QLabel" name="label_28">
-                                <property name="styleSheet">
-                                 <string notr="true">color: rgb(255, 255, 255)</string>
-                                </property>
-                                <property name="text">
-                                 <string>Progreso Misión</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QProgressBar" name="progressBar_4">
-                                <property name="styleSheet">
-                                 <string notr="true">background-color: rgb(114, 159, 207);</string>
-                                </property>
-                                <property name="value">
-                                 <number>24</number>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                           <item>
                             <widget class="QFrame" name="frame_43">
                              <property name="frameShape">
                               <enum>QFrame::StyledPanel</enum>
@@ -2693,6 +2668,41 @@ background-color: rgb(111, 110, 110);</string>
                               <enum>QFrame::Raised</enum>
                              </property>
                              <layout class="QVBoxLayout" name="verticalLayout_71">
+                              <item>
+                               <widget class="QFrame" name="frame_44">
+                                <property name="frameShape">
+                                 <enum>QFrame::StyledPanel</enum>
+                                </property>
+                                <property name="frameShadow">
+                                 <enum>QFrame::Raised</enum>
+                                </property>
+                                <layout class="QHBoxLayout" name="horizontalLayout_38">
+                                 <item>
+                                  <widget class="QLabel" name="label_28">
+                                   <property name="styleSheet">
+                                    <string notr="true">color: rgb(255, 255, 255)</string>
+                                   </property>
+                                   <property name="text">
+                                    <string>Progreso Misión</string>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                 <item>
+                                  <widget class="QProgressBar" name="progressBar_4">
+                                   <property name="styleSheet">
+                                    <string notr="true">background-color: rgb(114, 159, 207);</string>
+                                   </property>
+                                   <property name="value">
+                                    <number>24</number>
+                                   </property>
+                                   <property name="alignment">
+                                    <set>Qt::AlignCenter</set>
+                                   </property>
+                                  </widget>
+                                 </item>
+                                </layout>
+                               </widget>
+                              </item>
                               <item>
                                <widget class="QLabel" name="label_29">
                                 <property name="styleSheet">
@@ -5919,6 +5929,13 @@ background-color: rgb(136, 138, 133);</string>
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>

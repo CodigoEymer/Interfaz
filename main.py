@@ -1,16 +1,18 @@
 import sys
 import os
+import io
 import rospy
 import rospkg
 import resources_rc
-
+import folium
+from folium.plugins import Draw
+import geocoder
 from std_msgs.msg import String
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.uic import loadUi
 
 from mavros_msgs.srv import *
-
 
 class MainWindow(QMainWindow):
 
@@ -23,6 +25,7 @@ class MainWindow(QMainWindow):
 	self.registerBtn.clicked.connect(self.login_page)
 	self.cancelRegisterBtn.clicked.connect(self.login_page)	
 	self.settingsBtn.clicked.connect(self.settings_page)
+	self.pushButton_20.clicked.connect(self.get_location)
 	self.homeBtn.clicked.connect(self.home_page)
 	self.connectionBtn.clicked.connect(self.connection_page)
 	self.telemetryBtn.clicked.connect(self.telemetry_page_2)
@@ -52,9 +55,27 @@ class MainWindow(QMainWindow):
     def settings_page(self):
 	self.main_window()
        	self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
+	g = geocoder.ip('me')
+	m = folium.Map(location=(g.latlng),zoom_start=15)
+	draw = Draw(
+        	draw_options={
+          		'polyline':False,
+		        'rectangle':False,
+          		'polygon':True,
+          		'circle':False,
+          		'marker':True,
+          		'circlemarker':False},
+       		 edit_options={'edit':False})
+        m.add_child(draw)
+	data = io.BytesIO()
+	m.save(data, close_file = False)
+	self.webView.setHtml(data.getvalue().decode()) 
+
+    def get_location(self):
+	pass
 
     def home_page(self):
-       	self.switchPagesStacked.setCurrentWidget(self.homePage_3)
+	self.switchPagesStacked.setCurrentWidget(self.homePage_3)
 
     def connection_page(self):
        	self.stackedWidget_2.setCurrentWidget(self.page)
@@ -74,7 +95,6 @@ class MainWindow(QMainWindow):
         rospy.wait_for_service('/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
-            #http://wiki.ros.org/mavros/CustomModes for custom modes
             isModeChanged = flightModeService(custom_mode='STABILIZE') #return true or false
         except rospy.ServiceException, e:
             print "service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e
