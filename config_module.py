@@ -40,7 +40,7 @@ class config_module():
         dimesion = "2500"
         date=d.date.today()
         timestamp=d.datetime.now()
-        
+
         prueba.insert_mission(
             "15", #id_usuario
             self.ciudad, #ciudad
