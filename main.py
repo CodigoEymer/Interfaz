@@ -48,14 +48,14 @@ class MainWindow(QMainWindow):
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
 		
-		self.ingresarBtn.clicked.connect(self.settings_page)
+		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.crearUsuarioBtn.clicked.connect(self.signup_page)
 		self.registerBtn.clicked.connect(self.register_button)
 		self.cancelRegisterBtn.clicked.connect(self.login_page)	
-		self.settingsBtn.clicked.connect(self.settings_page)
+		self.settingsBtn.clicked.connect(self.home_page)
 		self.generarTrayectBtn.clicked.connect(self.gen_tray)
 		#self.pushButton_20.clicked.connect(self.get_location)
-		self.homeBtn.clicked.connect(self.home_page)
+		self.homeBtn.clicked.connect(self.settings_page)
 		self.connectionBtn.clicked.connect(self.connection_page)
 		self.telemetryBtn.clicked.connect(self.telemetry_page_2)
 		self.missionBtn.clicked.connect(self.mission_page)
@@ -94,6 +94,14 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_3.setCurrentWidget(self.userConfiPage)
 
 	def settings_page(self):
+		self.main_window()
+		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
+		m.add_child(draw)
+		data = io.BytesIO()
+		m.save(data, close_file = False)
+		self.webView.setHtml(data.getvalue().decode())
+
+	def user_validation(self):
 		
 		user_name = self.user_name_login.toPlainText()
 		connection = usuarios_dao_imp(conn)
@@ -152,15 +160,15 @@ class MainWindow(QMainWindow):
 		try:
 			flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
 			isModeChanged = flightModeService(custom_mode='STABILIZE') #return true or false
-		except rospy.ServiceException, e:
-			print "service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e
+		except rospy.ServiceException as e:
+			print ("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
 		rospy.wait_for_service('/mavros/cmd/arming')
 		try:
 			armService = rospy.ServiceProxy('/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
 			armService(True)
-		except rospy.ServiceException, e:
-			print "Service arm call failed: %s"%e
+		except rospy.ServiceException as e:
+			print ("Service arm call failed: %s"%e)
 
 if __name__ == "__main__":
     app = QApplication([])
