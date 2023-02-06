@@ -149,6 +149,10 @@ class MainWindow(QMainWindow):
 
 	def mission_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
+		m.add_child(draw)
+		data = io.BytesIO()
+		m.save(data, close_file = False)
+		self.webView_2.setHtml(data.getvalue().decode())
 
 	def report_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
