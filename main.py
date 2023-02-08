@@ -186,6 +186,6 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     handler = server.WebSocketHandler()
-    handler.message_received.connect()
+    #handler.message_received.connect()
     handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
     sys.exit(app.exec_())
