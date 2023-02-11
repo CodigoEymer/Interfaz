@@ -180,12 +180,14 @@ class MainWindow(QMainWindow):
 		except rospy.ServiceException as e:
 			print ("Service arm call failed: %s"%e)
 
+def on_message_received(message):
+    print("Received:", message)
 
 if __name__ == "__main__":
     app = QApplication([])
     window = MainWindow()
     window.show()
     handler = server.WebSocketHandler()
-    #handler.message_received.connect()
+    handler.message_received.connect(on_message_received)
     handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
     sys.exit(app.exec_())
