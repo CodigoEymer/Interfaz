@@ -9,13 +9,15 @@ import json
 
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp
 import config_module
+import server
 
 from folium.plugins import Draw
 import geocoder
 from std_msgs.msg import String
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.uic import loadUi
+from PyQt5.QtCore import QFile
 
 from mavros_msgs.srv import *
 
@@ -60,6 +62,7 @@ class MainWindow(QMainWindow):
 		self.telemetryBtn.clicked.connect(self.telemetry_page_2)
 		self.missionBtn.clicked.connect(self.mission_page)
 		self.playBtn.clicked.connect(self.armar)
+		self.pauseBtn.clicked.connect(self.pausingMission)
 		self.reportBtn.clicked.connect(self.report_page)
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.main_window)
@@ -99,7 +102,11 @@ class MainWindow(QMainWindow):
 		m.add_child(draw)
 		data = io.BytesIO()
 		m.save(data, close_file = False)
-		self.webView.setHtml(data.getvalue().decode())
+		#self.webView.setHtml(data.getvalue().decode())
+		file = QFile("map2.html")
+		if file.open(QFile.ReadOnly | QFile.Text):
+			html = str(file.readAll())
+			self.webView.setHtml(html)	
 
 	def user_validation(self):
 		
@@ -157,6 +164,9 @@ class MainWindow(QMainWindow):
 	def report_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
 
+	def pausingMission(self):
+		pass
+
 	def armar(self):
 		self.label_29.setText("comando armar enviado")
 
@@ -174,8 +184,16 @@ class MainWindow(QMainWindow):
 		except rospy.ServiceException as e:
 			print ("Service arm call failed: %s"%e)
 
+def on_message_received(message):
+    coords_dict = json.loads(message)
+    coords= coords_dict['geometry']['coordinates'][0]
+    print(coords)
+
 if __name__ == "__main__":
     app = QApplication([])
     window = MainWindow()
     window.show()
+    handler = server.WebSocketHandler()
+    handler.message_received.connect(on_message_received)
+    handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
     sys.exit(app.exec_())
