@@ -181,7 +181,9 @@ class MainWindow(QMainWindow):
 			print ("Service arm call failed: %s"%e)
 
 def on_message_received(message):
-    print("Received:", message)
+    coords_dict = json.loads(message)
+    coords= coords_dict['geometry']['coordinates'][0]
+    print(coords)
 
 if __name__ == "__main__":
     app = QApplication([])
