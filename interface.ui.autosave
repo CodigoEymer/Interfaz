@@ -59,7 +59,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_16">
+   <layout class="QHBoxLayout" name="horizontalLayout_62">
     <property name="sizeConstraint">
      <enum>QLayout::SetDefaultConstraint</enum>
     </property>
@@ -105,7 +105,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
        <property name="styleSheet">
         <string notr="true"/>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_26">
+       <layout class="QHBoxLayout" name="horizontalLayout_63">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -594,942 +594,961 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                              </property>
                              <layout class="QVBoxLayout" name="verticalLayout_35">
                               <item>
-                               <widget class="QWidget" name="widget_30" native="true">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
+                               <widget class="QScrollArea" name="scrollArea_2">
+                                <property name="widgetResizable">
+                                 <bool>true</bool>
                                 </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>16777215</width>
-                                  <height>16777215</height>
-                                 </size>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">background-color: rgb(203, 218, 216);
+                                <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                                 <property name="geometry">
+                                  <rect>
+                                   <x>0</x>
+                                   <y>0</y>
+                                   <width>268</width>
+                                   <height>678</height>
+                                  </rect>
+                                 </property>
+                                 <layout class="QVBoxLayout" name="verticalLayout_16">
+                                  <item>
+                                   <widget class="QWidget" name="widget_30" native="true">
+                                    <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                    </property>
+                                    <property name="maximumSize">
+                                     <size>
+                                      <width>16777215</width>
+                                      <height>16777215</height>
+                                     </size>
+                                    </property>
+                                    <property name="styleSheet">
+                                     <string notr="true">background-color: rgb(203, 218, 216);
 padding: 3px 3px;
 border-radius: 10px;</string>
-                                </property>
-                                <layout class="QVBoxLayout" name="verticalLayout_126">
-                                 <item>
-                                  <widget class="QFrame" name="city">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_49">
-                                    <property name="spacing">
-                                     <number>0</number>
                                     </property>
-                                    <property name="leftMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="topMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="rightMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="bottomMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <item>
-                                     <widget class="QLabel" name="city_label">
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);</string>
-                                      </property>
-                                      <property name="text">
-                                       <string>Ciudad</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                    <item>
-                                     <widget class="QTextEdit" name="city_text">
-                                      <property name="maximumSize">
-                                       <size>
-                                        <width>16777215</width>
-                                        <height>32</height>
-                                       </size>
-                                      </property>
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
-                                      </property>
-                                      <property name="placeholderText">
-                                       <string>Cali</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="address">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_120">
-                                    <property name="spacing">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="leftMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="topMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="rightMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="bottomMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <item>
-                                     <widget class="QLabel" name="address_label">
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);</string>
-                                      </property>
-                                      <property name="text">
-                                       <string>Dirección</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                    <item>
-                                     <widget class="QTextEdit" name="address_text">
-                                      <property name="maximumSize">
-                                       <size>
-                                        <width>16777215</width>
-                                        <height>32</height>
-                                       </size>
-                                      </property>
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
-                                      </property>
-                                      <property name="placeholderText">
-                                       <string>Cra 44 #24B-65</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="missionName">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_37">
-                                    <property name="spacing">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="leftMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="topMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="rightMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="bottomMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <item>
-                                     <widget class="QLabel" name="mission_name_label">
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);</string>
-                                      </property>
-                                      <property name="text">
-                                       <string>Nombre de la misión</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                    <item>
-                                     <widget class="QTextEdit" name="mission_name_text">
-                                      <property name="maximumSize">
-                                       <size>
-                                        <width>16777215</width>
-                                        <height>32</height>
-                                       </size>
-                                      </property>
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
-                                      </property>
-                                      <property name="placeholderText">
-                                       <string>Misión 1</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="roiName">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_119">
-                                    <property name="spacing">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="leftMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="topMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="rightMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="bottomMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <item>
-                                     <widget class="QLabel" name="label_147">
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);</string>
-                                      </property>
-                                      <property name="text">
-                                       <string>Nombre de la región de interes</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                    <item>
-                                     <widget class="QTextEdit" name="roi_name_text">
-                                      <property name="maximumSize">
-                                       <size>
-                                        <width>16777215</width>
-                                        <height>32</height>
-                                       </size>
-                                      </property>
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
-                                      </property>
-                                      <property name="placeholderText">
-                                       <string>Granja de Fernando</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="description">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_48">
-                                    <property name="spacing">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="leftMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="topMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="rightMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="bottomMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <item>
-                                     <widget class="QLabel" name="description_label">
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);</string>
-                                      </property>
-                                      <property name="text">
-                                       <string>Descripción</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                    <item>
-                                     <widget class="QTextEdit" name="description_text">
-                                      <property name="maximumSize">
-                                       <size>
-                                        <width>16777215</width>
-                                        <height>32</height>
-                                       </size>
-                                      </property>
-                                      <property name="font">
-                                       <font>
-                                        <pointsize>10</pointsize>
-                                       </font>
-                                      </property>
-                                      <property name="styleSheet">
-                                       <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
-                                      </property>
-                                      <property name="placeholderText">
-                                       <string>Inspección aérea de cultivo de caña</string>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="frame_2">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QHBoxLayout" name="horizontalLayout_3">
-                                    <property name="spacing">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="leftMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="topMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="rightMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <property name="bottomMargin">
-                                     <number>0</number>
-                                    </property>
-                                    <item>
-                                     <widget class="QFrame" name="frame_22">
-                                      <property name="frameShape">
-                                       <enum>QFrame::StyledPanel</enum>
-                                      </property>
-                                      <property name="frameShadow">
-                                       <enum>QFrame::Raised</enum>
-                                      </property>
-                                      <layout class="QVBoxLayout" name="verticalLayout">
-                                       <property name="spacing">
-                                        <number>0</number>
+                                    <layout class="QVBoxLayout" name="verticalLayout_126">
+                                     <item>
+                                      <widget class="QFrame" name="city">
+                                       <property name="frameShape">
+                                        <enum>QFrame::StyledPanel</enum>
                                        </property>
-                                       <property name="leftMargin">
-                                        <number>0</number>
+                                       <property name="frameShadow">
+                                        <enum>QFrame::Raised</enum>
                                        </property>
-                                       <property name="topMargin">
-                                        <number>0</number>
-                                       </property>
-                                       <property name="rightMargin">
-                                        <number>0</number>
-                                       </property>
-                                       <property name="bottomMargin">
-                                        <number>0</number>
-                                       </property>
-                                       <item>
-                                        <widget class="QFrame" name="visionField">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_117">
-                                          <property name="spacing">
-                                           <number>0</number>
+                                       <layout class="QVBoxLayout" name="verticalLayout_49">
+                                        <property name="spacing">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="leftMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="topMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="rightMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <item>
+                                         <widget class="QLabel" name="city_label">
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
                                           </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);</string>
                                           </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
+                                          <property name="text">
+                                           <string>Ciudad</string>
                                           </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
+                                         </widget>
+                                        </item>
+                                        <item>
+                                         <widget class="QTextEdit" name="city_text">
+                                          <property name="maximumSize">
+                                           <size>
+                                            <width>16777215</width>
+                                            <height>32</height>
+                                           </size>
                                           </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
                                           </property>
-                                          <item>
-                                           <widget class="QLabel" name="vision_field_label">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>Campo de visión</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                          <item>
-                                           <widget class="QTextEdit" name="vision_field_text">
-                                            <property name="maximumSize">
-                                             <size>
-                                              <width>16777215</width>
-                                              <height>32</height>
-                                             </size>
-                                            </property>
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);
 background-color: rgb(238, 238, 236);</string>
-                                            </property>
-                                            <property name="placeholderText">
-                                             <string>45</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                       <item>
-                                        <widget class="QFrame" name="maxHeight">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_50">
-                                          <property name="spacing">
-                                           <number>0</number>
                                           </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
+                                          <property name="placeholderText">
+                                           <string>Cali</string>
                                           </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
+                                         </widget>
+                                        </item>
+                                       </layout>
+                                      </widget>
+                                     </item>
+                                     <item>
+                                      <widget class="QFrame" name="address">
+                                       <property name="frameShape">
+                                        <enum>QFrame::StyledPanel</enum>
+                                       </property>
+                                       <property name="frameShadow">
+                                        <enum>QFrame::Raised</enum>
+                                       </property>
+                                       <layout class="QVBoxLayout" name="verticalLayout_120">
+                                        <property name="spacing">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="leftMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="topMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="rightMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <item>
+                                         <widget class="QLabel" name="address_label">
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
                                           </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);</string>
                                           </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
+                                          <property name="text">
+                                           <string>Dirección</string>
                                           </property>
-                                          <item>
-                                           <widget class="QLabel" name="max_height_label">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>Altura máxima</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                          <item>
-                                           <widget class="QTextEdit" name="max_height_text">
-                                            <property name="maximumSize">
-                                             <size>
-                                              <width>16777215</width>
-                                              <height>32</height>
-                                             </size>
-                                            </property>
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);
+                                         </widget>
+                                        </item>
+                                        <item>
+                                         <widget class="QTextEdit" name="address_text">
+                                          <property name="maximumSize">
+                                           <size>
+                                            <width>16777215</width>
+                                            <height>32</height>
+                                           </size>
+                                          </property>
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
+                                          </property>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);
 background-color: rgb(238, 238, 236);</string>
-                                            </property>
-                                            <property name="placeholderText">
-                                             <string>10</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                       <item>
-                                        <widget class="QFrame" name="max_speed">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_118">
-                                          <property name="spacing">
-                                           <number>0</number>
                                           </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
+                                          <property name="placeholderText">
+                                           <string>Cra 44 #24B-65</string>
                                           </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
+                                         </widget>
+                                        </item>
+                                       </layout>
+                                      </widget>
+                                     </item>
+                                     <item>
+                                      <widget class="QFrame" name="missionName">
+                                       <property name="frameShape">
+                                        <enum>QFrame::StyledPanel</enum>
+                                       </property>
+                                       <property name="frameShadow">
+                                        <enum>QFrame::Raised</enum>
+                                       </property>
+                                       <layout class="QVBoxLayout" name="verticalLayout_37">
+                                        <property name="spacing">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="leftMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="topMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="rightMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <item>
+                                         <widget class="QLabel" name="mission_name_label">
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
                                           </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);</string>
                                           </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
+                                          <property name="text">
+                                           <string>Nombre de la misión</string>
                                           </property>
-                                          <item>
-                                           <widget class="QLabel" name="max_speed_label">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>Velocidad máxima</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                          <item>
-                                           <widget class="QTextEdit" name="max_speed_text">
-                                            <property name="maximumSize">
-                                             <size>
-                                              <width>16777215</width>
-                                              <height>32</height>
-                                             </size>
-                                            </property>
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);
+                                         </widget>
+                                        </item>
+                                        <item>
+                                         <widget class="QTextEdit" name="mission_name_text">
+                                          <property name="maximumSize">
+                                           <size>
+                                            <width>16777215</width>
+                                            <height>32</height>
+                                           </size>
+                                          </property>
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
+                                          </property>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);
 background-color: rgb(238, 238, 236);</string>
-                                            </property>
-                                            <property name="placeholderText">
-                                             <string>4.5</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                       <item>
-                                        <widget class="QFrame" name="max_accel">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_47">
-                                          <property name="spacing">
-                                           <number>0</number>
                                           </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
+                                          <property name="placeholderText">
+                                           <string>Misión 1</string>
                                           </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
+                                         </widget>
+                                        </item>
+                                       </layout>
+                                      </widget>
+                                     </item>
+                                     <item>
+                                      <widget class="QFrame" name="roiName">
+                                       <property name="frameShape">
+                                        <enum>QFrame::StyledPanel</enum>
+                                       </property>
+                                       <property name="frameShadow">
+                                        <enum>QFrame::Raised</enum>
+                                       </property>
+                                       <layout class="QVBoxLayout" name="verticalLayout_119">
+                                        <property name="spacing">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="leftMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="topMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="rightMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <item>
+                                         <widget class="QLabel" name="label_147">
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
                                           </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);</string>
                                           </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
+                                          <property name="text">
+                                           <string>Nombre de la región de interes</string>
                                           </property>
-                                          <item>
-                                           <widget class="QLabel" name="max_acc_label">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>Aceleración máxima</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                          <item>
-                                           <widget class="QTextEdit" name="max_acc_text">
-                                            <property name="maximumSize">
-                                             <size>
-                                              <width>16777215</width>
-                                              <height>32</height>
-                                             </size>
-                                            </property>
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);
+                                         </widget>
+                                        </item>
+                                        <item>
+                                         <widget class="QTextEdit" name="roi_name_text">
+                                          <property name="maximumSize">
+                                           <size>
+                                            <width>16777215</width>
+                                            <height>32</height>
+                                           </size>
+                                          </property>
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
+                                          </property>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);
 background-color: rgb(238, 238, 236);</string>
-                                            </property>
-                                            <property name="placeholderText">
-                                             <string>2.1</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                       <item>
-                                        <widget class="QFrame" name="overlap">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_51">
-                                          <property name="spacing">
-                                           <number>0</number>
                                           </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
+                                          <property name="placeholderText">
+                                           <string>Granja de Fernando</string>
                                           </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
+                                         </widget>
+                                        </item>
+                                       </layout>
+                                      </widget>
+                                     </item>
+                                     <item>
+                                      <widget class="QFrame" name="description">
+                                       <property name="frameShape">
+                                        <enum>QFrame::StyledPanel</enum>
+                                       </property>
+                                       <property name="frameShadow">
+                                        <enum>QFrame::Raised</enum>
+                                       </property>
+                                       <layout class="QVBoxLayout" name="verticalLayout_48">
+                                        <property name="spacing">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="leftMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="topMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="rightMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <item>
+                                         <widget class="QLabel" name="description_label">
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
                                           </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);</string>
                                           </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
+                                          <property name="text">
+                                           <string>Descripción</string>
                                           </property>
-                                          <item>
-                                           <widget class="QLabel" name="label_15">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>Sobrelapamiento</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                          <item>
-                                           <widget class="QTextEdit" name="overlap_text">
-                                            <property name="maximumSize">
-                                             <size>
-                                              <width>16777215</width>
-                                              <height>32</height>
-                                             </size>
-                                            </property>
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);
+                                         </widget>
+                                        </item>
+                                        <item>
+                                         <widget class="QTextEdit" name="description_text">
+                                          <property name="maximumSize">
+                                           <size>
+                                            <width>16777215</width>
+                                            <height>32</height>
+                                           </size>
+                                          </property>
+                                          <property name="font">
+                                           <font>
+                                            <pointsize>10</pointsize>
+                                           </font>
+                                          </property>
+                                          <property name="styleSheet">
+                                           <string notr="true">color: rgb(0, 0, 0);
 background-color: rgb(238, 238, 236);</string>
-                                            </property>
-                                            <property name="placeholderText">
-                                             <string>3</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                      </layout>
-                                     </widget>
-                                    </item>
-                                    <item>
-                                     <widget class="QFrame" name="frame_107">
-                                      <property name="frameShape">
-                                       <enum>QFrame::StyledPanel</enum>
-                                      </property>
-                                      <property name="frameShadow">
-                                       <enum>QFrame::Raised</enum>
-                                      </property>
-                                      <layout class="QVBoxLayout" name="verticalLayout_40">
-                                       <property name="spacing">
-                                        <number>0</number>
+                                          </property>
+                                          <property name="placeholderText">
+                                           <string>Inspección aérea de cultivo de caña</string>
+                                          </property>
+                                         </widget>
+                                        </item>
+                                       </layout>
+                                      </widget>
+                                     </item>
+                                     <item>
+                                      <widget class="QFrame" name="frame_2">
+                                       <property name="frameShape">
+                                        <enum>QFrame::StyledPanel</enum>
                                        </property>
-                                       <property name="leftMargin">
-                                        <number>0</number>
+                                       <property name="frameShadow">
+                                        <enum>QFrame::Raised</enum>
                                        </property>
-                                       <property name="topMargin">
-                                        <number>0</number>
-                                       </property>
-                                       <property name="rightMargin">
-                                        <number>0</number>
-                                       </property>
-                                       <property name="bottomMargin">
-                                        <number>0</number>
-                                       </property>
-                                       <item>
-                                        <widget class="QFrame" name="visionField_2">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_123">
-                                          <item>
-                                           <widget class="QLabel" name="vision_field_label_3">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>°</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                       <item>
-                                        <widget class="QFrame" name="maxHeight_2">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_121">
-                                          <property name="spacing">
-                                           <number>0</number>
+                                       <layout class="QHBoxLayout" name="horizontalLayout_3">
+                                        <property name="spacing">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="leftMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="topMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="rightMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <property name="bottomMargin">
+                                         <number>0</number>
+                                        </property>
+                                        <item>
+                                         <widget class="QFrame" name="frame_22">
+                                          <property name="frameShape">
+                                           <enum>QFrame::StyledPanel</enum>
                                           </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
+                                          <property name="frameShadow">
+                                           <enum>QFrame::Raised</enum>
                                           </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
+                                          <layout class="QVBoxLayout" name="verticalLayout">
+                                           <property name="spacing">
+                                            <number>0</number>
+                                           </property>
+                                           <property name="leftMargin">
+                                            <number>0</number>
+                                           </property>
+                                           <property name="topMargin">
+                                            <number>0</number>
+                                           </property>
+                                           <property name="rightMargin">
+                                            <number>0</number>
+                                           </property>
+                                           <property name="bottomMargin">
+                                            <number>0</number>
+                                           </property>
+                                           <item>
+                                            <widget class="QFrame" name="visionField">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_117">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="vision_field_label">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>Campo de visión</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                              <item>
+                                               <widget class="QTextEdit" name="vision_field_text">
+                                                <property name="maximumSize">
+                                                 <size>
+                                                  <width>16777215</width>
+                                                  <height>32</height>
+                                                 </size>
+                                                </property>
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(238, 238, 236);</string>
+                                                </property>
+                                                <property name="placeholderText">
+                                                 <string>45</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                           <item>
+                                            <widget class="QFrame" name="maxHeight">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_50">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="max_height_label">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>Altura máxima</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                              <item>
+                                               <widget class="QTextEdit" name="max_height_text">
+                                                <property name="maximumSize">
+                                                 <size>
+                                                  <width>16777215</width>
+                                                  <height>32</height>
+                                                 </size>
+                                                </property>
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(238, 238, 236);</string>
+                                                </property>
+                                                <property name="placeholderText">
+                                                 <string>10</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                           <item>
+                                            <widget class="QFrame" name="max_speed">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_118">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="max_speed_label">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>Velocidad máxima</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                              <item>
+                                               <widget class="QTextEdit" name="max_speed_text">
+                                                <property name="maximumSize">
+                                                 <size>
+                                                  <width>16777215</width>
+                                                  <height>32</height>
+                                                 </size>
+                                                </property>
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(238, 238, 236);</string>
+                                                </property>
+                                                <property name="placeholderText">
+                                                 <string>4.5</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                           <item>
+                                            <widget class="QFrame" name="max_accel">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_47">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="max_acc_label">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>Aceleración máxima</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                              <item>
+                                               <widget class="QTextEdit" name="max_acc_text">
+                                                <property name="maximumSize">
+                                                 <size>
+                                                  <width>16777215</width>
+                                                  <height>32</height>
+                                                 </size>
+                                                </property>
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(238, 238, 236);</string>
+                                                </property>
+                                                <property name="placeholderText">
+                                                 <string>2.1</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                           <item>
+                                            <widget class="QFrame" name="overlap">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_51">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="label_15">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>Sobrelapamiento</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                              <item>
+                                               <widget class="QTextEdit" name="overlap_text">
+                                                <property name="maximumSize">
+                                                 <size>
+                                                  <width>16777215</width>
+                                                  <height>32</height>
+                                                 </size>
+                                                </property>
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(238, 238, 236);</string>
+                                                </property>
+                                                <property name="placeholderText">
+                                                 <string>3</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                          </layout>
+                                         </widget>
+                                        </item>
+                                        <item>
+                                         <widget class="QFrame" name="frame_107">
+                                          <property name="frameShape">
+                                           <enum>QFrame::StyledPanel</enum>
                                           </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
+                                          <property name="frameShadow">
+                                           <enum>QFrame::Raised</enum>
                                           </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <item>
-                                           <widget class="QLabel" name="max_height_label_2">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>m</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                       <item>
-                                        <widget class="QFrame" name="max_speed_2">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_125">
-                                          <property name="spacing">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <item>
-                                           <widget class="QLabel" name="max_speed_label_2">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>m/s</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                       <item>
-                                        <widget class="QFrame" name="max_accel_2">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_122">
-                                          <property name="spacing">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <item>
-                                           <widget class="QLabel" name="max_acc_label_2">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>m/s2</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                       <item>
-                                        <widget class="QFrame" name="overlap_2">
-                                         <property name="frameShape">
-                                          <enum>QFrame::StyledPanel</enum>
-                                         </property>
-                                         <property name="frameShadow">
-                                          <enum>QFrame::Raised</enum>
-                                         </property>
-                                         <layout class="QVBoxLayout" name="verticalLayout_124">
-                                          <property name="spacing">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="leftMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="topMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="rightMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <property name="bottomMargin">
-                                           <number>0</number>
-                                          </property>
-                                          <item>
-                                           <widget class="QLabel" name="label_18">
-                                            <property name="font">
-                                             <font>
-                                              <pointsize>10</pointsize>
-                                             </font>
-                                            </property>
-                                            <property name="styleSheet">
-                                             <string notr="true">color: rgb(0, 0, 0);</string>
-                                            </property>
-                                            <property name="text">
-                                             <string>m</string>
-                                            </property>
-                                           </widget>
-                                          </item>
-                                         </layout>
-                                        </widget>
-                                       </item>
-                                      </layout>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                </layout>
+                                          <layout class="QVBoxLayout" name="verticalLayout_40">
+                                           <property name="spacing">
+                                            <number>0</number>
+                                           </property>
+                                           <property name="leftMargin">
+                                            <number>0</number>
+                                           </property>
+                                           <property name="topMargin">
+                                            <number>0</number>
+                                           </property>
+                                           <property name="rightMargin">
+                                            <number>0</number>
+                                           </property>
+                                           <property name="bottomMargin">
+                                            <number>0</number>
+                                           </property>
+                                           <item>
+                                            <widget class="QFrame" name="visionField_2">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_123">
+                                              <item>
+                                               <widget class="QLabel" name="vision_field_label_3">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>°</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                           <item>
+                                            <widget class="QFrame" name="maxHeight_2">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_121">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="max_height_label_2">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>m</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                           <item>
+                                            <widget class="QFrame" name="max_speed_2">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_125">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="max_speed_label_2">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>m/s</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                           <item>
+                                            <widget class="QFrame" name="max_accel_2">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_122">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="max_acc_label_2">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>m/s2</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                           <item>
+                                            <widget class="QFrame" name="overlap_2">
+                                             <property name="frameShape">
+                                              <enum>QFrame::StyledPanel</enum>
+                                             </property>
+                                             <property name="frameShadow">
+                                              <enum>QFrame::Raised</enum>
+                                             </property>
+                                             <layout class="QVBoxLayout" name="verticalLayout_124">
+                                              <property name="spacing">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="leftMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="topMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="rightMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <property name="bottomMargin">
+                                               <number>0</number>
+                                              </property>
+                                              <item>
+                                               <widget class="QLabel" name="label_18">
+                                                <property name="font">
+                                                 <font>
+                                                  <pointsize>10</pointsize>
+                                                 </font>
+                                                </property>
+                                                <property name="styleSheet">
+                                                 <string notr="true">color: rgb(0, 0, 0);</string>
+                                                </property>
+                                                <property name="text">
+                                                 <string>m</string>
+                                                </property>
+                                               </widget>
+                                              </item>
+                                             </layout>
+                                            </widget>
+                                           </item>
+                                          </layout>
+                                         </widget>
+                                        </item>
+                                       </layout>
+                                      </widget>
+                                     </item>
+                                    </layout>
+                                   </widget>
+                                  </item>
+                                 </layout>
+                                </widget>
                                </widget>
                               </item>
                              </layout>
@@ -2615,7 +2634,7 @@ background-color: rgb(111, 110, 110);</string>
                               <item>
                                <widget class="QTabWidget" name="tabWidget">
                                 <property name="currentIndex">
-                                 <number>0</number>
+                                 <number>1</number>
                                 </property>
                                 <widget class="QWidget" name="drone1_widget">
                                  <attribute name="title">
@@ -2824,7 +2843,7 @@ background-color: rgb(111, 110, 110);</string>
                                  <property name="geometry">
                                   <rect>
                                    <x>0</x>
-                                   <y>0</y>
+                                   <y>-27</y>
                                    <width>551</width>
                                    <height>210</height>
                                   </rect>
@@ -5305,7 +5324,7 @@ border-radius: 30px;</string>
               <string notr="true"/>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="logInPage">
               <property name="styleSheet">
