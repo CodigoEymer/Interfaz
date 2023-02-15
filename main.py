@@ -67,6 +67,7 @@ class MainWindow(QMainWindow):
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
+		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 	
 
 
@@ -118,11 +119,7 @@ class MainWindow(QMainWindow):
 			db_user = str(user.get_nombre_usuario())
 			if db_user == user_name:
 				self.main_window()
-				self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
-				m.add_child(draw)
-				data = io.BytesIO()
-				m.save(data, close_file = False)
-				self.webView.setHtml(data.getvalue().decode())
+				self.settings_page()
 				break
 			else:
 				self.error_label.setText("Usuario no encontrado")
@@ -159,7 +156,10 @@ class MainWindow(QMainWindow):
 		m.add_child(draw)
 		data = io.BytesIO()
 		m.save(data, close_file = False)
-		self.webView_2.setHtml(data.getvalue().decode())
+		file = QFile("map2.html")
+		if file.open(QFile.ReadOnly | QFile.Text):
+			html = str(file.readAll())
+			self.webView_2.setHtml(html)	
 
 	def report_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
