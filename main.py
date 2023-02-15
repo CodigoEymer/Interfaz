@@ -186,8 +186,8 @@ class MainWindow(QMainWindow):
 
 def on_message_received(message):
     coords_dict = json.loads(message)
-    coords= coords_dict['geometry']['coordinates'][0]
-    print(coords)
+    #coords= coords_dict['geometry']['coordinates'][0]
+    print(coords_dict)
 
 if __name__ == "__main__":
     app = QApplication([])
