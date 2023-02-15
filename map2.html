@@ -25,32 +25,16 @@
 
       var drawControl = new L.Control.Draw({
         draw: {
-          polyline: {
-            metric: true,
-            shapeOptions: {
-              color: '#f357a1',
-              weight: 10
-            }
-          },
           polygon: {
             allowIntersection: false,
             showArea: true,
+            metric: ['km', 'm'],
             drawError: {
               color: '#e1e100',
               timeout: 1000
             },
             shapeOptions: {
               color: '#bada55'
-            }
-          },
-          rectangle: {
-            shapeOptions: {
-              clickable: false
-            }
-          },
-          circle: {
-            shapeOptions: {
-              color: '#ff0000'
             }
           },
           marker: {
@@ -62,6 +46,14 @@
           remove: true
         }
       });
+
+      drawControl.setDrawingOptions({
+        circle: false,
+        rectangle: false,
+        polyline: false,
+        circlemarker: false
+      })
+
       map.addControl(drawControl);
 
       map.on(L.Draw.Event.CREATED, function (event) {
@@ -69,6 +61,9 @@
         var coords = JSON.stringify(layer.toGeoJSON());
         drawnItems.addLayer(layer);
         enviarinfo(coords);
+        var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0])
+        //dimension = ´{area: ${area}}´
+        alert(area)
       });
 
       function enviarinfo(mensaje){
