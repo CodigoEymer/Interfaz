@@ -56,14 +56,27 @@
 
       map.addControl(drawControl);
 
+      var datos = {"wp_region":{},"area":{},"wp_recarga":{}}
+
       map.on(L.Draw.Event.CREATED, function (event) {
         var layer = event.layer,coords;
-        var coords = JSON.stringify(layer.toGeoJSON());
+        var jsonLayer = layer.toGeoJSON();
+        
+        var tipo = jsonLayer.geometry.type;
         drawnItems.addLayer(layer);
+        
+        
+        if (tipo =="Polygon") {
+          var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0])
+          datos.wp_region = jsonLayer.geometry.coordinates;
+          datos.area= area
+        }
+        if (tipo == "Point"){
+          datos.wp_recarga = jsonLayer.geometry.coordinates;
+        }
+
+        var coords = JSON.stringify(datos);
         enviarinfo(coords);
-        var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0])
-        //dimension = ´{area: ${area}}´
-        alert(area)
       });
 
       function enviarinfo(mensaje){

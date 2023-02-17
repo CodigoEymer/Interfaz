@@ -1,8 +1,14 @@
 {
-    "wpRegion": [
-        [5,1],
-        [5,2]
-    ],
+    "wpRegion": [[5,1],[5,2]],
     "Area": 378262,
     "wpRecarga": [4,2]
+}
+
+{
+    "type": "Feature",
+    "properties": {},
+    "geometry": {
+        "type": "Polygon",
+        "coordinates":[[],[],[]]
+    }
 }
