@@ -7,7 +7,7 @@ import resources_rc
 import folium
 import json
 
-from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp
+from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 import config_module
 import server
 
@@ -22,15 +22,6 @@ from PyQt5.QtCore import QFile
 from mavros_msgs.srv import *
 
 g = geocoder.ip('me')
-m = folium.Map(location=(g.latlng),tiles='OpenStreetMap',zoom_start=15)
-
-draw = Draw(export=True,    
-		filename="my_data.geojson",
-        draw_options={
-          	'polyline':False,
-		    'rectangle':False,
-          	'circle':False,
-          	'circlemarker':False})
 
 import MySQLdb
 DB_HOST = '127.0.0.1' 
@@ -40,6 +31,13 @@ DB_NAME = 'drones'
 
 datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME] 
 conn = MySQLdb.connect(*datos)
+
+
+
+coords= []
+wp_recarga=[] 
+area= []
+id_usuario = ""
 
 class MainWindow(QMainWindow):
 
@@ -68,6 +66,7 @@ class MainWindow(QMainWindow):
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
+
 	
 
 
@@ -100,9 +99,6 @@ class MainWindow(QMainWindow):
 	def settings_page(self):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
-		m.add_child(draw)
-		data = io.BytesIO()
-		m.save(data, close_file = False)
 		#self.webView.setHtml(data.getvalue().decode())
 		file = QFile("map2.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
@@ -110,14 +106,16 @@ class MainWindow(QMainWindow):
 			self.webView.setHtml(html)	
 
 	def user_validation(self):
-		
+		global id_usuario
 		user_name = self.user_name_login.toPlainText()
 		connection = usuarios_dao_imp(conn)
 		user_list = connection.get_all_users()
 		
 		for user in user_list:
 			db_user = str(user.get_nombre_usuario())
+			print("idusuario:"+str(user.get_id_usuario())+" nombre:"+user.get_nombre()+" nombre_usuario:"+user.get_nombre_usuario()+" ceular:"+user.get_celular()+" correo:"+user.get_correo())
 			if db_user == user_name:
+
 				self.main_window()
 				self.settings_page()
 				break
@@ -135,9 +133,9 @@ class MainWindow(QMainWindow):
 		vel_maxima = self.max_speed_text.toPlainText()
 		acc_maxima = self.max_acc_text.toPlainText()
 		sobrelapamiento = self.overlap_text.toPlainText()
-		coordenadas = self.coords_text.toPlainText()
 
-		datos= config_module.config_module(ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas)
+
+		datos= config_module.config_module(ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,str(coords),str(area),str(wp_recarga))
 		
 		datos.insertar_mision()
 
@@ -186,8 +184,13 @@ class MainWindow(QMainWindow):
 
 def on_message_received(message):
     coords_dict = json.loads(message)
-    #coords= coords_dict['geometry']['coordinates'][0]
-    print(coords_dict)
+
+    global coords
+    global wp_recarga
+    global area
+    coords = coords_dict['wp_region']
+    wp_recarga = coords_dict['wp_recarga']
+    area = coords_dict['area']
 
 if __name__ == "__main__":
     app = QApplication([])
@@ -197,3 +200,4 @@ if __name__ == "__main__":
     handler.message_received.connect(on_message_received)
     handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
     sys.exit(app.exec_())
+

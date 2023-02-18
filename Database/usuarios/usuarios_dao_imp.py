@@ -10,13 +10,13 @@ class usuarios_dao_imp:
         self.tupla = ()
         self.connection = conn
         cursor = self.connection.cursor()
-        query="select nombre, nombre_usuario, correo, celular from Usuario"
+        query="select id_usuario,nombre, nombre_usuario, correo, celular from Usuario"
         cursor.execute(query)
         #result = conn.store_result()
         tupla = cursor.fetchall()
         n_filas = len(tupla)
         for i in range(n_filas):
-            user = usuarios.usuarios(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3])
+            user = usuarios.usuarios(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4])
             self.users.append(user)
         cursor.close()
 
@@ -39,21 +39,21 @@ class usuarios_dao_imp:
         cursor = self.connection.cursor()
         res_rows = cursor.execute(query)
         self.connection.commit()
-        res_user = usuarios.usuarios(nombre,nombre_usuario,correo,celular)
-        self.users.append(res_user)
+        #res_user = usuarios.usuarios(nombre,nombre_usuario,correo,celular)
+        #self.users.append(res_user)
         cursor.close()
         return res_rows
 
     def get_all_users(self):
         self.users = []
         cursor = self.connection.cursor()
-        query="select nombre, nombre_usuario, correo, celular from Usuario"
+        query="select id_usuario,nombre, nombre_usuario, correo, celular from Usuario"
         cursor.execute(query)
         #result = conn.store_result()
         tupla = cursor.fetchall()
         n_filas = len(tupla)
         for i in range(n_filas):
-            user = usuarios.usuarios(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3])
+            user = usuarios.usuarios(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4])
             self.users.append(user)
         cursor.close()
         return self.users

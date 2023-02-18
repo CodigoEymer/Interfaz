@@ -1650,8 +1650,8 @@ border-radius: 10px;</string>
                                 </property>
                                 <layout class="QVBoxLayout" name="verticalLayout_10">
                                  <item>
-                                  <widget class="QWebView" name="webView">
-                                   <property name="url">
+                                  <widget class="QWebView" name="webView" native="true">
+                                   <property name="url" stdset="0">
                                     <url>
                                      <string>about:blank</string>
                                     </url>
@@ -3209,8 +3209,8 @@ background-color: rgb(111, 110, 110);</string>
                              </property>
                              <layout class="QVBoxLayout" name="verticalLayout_70">
                               <item>
-                               <widget class="QWebView" name="webView_2">
-                                <property name="url">
+                               <widget class="QWebView" name="webView_2" native="true">
+                                <property name="url" stdset="0">
                                  <url>
                                   <string>about:blank</string>
                                  </url>

@@ -43,12 +43,12 @@ class mision_dao_imp():
     def get_all_missions(self):
         self.missions = []
         cursor = self.connection.cursor()
-        query="select ciudad, descripcion, dimension, direccion, fecha, hora_inicio, hora_fin, id_mision,  id_usuario, nombre_mision, nombre_ubicacion, sobrelapamiento from Mision"
+        query="select id_mision, id_usuario, ciudad, descripcion, dimension, direccion, fecha, hora_inicio, hora_fin, nombre_mision, nombre_ubicacion, sobrelapamiento from Mision"
         cursor.execute(query)
         tupla = cursor.fetchall()
         n_filas = len(tupla)
         for i in range(n_filas):
-            mission = mision.mision(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3])
+            mission = mision.mision(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8],tupla[i][9],tupla[i][10],tupla[i][11])
             self.missions.append(mission)
         cursor.close()
         return self.missions

@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 class usuarios:
-    def __init__(self, nombre, nombre_usuario, correo, celular):
+    def __init__(self,id_usuario, nombre, nombre_usuario, correo, celular):
+        self.id_usuario = id_usuario
         self.celular = celular   
         self.nombre = nombre
         self.correo = correo
         self.nombre_usuario =nombre_usuario
-        #self.id_usuario = id_usuario
+        
 
     def get_celular(self):
         return self.celular
@@ -32,9 +33,9 @@ class usuarios:
     def set_nombre_usuario(self, nombre_usuario):
         self.nombre_usuario =  nombre_usuario
 
-    #def get_id_usuario(self):
-    #    return self.get_id_usuario
+    def get_id_usuario(self):
+        return self.get_id_usuario
 
-    #def set_id_usuario(self, id_usuario):
-    #    self.id_usuario = id_usuario
+    def set_id_usuario(self, id_usuario):
+        self.id_usuario = id_usuario
         

@@ -12,7 +12,7 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():
-    def __init__(self, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas):
+    def __init__(self, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga):
 
         self.ciudad = ciudad
         self.direccion = direccion
@@ -25,19 +25,13 @@ class config_module():
         self.acc_maxima = acc_maxima
         self.sobrelapamiento = sobrelapamiento
         self.coordenadas = coordenadas
+        self.dimension = dimension
+        self.wp_recarga = wp_recarga
 
         #self.insertar_mision()
-    
-    def calcular_area():
-        #coords_dict = json.load(coordenadas)
-        #coords= coords_dict['geometry']['coordinates'][0]
-        dimension = 2500
-        #print(coords)
-        return dimension
 
     def insertar_mision(self):
         prueba = mision_dao_imp(conn)
-        dimesion = "2500"
         date=d.date.today()
         timestamp=d.datetime.now()
 
@@ -45,7 +39,7 @@ class config_module():
             "15", #id_usuario
             self.ciudad, #ciudad
             self.descripcion, #descripcion
-            dimesion, #dimension
+            self.dimension, #dimension
             self.direccion, #direccion
             str(date), #fecha date:YYYY-MM-DD
             str(timestamp), #hora_inicio
@@ -53,6 +47,10 @@ class config_module():
             self.nombre_mision, #nombre_mision
             self.nombre_rdi, #nombre_ubicacion
             self.sobrelapamiento) #sobrelapamiento
+        
+        All_Mission =  prueba.get_all_missions()
+        for mision in All_Mission:
+            print(str(mision.get_id_mision()))
     
     def calcular_autonomia():
         pass
