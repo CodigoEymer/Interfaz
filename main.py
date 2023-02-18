@@ -134,9 +134,10 @@ class MainWindow(QMainWindow):
 		sobrelapamiento = self.overlap_text.toPlainText()
 
 
-		datos= config_module.config_module(id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,str(coords),str(area),str(wp_recarga))
+		datos= config_module.config_module(id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga))
 		
 		datos.insertar_mision()
+		datos.insertar_wp_region()
 
 
 	def home_page(self):
@@ -184,7 +185,7 @@ def on_message_received(message):
     global coords
     global wp_recarga
     global area
-    coords = coords_dict['wp_region']
+    coords = coords_dict['wp_region'][0]
     wp_recarga = coords_dict['wp_recarga']
     area = coords_dict['area']
 

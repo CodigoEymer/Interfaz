@@ -19,16 +19,18 @@ class mision_dao_imp():
             self.missions.append(mission)
         cursor.close()
 
-    def get_mission(self, fecha):
+    def get_mission(self, hora_inicio):
         res_mission= None
-        query="select id_mision, id_usuario, ciudad, descripcion, dimension, direccion, fecha, hora_inicio, hora_fin, nombre_mision, nombre_ubicacion, sobrelapamiento from Mision where fecha=" + str(fecha)
+        query="select id_mision, id_usuario, ciudad, descripcion, dimension, direccion, fecha, hora_fin, nombre_mision, nombre_ubicacion, sobrelapamiento from Mision where hora_inicio= '" + str(hora_inicio)+"'"
+        print(query)
         try:
             cursor = self.connection.cursor()
             result = cursor.execute(query)
             tupla = cursor.fetchone()
-            res_mission = mision.mision(tupla[0],tupla[1],tupla[2],tupla[3], tupla[4], tupla[5], tupla[6], tupla[7], tupla[8], tupla[9], tupla[10], tupla[11])
+            res_mission = mision.mision(tupla[0],tupla[1],tupla[2],tupla[3], tupla[4], tupla[5], tupla[6], hora_inicio, tupla[7], tupla[8], tupla[9], tupla[10])
         except Exception as e: print(e)
         cursor.close()
+        
         return res_mission
 
     def insert_mission(self, id_usuario, ciudad, descripcion, dimension, direccion, fecha, hora_inicio, hora_fin, nombre_mision,nombre_ubicacion,sobrelapamiento):
