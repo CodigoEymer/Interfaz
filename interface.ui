@@ -93,7 +93,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
        <string notr="true">background-color: rgb(203, 218, 216);</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="mainWindowWidget">
        <property name="sizePolicy">
@@ -245,8 +245,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                          </property>
                          <property name="icon">
                           <iconset resource="resources.qrc">
-                           <normaloff>:/icons/icons/IconoHomeAzul.svg</normaloff>
-                           <selectedoff>:/icons/icons/IconoHomeGris.svg</selectedoff>:/icons/icons/IconoHomeAzul.svg</iconset>
+                           <normaloff>:/icons/icons/IconoConfiAzul.png.svg</normaloff>:/icons/icons/IconoConfiAzul.png.svg</iconset>
                          </property>
                          <property name="iconSize">
                           <size>
@@ -269,7 +268,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                          </property>
                          <property name="icon">
                           <iconset resource="resources.qrc">
-                           <normaloff>:/icons/icons/IconoConfiAzul.png.svg</normaloff>:/icons/icons/IconoConfiAzul.png.svg</iconset>
+                           <normaloff>:/icons/icons/IconoHomeAzul.svg</normaloff>:/icons/icons/IconoHomeAzul.svg</iconset>
                          </property>
                          <property name="iconSize">
                           <size>
@@ -1650,55 +1649,11 @@ border-radius: 10px;</string>
                                 </property>
                                 <layout class="QVBoxLayout" name="verticalLayout_10">
                                  <item>
-                                  <widget class="QWebView" name="webView" native="true">
-                                   <property name="url" stdset="0">
+                                  <widget class="QWebView" name="webView">
+                                   <property name="url">
                                     <url>
                                      <string>about:blank</string>
                                     </url>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QTextEdit" name="wp_recarga_text">
-                                   <property name="maximumSize">
-                                    <size>
-                                     <width>16777215</width>
-                                     <height>25</height>
-                                    </size>
-                                   </property>
-                                   <property name="font">
-                                    <font>
-                                     <pointsize>10</pointsize>
-                                    </font>
-                                   </property>
-                                   <property name="styleSheet">
-                                    <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
-                                   </property>
-                                   <property name="placeholderText">
-                                    <string>COPIAR PUNTO DE RECARGA AQUÍ: {&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{},&quot;geometry&quot;:{&quot;type&quot;:&quot;Polygon&quot;,&quot;coordinates&quot;:[[[-76.51896,3.442056]]}}</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QTextEdit" name="coords_text">
-                                   <property name="maximumSize">
-                                    <size>
-                                     <width>16777215</width>
-                                     <height>40</height>
-                                    </size>
-                                   </property>
-                                   <property name="font">
-                                    <font>
-                                     <pointsize>10</pointsize>
-                                    </font>
-                                   </property>
-                                   <property name="styleSheet">
-                                    <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
-                                   </property>
-                                   <property name="placeholderText">
-                                    <string>COPIAR COORDENADAS AQUÍ: {&quot;type&quot;:&quot;Feature&quot;,&quot;properties&quot;:{},&quot;geometry&quot;:{&quot;type&quot;:&quot;Polygon&quot;,&quot;coordinates&quot;:[[[-76.51896,3.442056],[-76.515098,3.434174],[-76.528187,3.432546],[-76.51896,3.442056]]]}}</string>
                                    </property>
                                   </widget>
                                  </item>
@@ -3209,8 +3164,8 @@ background-color: rgb(111, 110, 110);</string>
                              </property>
                              <layout class="QVBoxLayout" name="verticalLayout_70">
                               <item>
-                               <widget class="QWebView" name="webView_2" native="true">
-                                <property name="url" stdset="0">
+                               <widget class="QWebView" name="webView_2">
+                                <property name="url">
                                  <url>
                                   <string>about:blank</string>
                                  </url>

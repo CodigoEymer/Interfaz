@@ -113,9 +113,8 @@ class MainWindow(QMainWindow):
 		
 		for user in user_list:
 			db_user = str(user.get_nombre_usuario())
-			print("idusuario:"+str(user.get_id_usuario())+" nombre:"+user.get_nombre()+" nombre_usuario:"+user.get_nombre_usuario()+" ceular:"+user.get_celular()+" correo:"+user.get_correo())
 			if db_user == user_name:
-
+				id_usuario = str(user.get_id_usuario())
 				self.main_window()
 				self.settings_page()
 				break
@@ -135,7 +134,7 @@ class MainWindow(QMainWindow):
 		sobrelapamiento = self.overlap_text.toPlainText()
 
 
-		datos= config_module.config_module(ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,str(coords),str(area),str(wp_recarga))
+		datos= config_module.config_module(id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,str(coords),str(area),str(wp_recarga))
 		
 		datos.insertar_mision()
 
@@ -151,9 +150,6 @@ class MainWindow(QMainWindow):
 
 	def mission_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
-		m.add_child(draw)
-		data = io.BytesIO()
-		m.save(data, close_file = False)
 		file = QFile("map2.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())

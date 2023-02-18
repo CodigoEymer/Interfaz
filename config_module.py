@@ -12,8 +12,8 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():
-    def __init__(self, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga):
-
+    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga):
+        self.id_usuario = id_usuario
         self.ciudad = ciudad
         self.direccion = direccion
         self.nombre_mision = nombre_mision
@@ -36,7 +36,7 @@ class config_module():
         timestamp=d.datetime.now()
 
         prueba.insert_mission(
-            "15", #id_usuario
+            self.id_usuario, #id_usuario
             self.ciudad, #ciudad
             self.descripcion, #descripcion
             self.dimension, #dimension
@@ -48,9 +48,8 @@ class config_module():
             self.nombre_rdi, #nombre_ubicacion
             self.sobrelapamiento) #sobrelapamiento
         
-        All_Mission =  prueba.get_all_missions()
-        for mision in All_Mission:
-            print(str(mision.get_id_mision()))
+        prueba.get_all_missions()
+
     
     def calcular_autonomia():
         pass
