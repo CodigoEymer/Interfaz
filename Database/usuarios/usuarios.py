@@ -34,7 +34,7 @@ class usuarios:
         self.nombre_usuario =  nombre_usuario
 
     def get_id_usuario(self):
-        return self.get_id_usuario
+        return self.id_usuario
 
     def set_id_usuario(self, id_usuario):
         self.id_usuario = id_usuario
