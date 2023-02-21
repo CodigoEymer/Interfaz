@@ -138,6 +138,7 @@ class MainWindow(QMainWindow):
 		
 		datos.insertar_mision()
 		datos.insertar_wp_region()
+		datos.insertar_wp_recarga()
 
 
 	def home_page(self):
