@@ -4,14 +4,12 @@ import io
 import rospy
 import rospkg
 import resources_rc
-import folium
 import json
 
-from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp
+from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 import config_module
 import server
 
-from folium.plugins import Draw
 import geocoder
 from std_msgs.msg import String
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
@@ -22,15 +20,6 @@ from PyQt5.QtCore import QFile
 from mavros_msgs.srv import *
 
 g = geocoder.ip('me')
-m = folium.Map(location=(g.latlng),tiles='OpenStreetMap',zoom_start=15)
-
-draw = Draw(export=True,    
-		filename="my_data.geojson",
-        draw_options={
-          	'polyline':False,
-		    'rectangle':False,
-          	'circle':False,
-          	'circlemarker':False})
 
 import MySQLdb
 DB_HOST = '127.0.0.1' 
@@ -40,6 +29,13 @@ DB_NAME = 'drones'
 
 datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME] 
 conn = MySQLdb.connect(*datos)
+
+
+cont=1
+coords= []
+wp_recarga=[] 
+area= []
+id_usuario = ""
 
 class MainWindow(QMainWindow):
 
@@ -54,10 +50,10 @@ class MainWindow(QMainWindow):
 		self.crearUsuarioBtn.clicked.connect(self.signup_page)
 		self.registerBtn.clicked.connect(self.register_button)
 		self.cancelRegisterBtn.clicked.connect(self.login_page)	
-		self.settingsBtn.clicked.connect(self.home_page)
+		self.homeBtn.clicked.connect(self.home_page)
 		self.generarTrayectBtn.clicked.connect(self.gen_tray)
-		#self.pushButton_20.clicked.connect(self.get_location)
-		self.homeBtn.clicked.connect(self.settings_page)
+		self.iniciarTrayectBtn.clicked.connect(self.init_trayct)
+		self.settingsBtn.clicked.connect(self.settings_page)
 		self.connectionBtn.clicked.connect(self.connection_page)
 		self.telemetryBtn.clicked.connect(self.telemetry_page_2)
 		self.missionBtn.clicked.connect(self.mission_page)
@@ -68,6 +64,7 @@ class MainWindow(QMainWindow):
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
+
 	
 
 
@@ -100,17 +97,14 @@ class MainWindow(QMainWindow):
 	def settings_page(self):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
-		m.add_child(draw)
-		data = io.BytesIO()
-		m.save(data, close_file = False)
-		#self.webView.setHtml(data.getvalue().decode())
+		self.hide_all_drones()
 		file = QFile("map2.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
 			self.webView.setHtml(html)	
 
 	def user_validation(self):
-		
+		global id_usuario
 		user_name = self.user_name_login.toPlainText()
 		connection = usuarios_dao_imp(conn)
 		user_list = connection.get_all_users()
@@ -118,6 +112,7 @@ class MainWindow(QMainWindow):
 		for user in user_list:
 			db_user = str(user.get_nombre_usuario())
 			if db_user == user_name:
+				id_usuario = str(user.get_id_usuario())
 				self.main_window()
 				self.settings_page()
 				break
@@ -135,15 +130,45 @@ class MainWindow(QMainWindow):
 		vel_maxima = self.max_speed_text.toPlainText()
 		acc_maxima = self.max_acc_text.toPlainText()
 		sobrelapamiento = self.overlap_text.toPlainText()
-		coordenadas = self.coords_text.toPlainText()
 
-		datos= config_module.config_module(ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas)
+
+		datos= config_module.config_module(id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga))
 		
 		datos.insertar_mision()
+		datos.insertar_wp_region()
+		datos.insertar_wp_recarga()
 
-
+	def init_trayct(self):
+		global cont
+		if cont == 9:
+			self.drone_9.show()
+		if cont == 8: 
+			self.drone_8.show()
+			cont=9
+		if cont == 7: 
+			self.drone_7.show()
+			cont=8
+		if cont == 6: 
+			self.drone_6.show()
+			cont=7
+		if cont == 5: 
+			self.drone_5.show()
+			cont=6
+		if cont == 4: 
+			self.drone_4.show()
+			cont=5
+		if cont == 3: 
+			self.drone_3.show()
+			cont=4
+		if cont == 2:
+			self.drone_2.show()
+			cont=3
+		if cont == 1:
+			self.drone_1x.show()
+			cont=2
 	def home_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
+		self.frame_15.hide()
 
 	def connection_page(self):
 		self.stackedWidget_2.setCurrentWidget(self.page)
@@ -153,9 +178,6 @@ class MainWindow(QMainWindow):
 
 	def mission_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
-		m.add_child(draw)
-		data = io.BytesIO()
-		m.save(data, close_file = False)
 		file = QFile("map2.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
@@ -184,10 +206,28 @@ class MainWindow(QMainWindow):
 		except rospy.ServiceException as e:
 			print ("Service arm call failed: %s"%e)
 
+	def hide_all_drones(self):
+		self.drone_1.hide()
+		self.drone_1x.hide()
+		self.drone_2.hide()
+		#self.drone_2x.hide()
+		self.drone_3.hide()
+		self.drone_4.hide()
+		self.drone_5.hide()
+		self.drone_6.hide()
+		self.drone_7.hide()
+		self.drone_8.hide()
+		self.drone_9.hide()
+
 def on_message_received(message):
     coords_dict = json.loads(message)
-    #coords= coords_dict['geometry']['coordinates'][0]
-    print(coords_dict)
+
+    global coords
+    global wp_recarga
+    global area
+    coords = coords_dict['wp_region'][0]
+    wp_recarga = coords_dict['wp_recarga']
+    area = coords_dict['area']
 
 if __name__ == "__main__":
     app = QApplication([])
@@ -197,3 +237,4 @@ if __name__ == "__main__":
     handler.message_received.connect(on_message_received)
     handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
     sys.exit(app.exec_())
+
