@@ -16,9 +16,9 @@ conn = MySQLdb.connect(*datos)
 id_mision = ""
 
 class config_module():
-    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga):
+    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,duracion_bateria,tipo):
         self.id_usuario = id_usuario
-        self.ciudad = "Cali"
+        self.ciudad = ciudad
         self.direccion = direccion
         self.nombre_mision = nombre_mision
         self.nombre_rdi = nombre_rdi
@@ -31,6 +31,9 @@ class config_module():
         self.coordenadas = coordenadas
         self.dimension = dimension
         self.wp_recarga = wp_recarga
+        self.controladora = controladora
+        self.duracion_bateria = duracion_bateria
+        self.tipo = tipo
 
     def insertar_mision(self):
         prueba = mision_dao_imp(conn)
@@ -74,6 +77,11 @@ class config_module():
         prueba = wp_recarga_dao_imp(conn)
         prueba.insert_wp_recarga(id_mision,wp_recarga)
         pass
+
+    def insertar_dron(self):
+        
+            pass
+
 
     def insertar_wp_dron():
         pass
