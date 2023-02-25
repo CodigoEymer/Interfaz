@@ -39,8 +39,6 @@ id_usuario = ""
 
 class MainWindow(QMainWindow):
 
-
-
 	def __init__(self):
 
 		super(MainWindow, self).__init__()
@@ -64,6 +62,10 @@ class MainWindow(QMainWindow):
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
+
+		self.hide_all_status()
+		self.hide_all_health()
+		self.hide_all_frames()
 
 	
 
@@ -142,11 +144,12 @@ class MainWindow(QMainWindow):
 		global cont
 		if cont == 9:
 			self.drone_9.show()
+			cont=1
 		if cont == 8: 
-			self.drone_8.show()
+			self.drone_8x.show()
 			cont=9
 		if cont == 7: 
-			self.drone_7.show()
+			self.drone_7x.show()
 			cont=8
 		if cont == 6: 
 			self.drone_6.show()
@@ -158,7 +161,7 @@ class MainWindow(QMainWindow):
 			self.drone_4.show()
 			cont=5
 		if cont == 3: 
-			self.drone_3.show()
+			self.drone_3x.show()
 			cont=4
 		if cont == 2:
 			self.drone_2.show()
@@ -168,7 +171,16 @@ class MainWindow(QMainWindow):
 			cont=2
 	def home_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
-		self.frame_15.hide()
+
+
+		self.frame_drone1.show()
+		self.armado_status1.show()
+		self.battery_good1.show()
+		self.gps_good1.show()
+		self.motor_good1.show()
+		self.autopilot_good1.show()
+		self.imu_good1.show()
+		self.camera_good1.show()
 
 	def connection_page(self):
 		self.stackedWidget_2.setCurrentWidget(self.page)
@@ -210,14 +222,130 @@ class MainWindow(QMainWindow):
 		self.drone_1.hide()
 		self.drone_1x.hide()
 		self.drone_2.hide()
-		#self.drone_2x.hide()
+		self.drone_2x.hide()
 		self.drone_3.hide()
+		self.drone_3x.hide()
 		self.drone_4.hide()
+		self.drone_4x.hide()
 		self.drone_5.hide()
+		self.drone_5x.hide()
 		self.drone_6.hide()
+		self.drone_6x.hide()
 		self.drone_7.hide()
+		self.drone_7x.hide()
 		self.drone_8.hide()
+		self.drone_8x.hide()
 		self.drone_9.hide()
+		self.drone_9x.hide()
+
+	def hide_all_status(self):
+		self.conectado_status1.hide()
+		self.armado_status1.hide()
+		self.en_mision_status1.hide()
+		self.error_status1.hide()
+
+		self.conectado_status2.hide()
+		self.armado_status2.hide()
+		self.en_mision_status2.hide()
+		self.error_status2.hide()
+
+		self.conectado_status3.hide()
+		self.armado_status3.hide()
+		self.en_mision_status3.hide()
+		self.error_status3.hide()
+
+		self.conectado_status4.hide()
+		self.armado_status4.hide()
+		self.en_mision_status4.hide()
+		self.error_status4.hide()
+
+		self.conectado_status5.hide()
+		self.armado_status5.hide()
+		self.en_mision_status5.hide()
+		self.error_status5.hide()
+
+	def hide_all_frames(self):
+		self.frame_drone1.hide()
+		self.frame_drone2.hide()
+		self.frame_drone3.hide()
+		self.frame_drone4.hide()
+		self.frame_drone5.hide()
+
+
+	def hide_all_health(self):
+		
+		self.battery_good1.hide()
+		self.battery_good2.hide()
+		self.battery_good3.hide()
+		self.battery_good4.hide()
+		self.battery_good5.hide()	
+
+		self.battery_bad1.hide()
+		self.battery_bad2.hide()
+		self.battery_bad3.hide()
+		self.battery_bad4.hide()
+		self.battery_bad5.hide()
+
+		self.gps_good1.hide()
+		self.gps_good2.hide()
+		self.gps_good3.hide()
+		self.gps_good4.hide()
+		self.gps_good5.hide()
+
+		self.gps_bad1.hide()
+		self.gps_bad2.hide()
+		self.gps_bad3.hide()
+		self.gps_bad4.hide()
+		self.gps_bad5.hide()
+
+		self.motor_good1.hide()
+		self.motor_good2.hide()
+		self.motor_good3.hide()
+		self.motor_good4.hide()
+		self.motor_good5.hide()
+
+		self.motor_bad1.hide()
+		self.motor_bad2.hide()
+		self.motor_bad3.hide()
+		self.motor_bad4.hide()
+		self.motor_bad5.hide()
+
+		self.autopilot_good1.hide()
+		self.autopilot_good2.hide()
+		self.autopilot_good3.hide()
+		self.autopilot_good4.hide()
+		self.autopilot_good5.hide()
+
+		self.autopilot_bad1.hide()
+		self.autopilot_bad2.hide()
+		self.autopilot_bad3.hide()
+		self.autopilot_bad4.hide()
+		self.autopilot_bad5.hide()
+
+		self.imu_good1.hide()
+		self.imu_good2.hide()
+		self.imu_good3.hide()
+		self.imu_good4.hide()
+		self.imu_good5.hide()
+
+		self.imu_bad1.hide()
+		self.imu_bad2.hide()
+		self.imu_bad3.hide()
+		self.imu_bad4.hide()
+		self.imu_bad5.hide()
+
+		self.camera_good1.hide()
+		self.camera_good2.hide()
+		self.camera_good3.hide()
+		self.camera_good4.hide()
+		self.camera_good5.hide()
+
+		self.camera_bad1.hide()
+		self.camera_bad2.hide()
+		self.camera_bad3.hide()
+		self.camera_bad4.hide()
+		self.camera_bad5.hide()
+
 
 def on_message_received(message):
     coords_dict = json.loads(message)
