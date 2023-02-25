@@ -8,6 +8,7 @@ import json
 
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 import config_module
+import communication_module
 import server
 
 import geocoder
@@ -104,6 +105,8 @@ class MainWindow(QMainWindow):
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
 			self.webView.setHtml(html)	
+
+		communication_module.communication_module()
 
 	def user_validation(self):
 		global id_usuario
