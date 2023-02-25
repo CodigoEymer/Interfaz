@@ -9,6 +9,7 @@ import json
 
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp
 import config_module
+import communication_module
 import server
 
 from folium.plugins import Draw
@@ -108,6 +109,8 @@ class MainWindow(QMainWindow):
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
 			self.webView.setHtml(html)	
+
+		communication_module.communication_module()
 
 	def user_validation(self):
 		
