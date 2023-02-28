@@ -175,15 +175,81 @@ class MainWindow(QMainWindow):
 	def home_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
 
+		estados = ["id","Ok", "Ok", "Ok", "Ok", "Ok", "Ok", "Ok", "Ok", "Ok"]
 
-		self.frame_drone1.show()
-		self.armado_status1.show()
-		self.battery_good1.show()
-		self.gps_good1.show()
-		self.motor_good1.show()
-		self.autopilot_good1.show()
-		self.imu_good1.show()
-		self.camera_good1.show()
+		self.show_states(estados, 1)
+		self.show_states(estados, 4)
+
+	def show_states(self, estados, dron):
+
+		frame_name = "frame_drone" + str(dron)
+		frame = getattr(self,frame_name)
+		frame.show()
+
+		conectado_status = "conectado_status" + str(dron)
+		conectado = getattr(self,conectado_status)
+		conectado.show()
+		
+		battery_good = "battery_good" + str(dron)
+		battery_green = getattr(self, battery_good)
+		battery_bad = "battery_bad" + str(dron)
+		battery_red = getattr(self, battery_bad)
+
+		gps_good = "gps_good" + str(dron)
+		gps_green = getattr(self, gps_good)
+		gps_bad = "gps_bad" + str(dron)
+		gps_red = getattr(self, gps_bad)
+
+		motor_good = "motor_good" + str(dron)
+		motor_green = getattr(self, motor_good)
+		motor_bad = "motor_bad" + str(dron)
+		motor_red = getattr(self, motor_bad)
+
+		autopilot_good = "autopilot_good" + str(dron)
+		autopilot_green = getattr(self, autopilot_good)
+		autopilot_bad = "autopilot_bad" + str(dron)
+		autopilot_red = getattr(self, autopilot_bad)
+
+		imu_good = "imu_good" + str(dron)
+		imu_green = getattr(self, imu_good)
+		imu_bad = "imu_bad" + str(dron)
+		imu_red = getattr(self, imu_bad)
+
+		camera_good = "camera_good" + str(dron)
+		camera_green = getattr(self, camera_good)
+		camera_bad = "camera_bad" + str(dron)
+		camera_red = getattr(self, camera_bad)
+
+		if estados[1] == "Ok":
+			battery_green.show()
+		else:
+			battery_red.show()
+
+		if estados[2] == "Ok":
+			gps_green.show()
+		else:
+			gps_red.show()
+
+		if estados[3] == "Ok":
+			motor_green.show()
+		else:
+			motor_red.show()
+
+		if estados[4] == "Ok":
+			autopilot_green.show()
+		else:
+			autopilot_red.show()
+
+		if estados[5] == "Ok" and estados[6] == "Ok" and estados[7] == "Ok" and estados[8] == "Ok":
+			imu_green.show()
+		else:
+			imu_red.show()
+
+		if estados[9] == "Ok":
+			camera_green.show()
+		else:
+			camera_red.show()
+		
 
 	def connection_page(self):
 		self.stackedWidget_2.setCurrentWidget(self.page)
