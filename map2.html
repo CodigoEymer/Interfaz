@@ -13,7 +13,7 @@
     <div id="map" style="height: 100%; width: 100%"></div>
     <script>
 
-      
+
       var c = 0;
       var map = L.map('map').setView([51.505, -0.09], 13);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -30,11 +30,11 @@
             showArea: true,
             metric: ['km', 'm'],
             drawError: {
-              color: '#e1e100',
+              color: '#FF0000 	',
               timeout: 1000
             },
             shapeOptions: {
-              color: '#bada55'
+              color: '#00FF00'
             }
           },
           marker: {
@@ -78,6 +78,20 @@
         var coords = JSON.stringify(datos);
         enviarinfo(coords);
       });
+      
+      let coordinates = [];
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+
+      function showPosition(position) {
+        coordinates.push(position.coords.latitude, position.coords.longitude);
+        alert(coordinates);
+      }
+
 
       function enviarinfo(mensaje){
         const websocket = new WebSocket("ws://localhost:8765");
