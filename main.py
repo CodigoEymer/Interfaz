@@ -14,7 +14,7 @@ import server
 import geocoder
 from std_msgs.msg import String
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidget, QTableWidgetItem
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile
 
@@ -179,6 +179,8 @@ class MainWindow(QMainWindow):
 
 		self.show_states(estados, 1)
 		self.show_states(estados, 4)
+
+		self.tableWidget.setItem(0,0,QTableWidgetItem("Jaime"))
 
 	def show_states(self, estados, dron):
 
