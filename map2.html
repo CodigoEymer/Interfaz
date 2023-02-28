@@ -78,20 +78,6 @@
         var coords = JSON.stringify(datos);
         enviarinfo(coords);
       });
-      
-      let coordinates = [];
-
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-      } else {
-        alert("Geolocation is not supported by this browser.");
-      }
-
-      function showPosition(position) {
-        coordinates.push(position.coords.latitude, position.coords.longitude);
-        alert(coordinates);
-      }
-
 
       function enviarinfo(mensaje){
         const websocket = new WebSocket("ws://localhost:8765");
