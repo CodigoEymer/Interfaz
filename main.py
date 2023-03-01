@@ -175,12 +175,21 @@ class MainWindow(QMainWindow):
 	def home_page(self):
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
 
-		estados = ["id","Ok", "Ok", "Ok", "Ok", "Ok", "Ok", "Ok", "Ok", "Ok"]
+		estados = communication_module.communication_module.Estados
+		posiciones = communication_module.communication_module.Posiciones
 
 		self.show_states(estados, 1)
 		self.show_states(estados, 4)
 
-		self.tableWidget.setItem(0,0,QTableWidgetItem("Jaime"))
+		id= posiciones[0]
+		latitud=posiciones[1]
+		longitud=posiciones[2]
+		altitud=posiciones[3]
+
+		self.tableWidget.setItem(0,0,QTableWidgetItem(str(id)))
+		self.tableWidget.setItem(0,1,QTableWidgetItem(str(latitud)))
+		self.tableWidget.setItem(0,2,QTableWidgetItem(str(longitud)))
+		self.tableWidget.setItem(0,3,QTableWidgetItem(str(altitud)))
 
 	def show_states(self, estados, dron):
 
