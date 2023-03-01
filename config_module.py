@@ -3,7 +3,7 @@ import datetime as d
 from Database.mision.mision_dao_imp import mision_dao_imp, mision, mision_dao
 from Database.wp_region.wp_region_dao_imp import wp_region_dao_imp, wp_region, wp_region_dao
 from Database.wp_recarga.wp_recarga_dao_imp import wp_recarga_dao_imp
-
+from Database.dron.dron_dao_imp import dron_dao_imp
 import MySQLdb
 DB_HOST = '127.0.0.1' 
 DB_USER = 'root' 
@@ -16,7 +16,7 @@ conn = MySQLdb.connect(*datos)
 id_mision = ""
 
 class config_module():
-    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,duracion_bateria,tipo):
+    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,voltaje_bateria,tipo):
         self.id_usuario = id_usuario
         self.ciudad = ciudad
         self.direccion = direccion
@@ -32,7 +32,7 @@ class config_module():
         self.dimension = dimension
         self.wp_recarga = wp_recarga
         self.controladora = controladora
-        self.duracion_bateria = duracion_bateria
+        self.voltaje_bateria = voltaje_bateria
         self.tipo = tipo
 
     def insertar_mision(self):
@@ -79,8 +79,9 @@ class config_module():
         pass
 
     def insertar_dron(self):
-        
-            pass
+        prueba = dron_dao_imp(conn)
+        print("voltaje"+self.voltaje_bateria+"  tipo"+self.tipo)
+        prueba.insert_dron(id_mision, self.acc_maxima, self.vel_maxima,self.alt_maxima, self.campo_de_vision,self.controladora,self.voltaje_bateria,self.tipo)
 
 
     def insertar_wp_dron():

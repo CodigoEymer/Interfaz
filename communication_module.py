@@ -107,15 +107,15 @@ class communication_module():
                             presion = value.value
                             self.Estados[8] = presion
 
-        for  dron in self.Dron:
-            print(dron)
-        print("\n")
-        for  estado in self.Estados:
-            print(estado)
-        print("\n")
-        for  posicion in self.Posiciones:
-            print(posicion)
-        print("\n")
+        # for  dron in self.Dron:
+        #     print(dron)
+        # print("\n")
+        # for  estado in self.Estados:
+        #     print(estado)
+        # print("\n")
+        # for  posicion in self.Posiciones:
+        #     print(posicion)
+        # print("\n")
                               
 
                     

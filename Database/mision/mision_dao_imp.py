@@ -22,7 +22,6 @@ class mision_dao_imp():
     def get_mission(self, hora_inicio):
         res_mission= None
         query="select id_mision, id_usuario, ciudad, descripcion, dimension, direccion, fecha, hora_fin, nombre_mision, nombre_ubicacion, sobrelapamiento from Mision where hora_inicio= '" + str(hora_inicio)+"'"
-        print(query)
         try:
             cursor = self.connection.cursor()
             result = cursor.execute(query)
