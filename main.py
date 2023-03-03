@@ -147,6 +147,7 @@ class MainWindow(QMainWindow):
 		datos.insertar_wp_recarga()
 		datos.insertar_dron()
 
+		
 	def init_trayct(self):
 		global cont
 		if cont == 9:

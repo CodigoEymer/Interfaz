@@ -63,7 +63,7 @@ class config_module():
     def calcular_autonomia():
         pass
     
-    def insertar_dron():
+    def generar_trayectoria():
         pass
 
     def insertar_wp_region(self):
