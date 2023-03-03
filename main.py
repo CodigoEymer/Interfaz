@@ -11,7 +11,6 @@ import config_module
 import communication_module
 import server
 
-import geocoder
 from std_msgs.msg import String
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidget, QTableWidgetItem
@@ -19,8 +18,6 @@ from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile
 
 from mavros_msgs.srv import *
-
-g = geocoder.ip('me')
 
 import MySQLdb
 DB_HOST = '127.0.0.1' 
@@ -67,9 +64,6 @@ class MainWindow(QMainWindow):
 		self.hide_all_status()
 		self.hide_all_health()
 		self.hide_all_frames()
-
-	
-
 
 	def main_window(self):
 			self.stackedWidget.setCurrentWidget(self.mainWindowWidget)
@@ -185,11 +179,17 @@ class MainWindow(QMainWindow):
 		latitud=posiciones[1]
 		longitud=posiciones[2]
 		altitud=posiciones[3]
+		guinada=posiciones[4]
+		alaveo=posiciones[5]
+		cabeceo=posiciones[6]
 
 		self.tableWidget.setItem(0,0,QTableWidgetItem(str(id)))
 		self.tableWidget.setItem(0,1,QTableWidgetItem(str(latitud)))
 		self.tableWidget.setItem(0,2,QTableWidgetItem(str(longitud)))
 		self.tableWidget.setItem(0,3,QTableWidgetItem(str(altitud)))
+		self.tableWidget.setItem(0,4,QTableWidgetItem(str(guinada)))
+		self.tableWidget.setItem(0,5,QTableWidgetItem(str(alaveo)))
+		self.tableWidget.setItem(0,6,QTableWidgetItem(str(cabeceo)))
 
 	def show_states(self, estados, dron):
 
