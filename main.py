@@ -141,13 +141,18 @@ class MainWindow(QMainWindow):
 		acc_maxima = self.max_acc_text.toPlainText()
 		sobrelapamiento = self.overlap_text.toPlainText()
 
+		controladora = communication_module.communication_module.Dron[2]
+		votaje_bateria = communication_module.communication_module.Dron[3]
+		tipo = communication_module.communication_module.Dron[1]
 
-		datos= config_module.config_module(id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga))
+		datos= config_module.config_module(id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo)
 		
 		datos.insertar_mision()
 		datos.insertar_wp_region()
 		datos.insertar_wp_recarga()
+		datos.insertar_dron()
 
+		
 	def init_trayct(self):
 		global cont
 		if cont == 9:
@@ -181,7 +186,9 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
 
 		estados = communication_module.communication_module.Estados
+
 		posiciones = communication_module.communication_module.Posiciones
+
 
 		self.show_states(estados, 1)
 		self.show_states(estados, 4)
