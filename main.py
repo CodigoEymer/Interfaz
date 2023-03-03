@@ -15,10 +15,11 @@ from std_msgs.msg import String
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidget, QTableWidgetItem
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QFile, QThread, pyqtSignal
 
 from mavros_msgs.srv import *
-
+import time
+import prueba
 import MySQLdb
 DB_HOST = '127.0.0.1' 
 DB_USER = 'root' 
@@ -101,6 +102,16 @@ class MainWindow(QMainWindow):
 			self.webView.setHtml(html)	
 
 		communication_module.communication_module()
+
+	def startThread(self):
+		self.thread = prueba.Worker()
+		self.thread.dataLoaded.connect(self.setData)
+		self.thread.start()
+
+	def setData(self, data):
+		for i, row in enumerate(data):
+			for j, item in enumerate(row):
+				self.tableWidget.setItem(i, j, QTableWidgetItem(item))
 
 	def user_validation(self):
 		global id_usuario
