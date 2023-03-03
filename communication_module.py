@@ -5,6 +5,7 @@ from std_msgs.msg import String
 from sensor_msgs.msg import NavSatFix
 from sensor_msgs.msg import Imu
 from diagnostic_msgs.msg import DiagnosticArray
+import main
 
 
 from mavros_msgs.srv import *
@@ -107,6 +108,7 @@ class communication_module():
                             presion = value.value
                             self.Estados[8] = presion
 
+
         # for  dron in self.Dron:
         #     print(dron)
         # print("\n")
@@ -116,6 +118,7 @@ class communication_module():
         # for  posicion in self.Posiciones:
         #     print(posicion)
         # print("\n")
+        main.MainWindow.startThread()
                               
 
                     

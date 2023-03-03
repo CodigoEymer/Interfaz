@@ -515,7 +515,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>1</number>
+                    <number>2</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -2076,7 +2076,7 @@ background-color: rgb(111, 110, 110);</string>
                            <item>
                             <widget class="QStackedWidget" name="stackedWidget_2">
                              <property name="currentIndex">
-                              <number>0</number>
+                              <number>1</number>
                              </property>
                              <widget class="QWidget" name="page">
                               <layout class="QVBoxLayout" name="verticalLayout_127">
@@ -4257,7 +4257,7 @@ background-color: rgb(111, 110, 110);</string>
                                     </property>
                                    </widget>
                                   </item>
-                                  <item alignment="Qt::AlignHCenter">
+                                  <item>
                                    <widget class="QFrame" name="frame_33">
                                     <property name="sizePolicy">
                                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -4272,7 +4272,7 @@ background-color: rgb(111, 110, 110);</string>
                                      <enum>QFrame::Raised</enum>
                                     </property>
                                     <layout class="QVBoxLayout" name="verticalLayout_54">
-                                     <item>
+                                     <item alignment="Qt::AlignHCenter">
                                       <widget class="QTableWidget" name="tableWidget">
                                        <property name="sizePolicy">
                                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -4282,28 +4282,13 @@ background-color: rgb(111, 110, 110);</string>
                                        </property>
                                        <property name="minimumSize">
                                         <size>
-                                         <width>500</width>
+                                         <width>1000</width>
                                          <height>0</height>
                                         </size>
                                        </property>
                                        <row>
                                         <property name="text">
                                          <string>1</string>
-                                        </property>
-                                       </row>
-                                       <row>
-                                        <property name="text">
-                                         <string>2</string>
-                                        </property>
-                                       </row>
-                                       <row>
-                                        <property name="text">
-                                         <string>3</string>
-                                        </property>
-                                       </row>
-                                       <row>
-                                        <property name="text">
-                                         <string>4</string>
                                         </property>
                                        </row>
                                        <column>
@@ -4326,84 +4311,66 @@ background-color: rgb(111, 110, 110);</string>
                                          <string>Altitud</string>
                                         </property>
                                        </column>
+                                       <column>
+                                        <property name="text">
+                                         <string>Guiñada</string>
+                                        </property>
+                                       </column>
+                                       <column>
+                                        <property name="text">
+                                         <string>Alaveo</string>
+                                        </property>
+                                       </column>
+                                       <column>
+                                        <property name="text">
+                                         <string>Cabeceo</string>
+                                        </property>
+                                       </column>
                                        <item row="0" column="0">
                                         <property name="text">
-                                         <string>Dron 1</string>
+                                         <string/>
+                                        </property>
+                                        <property name="textAlignment">
+                                         <set>AlignCenter</set>
                                         </property>
                                        </item>
                                        <item row="0" column="1">
                                         <property name="text">
-                                         <string>342.562</string>
+                                         <string/>
+                                        </property>
+                                        <property name="textAlignment">
+                                         <set>AlignCenter</set>
                                         </property>
                                        </item>
                                        <item row="0" column="2">
                                         <property name="text">
-                                         <string>25.5353</string>
+                                         <string/>
+                                        </property>
+                                        <property name="textAlignment">
+                                         <set>AlignCenter</set>
                                         </property>
                                        </item>
                                        <item row="0" column="3">
                                         <property name="text">
-                                         <string>2356.264</string>
+                                         <string/>
+                                        </property>
+                                        <property name="textAlignment">
+                                         <set>AlignCenter</set>
                                         </property>
                                        </item>
-                                       <item row="1" column="0">
-                                        <property name="text">
-                                         <string>Dron 2</string>
+                                       <item row="0" column="4">
+                                        <property name="textAlignment">
+                                         <set>AlignCenter</set>
                                         </property>
                                        </item>
-                                       <item row="1" column="1">
-                                        <property name="text">
-                                         <string>245.346</string>
+                                       <item row="0" column="5">
+                                        <property name="textAlignment">
+                                         <set>AlignCenter</set>
                                         </property>
                                        </item>
-                                       <item row="1" column="2">
-                                        <property name="text">
-                                         <string>5253.25</string>
-                                        </property>
-                                       </item>
-                                       <item row="1" column="3">
-                                        <property name="text">
-                                         <string>5524.524</string>
-                                        </property>
-                                       </item>
-                                       <item row="2" column="0">
-                                        <property name="text">
-                                         <string>Dron 3</string>
-                                        </property>
-                                       </item>
-                                       <item row="2" column="1">
-                                        <property name="text">
-                                         <string>23.353</string>
-                                        </property>
-                                       </item>
-                                       <item row="2" column="2">
-                                        <property name="text">
-                                         <string>642.543</string>
-                                        </property>
-                                       </item>
-                                       <item row="2" column="3">
-                                        <property name="text">
-                                         <string>5325.235</string>
-                                        </property>
-                                       </item>
-                                       <item row="3" column="0">
-                                        <property name="text">
-                                         <string>Dron 4</string>
-                                        </property>
-                                       </item>
-                                       <item row="3" column="1">
-                                        <property name="text">
-                                         <string>35.532</string>
-                                        </property>
-                                       </item>
-                                       <item row="3" column="2">
-                                        <property name="text">
-                                         <string>3.535</string>
-                                        </property>
-                                       </item>
-                                       <item row="3" column="3">
-                                        <property name="text">
-                                         <string>64.4624</string>
+                                       <item row="0" column="6">
+                                        <property name="textAlignment">
+                                         <set>AlignCenter</set>
                                         </property>
                                        </item>
                                       </widget>
@@ -4529,7 +4496,7 @@ background-color: rgb(111, 110, 110);</string>
                               <item>
                                <widget class="QTabWidget" name="tabWidget">
                                 <property name="currentIndex">
-                                 <number>1</number>
+                                 <number>2</number>
                                 </property>
                                 <widget class="QWidget" name="drone1_widget">
                                  <attribute name="title">

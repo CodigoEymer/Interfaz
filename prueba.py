@@ -1,10 +1,13 @@
-from datetime import datetime
+from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QProgressBar
+import time
+import communication_module
 
-ahora = datetime.now()
+class Worker(QThread):
+    dataLoaded = pyqtSignal(list)
+    
+    def run(self):
+        data = communication_module.communication_module.Dron
+        self.dron.emit(data)
 
-# Formato de hora por defecto
-print("Hora actual (formato por defecto):", ahora)
 
-# Cambio de formato de hora
-hora_formateada = ahora.strftime("%H:%M:%S")
-print("Hora actual (formato personalizado):", hora_formateada)
