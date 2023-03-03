@@ -118,7 +118,6 @@ class communication_module():
         # for  posicion in self.Posiciones:
         #     print(posicion)
         # print("\n")
-        main.MainWindow.startThread()
                               
 
                     

@@ -100,8 +100,8 @@ class MainWindow(QMainWindow):
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
 			self.webView.setHtml(html)	
-
 		communication_module.communication_module()
+		self.startThread()
 
 	def startThread(self):
 		self.thread = prueba.Worker()
@@ -109,9 +109,8 @@ class MainWindow(QMainWindow):
 		self.thread.start()
 
 	def setData(self, data):
-		for i, row in enumerate(data):
-			for j, item in enumerate(row):
-				self.tableWidget.setItem(i, j, QTableWidgetItem(item))
+		for j, item in enumerate(data):
+			self.tableWidget.setItem(0, j, QTableWidgetItem(str(item)))
 
 	def user_validation(self):
 		global id_usuario
@@ -187,27 +186,26 @@ class MainWindow(QMainWindow):
 
 		estados = communication_module.communication_module.Estados
 
-		posiciones = communication_module.communication_module.Posiciones
-
-
 		self.show_states(estados, 1)
 		self.show_states(estados, 4)
 
-		id= posiciones[0]
-		latitud=posiciones[1]
-		longitud=posiciones[2]
-		altitud=posiciones[3]
-		guinada=posiciones[4]
-		alaveo=posiciones[5]
-		cabeceo=posiciones[6]
+		#posiciones = communication_module.communication_module.Posiciones
 
-		self.tableWidget.setItem(0,0,QTableWidgetItem(str(id)))
-		self.tableWidget.setItem(0,1,QTableWidgetItem(str(latitud)))
-		self.tableWidget.setItem(0,2,QTableWidgetItem(str(longitud)))
-		self.tableWidget.setItem(0,3,QTableWidgetItem(str(altitud)))
-		self.tableWidget.setItem(0,4,QTableWidgetItem(str(guinada)))
-		self.tableWidget.setItem(0,5,QTableWidgetItem(str(alaveo)))
-		self.tableWidget.setItem(0,6,QTableWidgetItem(str(cabeceo)))
+		#id= posiciones[0]
+		#latitud=posiciones[1]
+		#longitud=posiciones[2]
+		#altitud=posiciones[3]
+		#guinada=posiciones[4]
+		#alaveo=posiciones[5]
+		#cabeceo=posiciones[6]
+
+		#self.tableWidget.setItem(0,0,QTableWidgetItem(str(id)))
+		#self.tableWidget.setItem(0,1,QTableWidgetItem(str(latitud)))
+		#self.tableWidget.setItem(0,2,QTableWidgetItem(str(longitud)))
+		#self.tableWidget.setItem(0,3,QTableWidgetItem(str(altitud)))
+		#self.tableWidget.setItem(0,4,QTableWidgetItem(str(guinada)))
+		#self.tableWidget.setItem(0,5,QTableWidgetItem(str(alaveo)))
+		#self.tableWidget.setItem(0,6,QTableWidgetItem(str(cabeceo)))
 
 	def show_states(self, estados, dron):
 

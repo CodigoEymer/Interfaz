@@ -7,7 +7,8 @@ class Worker(QThread):
     dataLoaded = pyqtSignal(list)
     
     def run(self):
-        data = communication_module.communication_module.Dron
-        self.dron.emit(data)
-
+        while(True):
+            data = communication_module.communication_module.Posiciones
+            self.dataLoaded.emit(data)
+            time.sleep(0.05)
 
