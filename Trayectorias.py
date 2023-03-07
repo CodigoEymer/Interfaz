@@ -29,6 +29,9 @@ def angle_between_vectors(x1, y1, x2, y2):
 print("Centroid: "+str(centroid_x)+","+str(centroid_y))
 
 dcp = float("inf")
+
+wp_dron =[]
+
 for i in range(p):
 
     x1, y1 = vertices[i]
@@ -48,14 +51,13 @@ print("Numero de anillos:", nr)
 
 for j in range(nr):
     for i in range(p):
+
+
         x1, y1 = vertices[i]
         if i == p-1:
             x2, y2 = vertices[0]
         else:
             x2, y2 = vertices[i+1]
-        di = distance(x1, y1, x2, y2)
-
-        print("di:", di)
 
         if i == p-1:
             x3, y3 = vertices[1]
@@ -70,8 +72,54 @@ for j in range(nr):
         angleY = angle_between_vectors(vector1x, vector1y, vector2x, vector2y)
         print("angleY:", angleY)
 
+        if i == 0 and j == 0:    
+            di = distance(x1, y1, x2, y2)-(LX/(math.tan(angleY)))            
+        else:
+            di = distance(x1, y1, x2, y2)           
+
+        
+
+        print("di:", di)
+
         # Numero de waypoints
         nw = (di-Ovy)/dw
+
+        for k in range(nw):
+
+
+            if k == 0:
+                if i == 0 and j == 0:   
+                    wp_dron.append((x1,y1+LX/2))
+                else:    
+                    wp_dron.append((x1+(LY/2),y1+LX/2))
+            else:
+                xwp , ywp = wp_dron(0)
+                wp_dron.append((xwp+dw,)
+            
+
+
+
+                di = distance(x1, y1, x2, y2)-(LX/(math.tan(angleY)))
+                
+
+
+
+                
+                
+
+
+
+
+        # Ovy recalculado
+        Ovy = (nw*LY-di)/(nw-1)
+        # dw recalculado
+        dw = (di-LY)/(nw-1)
+
+        
+
+
+
+
         
 
 
