@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1281</width>
+    <width>1299</width>
     <height>826</height>
    </rect>
   </property>
@@ -60,21 +60,6 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
     <string notr="true"/>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_52">
-    <property name="sizeConstraint">
-     <enum>QLayout::SetDefaultConstraint</enum>
-    </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="sizePolicy">
@@ -243,11 +228,14 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                          <property name="toolTip">
                           <string>Config</string>
                          </property>
+                         <property name="styleSheet">
+                          <string notr="true"/>
+                         </property>
                          <property name="text">
                           <string/>
                          </property>
                          <property name="icon">
-                          <iconset resource="resources.qrc">
+                          <iconset>
                            <normaloff>:/icons/icons/IconoConfiAzul.png.svg</normaloff>:/icons/icons/IconoConfiAzul.png.svg</iconset>
                          </property>
                          <property name="iconSize">
@@ -266,6 +254,9 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                        </item>
                        <item>
                         <widget class="QPushButton" name="homeBtn">
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
                          <property name="toolTip">
                           <string>Home</string>
                          </property>
@@ -289,6 +280,9 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                        </item>
                        <item>
                         <widget class="QPushButton" name="missionBtn">
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
                          <property name="toolTip">
                           <string>Mission</string>
                          </property>
@@ -309,8 +303,14 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                        </item>
                        <item>
                         <widget class="QPushButton" name="reportBtn">
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
                          <property name="toolTip">
                           <string>Report</string>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">background-color: rgb(203, 218, 216);</string>
                          </property>
                          <property name="text">
                           <string/>
@@ -446,6 +446,9 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                        </item>
                        <item>
                         <widget class="QPushButton" name="userBtn_2">
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
                          <property name="toolTip">
                           <string>User </string>
                          </property>
@@ -611,8 +614,8 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                                   <rect>
                                    <x>0</x>
                                    <y>0</y>
-                                   <width>240</width>
-                                   <height>678</height>
+                                   <width>267</width>
+                                   <height>617</height>
                                   </rect>
                                  </property>
                                  <layout class="QVBoxLayout" name="verticalLayout_16">
@@ -664,7 +667,7 @@ border-radius: 10px;</string>
                                          <widget class="QLabel" name="city_label">
                                           <property name="font">
                                            <font>
-                                            <pointsize>10</pointsize>
+                                            <pointsize>11</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
@@ -676,21 +679,14 @@ border-radius: 10px;</string>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QTextEdit" name="city_text">
-                                          <property name="maximumSize">
-                                           <size>
-                                            <width>16777215</width>
-                                            <height>32</height>
-                                           </size>
-                                          </property>
+                                         <widget class="QLineEdit" name="city_text">
                                           <property name="font">
                                            <font>
                                             <pointsize>10</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
-                                           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                           <string notr="true">background-color: rgb(238, 238, 236);</string>
                                           </property>
                                           <property name="placeholderText">
                                            <string>Cali</string>
@@ -728,7 +724,7 @@ background-color: rgb(238, 238, 236);</string>
                                          <widget class="QLabel" name="address_label">
                                           <property name="font">
                                            <font>
-                                            <pointsize>10</pointsize>
+                                            <pointsize>11</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
@@ -740,21 +736,14 @@ background-color: rgb(238, 238, 236);</string>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QTextEdit" name="address_text">
-                                          <property name="maximumSize">
-                                           <size>
-                                            <width>16777215</width>
-                                            <height>32</height>
-                                           </size>
-                                          </property>
+                                         <widget class="QLineEdit" name="address_text">
                                           <property name="font">
                                            <font>
                                             <pointsize>10</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
-                                           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                           <string notr="true">background-color: rgb(238, 238, 236);</string>
                                           </property>
                                           <property name="placeholderText">
                                            <string>Cra 44 #24B-65</string>
@@ -792,7 +781,7 @@ background-color: rgb(238, 238, 236);</string>
                                          <widget class="QLabel" name="mission_name_label">
                                           <property name="font">
                                            <font>
-                                            <pointsize>10</pointsize>
+                                            <pointsize>11</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
@@ -804,21 +793,14 @@ background-color: rgb(238, 238, 236);</string>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QTextEdit" name="mission_name_text">
-                                          <property name="maximumSize">
-                                           <size>
-                                            <width>16777215</width>
-                                            <height>32</height>
-                                           </size>
-                                          </property>
+                                         <widget class="QLineEdit" name="mision_name_text">
                                           <property name="font">
                                            <font>
                                             <pointsize>10</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
-                                           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                           <string notr="true">background-color: rgb(238, 238, 236);</string>
                                           </property>
                                           <property name="placeholderText">
                                            <string>Misión 1</string>
@@ -856,7 +838,7 @@ background-color: rgb(238, 238, 236);</string>
                                          <widget class="QLabel" name="label_147">
                                           <property name="font">
                                            <font>
-                                            <pointsize>10</pointsize>
+                                            <pointsize>11</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
@@ -868,21 +850,14 @@ background-color: rgb(238, 238, 236);</string>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QTextEdit" name="roi_name_text">
-                                          <property name="maximumSize">
-                                           <size>
-                                            <width>16777215</width>
-                                            <height>32</height>
-                                           </size>
-                                          </property>
+                                         <widget class="QLineEdit" name="roi_name_text">
                                           <property name="font">
                                            <font>
                                             <pointsize>10</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
-                                           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                           <string notr="true">background-color: rgb(238, 238, 236);</string>
                                           </property>
                                           <property name="placeholderText">
                                            <string>Granja de Fernando</string>
@@ -920,7 +895,7 @@ background-color: rgb(238, 238, 236);</string>
                                          <widget class="QLabel" name="description_label">
                                           <property name="font">
                                            <font>
-                                            <pointsize>10</pointsize>
+                                            <pointsize>11</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
@@ -932,21 +907,14 @@ background-color: rgb(238, 238, 236);</string>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QTextEdit" name="description_text">
-                                          <property name="maximumSize">
-                                           <size>
-                                            <width>16777215</width>
-                                            <height>32</height>
-                                           </size>
-                                          </property>
+                                         <widget class="QLineEdit" name="description_text">
                                           <property name="font">
                                            <font>
                                             <pointsize>10</pointsize>
                                            </font>
                                           </property>
                                           <property name="styleSheet">
-                                           <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                           <string notr="true">background-color: rgb(238, 238, 236);</string>
                                           </property>
                                           <property name="placeholderText">
                                            <string>Inspección aérea de cultivo de caña</string>
@@ -1032,7 +1000,7 @@ background-color: rgb(238, 238, 236);</string>
                                                <widget class="QLabel" name="vision_field_label">
                                                 <property name="font">
                                                  <font>
-                                                  <pointsize>10</pointsize>
+                                                  <pointsize>11</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
@@ -1044,21 +1012,14 @@ background-color: rgb(238, 238, 236);</string>
                                                </widget>
                                               </item>
                                               <item>
-                                               <widget class="QTextEdit" name="vision_field_text">
-                                                <property name="maximumSize">
-                                                 <size>
-                                                  <width>16777215</width>
-                                                  <height>32</height>
-                                                 </size>
-                                                </property>
+                                               <widget class="QLineEdit" name="vision_field_text">
                                                 <property name="font">
                                                  <font>
                                                   <pointsize>10</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
-                                                 <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                                 <string notr="true">background-color: rgb(238, 238, 236);</string>
                                                 </property>
                                                 <property name="placeholderText">
                                                  <string>45</string>
@@ -1089,14 +1050,11 @@ background-color: rgb(238, 238, 236);</string>
                                               <property name="rightMargin">
                                                <number>0</number>
                                               </property>
-                                              <property name="bottomMargin">
-                                               <number>0</number>
-                                              </property>
                                               <item>
                                                <widget class="QLabel" name="max_height_label">
                                                 <property name="font">
                                                  <font>
-                                                  <pointsize>10</pointsize>
+                                                  <pointsize>11</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
@@ -1108,21 +1066,14 @@ background-color: rgb(238, 238, 236);</string>
                                                </widget>
                                               </item>
                                               <item>
-                                               <widget class="QTextEdit" name="max_height_text">
-                                                <property name="maximumSize">
-                                                 <size>
-                                                  <width>16777215</width>
-                                                  <height>32</height>
-                                                 </size>
-                                                </property>
+                                               <widget class="QLineEdit" name="max_height_text">
                                                 <property name="font">
                                                  <font>
                                                   <pointsize>10</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
-                                                 <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                                 <string notr="true">background-color: rgb(238, 238, 236);</string>
                                                 </property>
                                                 <property name="placeholderText">
                                                  <string>10</string>
@@ -1160,7 +1111,7 @@ background-color: rgb(238, 238, 236);</string>
                                                <widget class="QLabel" name="max_speed_label">
                                                 <property name="font">
                                                  <font>
-                                                  <pointsize>10</pointsize>
+                                                  <pointsize>11</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
@@ -1172,21 +1123,14 @@ background-color: rgb(238, 238, 236);</string>
                                                </widget>
                                               </item>
                                               <item>
-                                               <widget class="QTextEdit" name="max_speed_text">
-                                                <property name="maximumSize">
-                                                 <size>
-                                                  <width>16777215</width>
-                                                  <height>32</height>
-                                                 </size>
-                                                </property>
+                                               <widget class="QLineEdit" name="max_speed_text">
                                                 <property name="font">
                                                  <font>
                                                   <pointsize>10</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
-                                                 <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                                 <string notr="true">background-color: rgb(238, 238, 236);</string>
                                                 </property>
                                                 <property name="placeholderText">
                                                  <string>4.5</string>
@@ -1224,7 +1168,7 @@ background-color: rgb(238, 238, 236);</string>
                                                <widget class="QLabel" name="max_acc_label">
                                                 <property name="font">
                                                  <font>
-                                                  <pointsize>10</pointsize>
+                                                  <pointsize>11</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
@@ -1236,21 +1180,14 @@ background-color: rgb(238, 238, 236);</string>
                                                </widget>
                                               </item>
                                               <item>
-                                               <widget class="QTextEdit" name="max_acc_text">
-                                                <property name="maximumSize">
-                                                 <size>
-                                                  <width>16777215</width>
-                                                  <height>32</height>
-                                                 </size>
-                                                </property>
+                                               <widget class="QLineEdit" name="max_acc_text">
                                                 <property name="font">
                                                  <font>
                                                   <pointsize>10</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
-                                                 <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                                 <string notr="true">background-color: rgb(238, 238, 236);</string>
                                                 </property>
                                                 <property name="placeholderText">
                                                  <string>2.1</string>
@@ -1288,7 +1225,7 @@ background-color: rgb(238, 238, 236);</string>
                                                <widget class="QLabel" name="label_15">
                                                 <property name="font">
                                                  <font>
-                                                  <pointsize>10</pointsize>
+                                                  <pointsize>11</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
@@ -1300,21 +1237,14 @@ background-color: rgb(238, 238, 236);</string>
                                                </widget>
                                               </item>
                                               <item>
-                                               <widget class="QTextEdit" name="overlap_text">
-                                                <property name="maximumSize">
-                                                 <size>
-                                                  <width>16777215</width>
-                                                  <height>32</height>
-                                                 </size>
-                                                </property>
+                                               <widget class="QLineEdit" name="overlap_text">
                                                 <property name="font">
                                                  <font>
                                                   <pointsize>10</pointsize>
                                                  </font>
                                                 </property>
                                                 <property name="styleSheet">
-                                                 <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                                                 <string notr="true">background-color: rgb(238, 238, 236);</string>
                                                 </property>
                                                 <property name="placeholderText">
                                                  <string>3</string>
@@ -2019,6 +1949,9 @@ border-radius: 10px;</string>
                                   <height>16777215</height>
                                  </size>
                                 </property>
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
+                                </property>
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(255, 0, 0);</string>
@@ -2035,6 +1968,9 @@ background-color: rgb(255, 0, 0);</string>
                                   <width>250</width>
                                   <height>16777215</height>
                                  </size>
+                                </property>
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
                                 </property>
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);
@@ -2090,7 +2026,7 @@ background-color: rgb(111, 110, 110);</string>
                                    <rect>
                                     <x>0</x>
                                     <y>0</y>
-                                    <width>1095</width>
+                                    <width>654</width>
                                     <height>813</height>
                                    </rect>
                                   </property>
@@ -4402,6 +4338,9 @@ background-color: rgb(111, 110, 110);</string>
                           <layout class="QVBoxLayout" name="verticalLayout_32">
                            <item>
                             <widget class="QPushButton" name="connectionBtn">
+                             <property name="cursor">
+                              <cursorShape>PointingHandCursor</cursorShape>
+                             </property>
                              <property name="styleSheet">
                               <string notr="true">background-color: rgb(3, 33, 77);</string>
                              </property>
@@ -4422,6 +4361,9 @@ background-color: rgb(111, 110, 110);</string>
                            </item>
                            <item>
                             <widget class="QPushButton" name="telemetryBtn">
+                             <property name="cursor">
+                              <cursorShape>PointingHandCursor</cursorShape>
+                             </property>
                              <property name="text">
                               <string/>
                              </property>
@@ -4468,7 +4410,7 @@ background-color: rgb(111, 110, 110);</string>
                               <enum>QFrame::Raised</enum>
                              </property>
                              <layout class="QVBoxLayout" name="verticalLayout_59">
-                              <item alignment="Qt::AlignHCenter">
+                              <item>
                                <widget class="QLabel" name="label_26">
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);</string>
@@ -4496,7 +4438,7 @@ background-color: rgb(111, 110, 110);</string>
                               <item>
                                <widget class="QTabWidget" name="tabWidget">
                                 <property name="currentIndex">
-                                 <number>2</number>
+                                 <number>0</number>
                                 </property>
                                 <widget class="QWidget" name="drone1_widget">
                                  <attribute name="title">
@@ -4970,6 +4912,9 @@ background-color: rgb(111, 110, 110);</string>
                              <layout class="QHBoxLayout" name="horizontalLayout_30">
                               <item>
                                <widget class="QPushButton" name="playBtn">
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
+                                </property>
                                 <property name="toolTip">
                                  <string>Iniciar</string>
                                 </property>
@@ -4993,6 +4938,9 @@ background-color: rgb(111, 110, 110);</string>
                               </item>
                               <item>
                                <widget class="QPushButton" name="pauseBtn">
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
+                                </property>
                                 <property name="toolTip">
                                  <string>Pausar</string>
                                 </property>
@@ -5016,6 +4964,9 @@ background-color: rgb(111, 110, 110);</string>
                               </item>
                               <item>
                                <widget class="QPushButton" name="stopBtn">
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
+                                </property>
                                 <property name="toolTip">
                                  <string>Detener</string>
                                 </property>
@@ -7371,12 +7322,6 @@ padding: 3px 3px;
 border-radius: 10px;</string>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_36">
-                           <property name="spacing">
-                            <number>0</number>
-                           </property>
-                           <property name="rightMargin">
-                            <number>9</number>
-                           </property>
                            <item>
                             <widget class="QLabel" name="label_4">
                              <property name="styleSheet">
@@ -7388,22 +7333,9 @@ border-radius: 10px;</string>
                             </widget>
                            </item>
                            <item>
-                            <widget class="QTextEdit" name="user_name_login">
-                             <property name="minimumSize">
-                              <size>
-                               <width>200</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>300</width>
-                               <height>32</height>
-                              </size>
-                             </property>
+                            <widget class="QLineEdit" name="user_name_login">
                              <property name="styleSheet">
-                              <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(238, 238, 236);</string>
+                              <string notr="true">background-color: rgb(238, 238, 236);</string>
                              </property>
                             </widget>
                            </item>
@@ -7428,6 +7360,9 @@ background-color: rgb(238, 238, 236);</string>
                              <layout class="QHBoxLayout" name="horizontalLayout_15">
                               <item>
                                <widget class="QPushButton" name="ingresarBtn">
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
+                                </property>
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(255, 0, 0);</string>
@@ -7439,6 +7374,9 @@ background-color: rgb(255, 0, 0);</string>
                               </item>
                               <item>
                                <widget class="QPushButton" name="crearUsuarioBtn">
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
+                                </property>
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(111, 110, 110);</string>
@@ -7879,6 +7817,9 @@ background-color: rgb(238, 238, 236);</string>
                                 <layout class="QHBoxLayout" name="horizontalLayout_13">
                                  <item>
                                   <widget class="QPushButton" name="registerBtn">
+                                   <property name="cursor">
+                                    <cursorShape>PointingHandCursor</cursorShape>
+                                   </property>
                                    <property name="styleSheet">
                                     <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(239, 41, 41);</string>
@@ -7890,6 +7831,9 @@ background-color: rgb(239, 41, 41);</string>
                                  </item>
                                  <item>
                                   <widget class="QPushButton" name="cancelRegisterBtn">
+                                   <property name="cursor">
+                                    <cursorShape>PointingHandCursor</cursorShape>
+                                   </property>
                                    <property name="styleSheet">
                                     <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(136, 138, 133);</string>
@@ -8312,6 +8256,9 @@ background-color: rgb(238, 238, 236);</string>
                              <layout class="QHBoxLayout" name="horizontalLayout_16">
                               <item>
                                <widget class="QPushButton" name="updateBtn">
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
+                                </property>
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(239, 41, 41);</string>
@@ -8323,6 +8270,9 @@ background-color: rgb(239, 41, 41);</string>
                               </item>
                               <item>
                                <widget class="QPushButton" name="cancelUpdateBtn">
+                                <property name="cursor">
+                                 <cursorShape>PointingHandCursor</cursorShape>
+                                </property>
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);
 background-color: rgb(136, 138, 133);</string>

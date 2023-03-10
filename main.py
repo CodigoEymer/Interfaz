@@ -16,6 +16,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidget, QTableWidgetItem
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QThread, pyqtSignal
+from PyQt5.QtGui import QIcon, QColor
 
 from mavros_msgs.srv import *
 import time
@@ -44,6 +45,7 @@ class MainWindow(QMainWindow):
 		loadUi('interface.ui', self)
 		
 		self.ingresarBtn.clicked.connect(self.user_validation)
+		self.user_name_login.returnPressed.connect(self.user_validation)
 		self.crearUsuarioBtn.clicked.connect(self.signup_page)
 		self.registerBtn.clicked.connect(self.register_button)
 		self.cancelRegisterBtn.clicked.connect(self.login_page)	
@@ -65,6 +67,25 @@ class MainWindow(QMainWindow):
 		self.hide_all_status()
 		self.hide_all_health()
 		self.hide_all_frames()
+
+	def set_default_icons(self):
+
+		default = "background-color: rgb(203, 218, 216);"
+
+		self.settingsBtn.setIcon(QIcon('./icons/IconoConfiAzul.svg'))
+		self.settingsBtn.setStyleSheet(default)
+
+		self.homeBtn.setIcon(QIcon('./icons/IconoHomeAzul.svg'))
+		self.homeBtn.setStyleSheet(default)
+
+		self.missionBtn.setIcon(QIcon('./icons/IconoMisionAzul.svg'))
+		self.missionBtn.setStyleSheet(default)
+
+		self.reportBtn.setIcon(QIcon('./icons/IconoReporteAzul.svg'))
+		self.reportBtn.setStyleSheet(default)
+
+
+
 
 	def main_window(self):
 			self.stackedWidget.setCurrentWidget(self.mainWindowWidget)
@@ -93,6 +114,11 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_3.setCurrentWidget(self.userConfiPage)
 
 	def settings_page(self):
+		self.set_default_icons()
+		icon = QIcon('./icons/IconoConfiGris.svg')
+		self.settingsBtn.setIcon(icon)
+		self.settingsBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
+		
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.hide_all_drones()
@@ -114,7 +140,7 @@ class MainWindow(QMainWindow):
 
 	def user_validation(self):
 		global id_usuario
-		user_name = self.user_name_login.toPlainText()
+		user_name = self.user_name_login.text()
 		connection = usuarios_dao_imp(conn)
 		user_list = connection.get_all_users()
 		
@@ -129,16 +155,16 @@ class MainWindow(QMainWindow):
 				self.error_label.setText("Usuario no encontrado")
 
 	def gen_tray(self):
-		ciudad = self.city_text.toPlainText()
-		direccion = self.address_text.toPlainText()
-		nombre_mision = self.mission_name_text.toPlainText()
-		nombre_rdi = self.roi_name_text.toPlainText()
-		descripcion = self.description_text.toPlainText()
-		campo_de_vision = self.vision_field_text.toPlainText()
-		alt_maxima = self.max_height_text.toPlainText()
-		vel_maxima = self.max_speed_text.toPlainText()
-		acc_maxima = self.max_acc_text.toPlainText()
-		sobrelapamiento = self.overlap_text.toPlainText()
+		ciudad = self.city_text.text()
+		direccion = self.address_text.text()
+		nombre_mision = self.mission_name_text.text()
+		nombre_rdi = self.roi_name_text.text()
+		descripcion = self.description_text.text()
+		campo_de_vision = self.vision_field_text.text()
+		alt_maxima = self.max_height_text.text()
+		vel_maxima = self.max_speed_text.text()
+		acc_maxima = self.max_acc_text.text()
+		sobrelapamiento = self.overlap_text.text()
 
 		controladora = communication_module.communication_module.Dron[2]
 		votaje_bateria = communication_module.communication_module.Dron[3]
@@ -182,12 +208,16 @@ class MainWindow(QMainWindow):
 			self.drone_1x.show()
 			cont=2
 	def home_page(self):
+		self.set_default_icons()
+		icon = QIcon('./icons/IconoHomeGris.svg')
+		self.homeBtn.setIcon(icon)
+		self.homeBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
+
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
 
 		estados = communication_module.communication_module.Estados
 
 		self.show_states(estados, 1)
-		self.show_states(estados, 4)
 
 		#posiciones = communication_module.communication_module.Posiciones
 
@@ -285,6 +315,11 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_2.setCurrentWidget(self.page_2)
 
 	def mission_page(self):
+		self.set_default_icons()
+		icon = QIcon('./icons/IconoMisionGris.svg')
+		self.missionBtn.setIcon(icon)
+		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
+
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		file = QFile("map2.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
@@ -292,6 +327,11 @@ class MainWindow(QMainWindow):
 			self.webView_2.setHtml(html)	
 
 	def report_page(self):
+		self.set_default_icons()
+		icon = QIcon('./icons/IconoReporteGris.svg')
+		self.reportBtn.setIcon(icon)
+		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
+
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
 
 	def pausingMission(self):
