@@ -82,8 +82,6 @@ class MainWindow(QMainWindow):
 		self.reportBtn.setStyleSheet(default)
 
 
-
-
 	def main_window(self):
 			self.stackedWidget.setCurrentWidget(self.mainWindowWidget)
 
