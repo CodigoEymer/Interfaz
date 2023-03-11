@@ -31,7 +31,6 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 
-cont=1
 coords= []
 wp_recarga=[] 
 area= []
@@ -64,8 +63,6 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 
-		self.hide_all_status()
-		self.hide_all_health()
 		self.hide_all_frames()
 
 	def set_default_icons(self):
@@ -121,7 +118,7 @@ class MainWindow(QMainWindow):
 		
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
-		self.hide_all_drones()
+		
 		file = QFile("map2.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
@@ -135,6 +132,7 @@ class MainWindow(QMainWindow):
 		self.thread.start()
 
 	def setData(self, data):
+		self.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
 		for j, item in enumerate(data):
 			self.tableWidget.setItem(0, j, QTableWidgetItem(str(item)))
 
@@ -179,63 +177,16 @@ class MainWindow(QMainWindow):
 
 		
 	def init_trayct(self):
-		global cont
-		if cont == 9:
-			self.drone_9.show()
-			cont=1
-		if cont == 8: 
-			self.drone_8x.show()
-			cont=9
-		if cont == 7: 
-			self.drone_7x.show()
-			cont=8
-		if cont == 6: 
-			self.drone_6.show()
-			cont=7
-		if cont == 5: 
-			self.drone_5.show()
-			cont=6
-		if cont == 4: 
-			self.drone_4.show()
-			cont=5
-		if cont == 3: 
-			self.drone_3x.show()
-			cont=4
-		if cont == 2:
-			self.drone_2.show()
-			cont=3
-		if cont == 1:
-			self.drone_1x.show()
-			cont=2
+		pass
+
 	def home_page(self):
 		self.set_default_icons()
 		icon = QIcon('./icons/IconoHomeGris.svg')
 		self.homeBtn.setIcon(icon)
 		self.homeBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
-
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
-
 		estados = communication_module.communication_module.Estados
-
 		self.show_states(estados, 1)
-
-		#posiciones = communication_module.communication_module.Posiciones
-
-		#id= posiciones[0]
-		#latitud=posiciones[1]
-		#longitud=posiciones[2]
-		#altitud=posiciones[3]
-		#guinada=posiciones[4]
-		#alaveo=posiciones[5]
-		#cabeceo=posiciones[6]
-
-		#self.tableWidget.setItem(0,0,QTableWidgetItem(str(id)))
-		#self.tableWidget.setItem(0,1,QTableWidgetItem(str(latitud)))
-		#self.tableWidget.setItem(0,2,QTableWidgetItem(str(longitud)))
-		#self.tableWidget.setItem(0,3,QTableWidgetItem(str(altitud)))
-		#self.tableWidget.setItem(0,4,QTableWidgetItem(str(guinada)))
-		#self.tableWidget.setItem(0,5,QTableWidgetItem(str(alaveo)))
-		#self.tableWidget.setItem(0,6,QTableWidgetItem(str(cabeceo)))
 
 	def show_states(self, estados, dron):
 
@@ -245,67 +196,69 @@ class MainWindow(QMainWindow):
 
 		conectado_status = "conectado_status" + str(dron)
 		conectado = getattr(self,conectado_status)
-		conectado.show()
+		conectado.setText("Conectado")
 		
-		battery_good = "battery_good" + str(dron)
-		battery_green = getattr(self, battery_good)
-		battery_bad = "battery_bad" + str(dron)
-		battery_red = getattr(self, battery_bad)
+		battery = "battery_good" + str(dron)
+		batteryBtn = getattr(self, battery)
+		battery_green = QIcon('./icons/batteryVerde.svg')
+		battery_red = QIcon('./icons/batteryRojo.svg')
+
 
 		gps_good = "gps_good" + str(dron)
-		gps_green = getattr(self, gps_good)
-		gps_bad = "gps_bad" + str(dron)
-		gps_red = getattr(self, gps_bad)
+		gpsBtn = getattr(self, gps_good)
+		gps_green = QIcon('./icons/gpsVerde.svg')
+		gps_red = QIcon('./icons/gpsRojo.svg')
 
 		motor_good = "motor_good" + str(dron)
-		motor_green = getattr(self, motor_good)
-		motor_bad = "motor_bad" + str(dron)
-		motor_red = getattr(self, motor_bad)
+		motorBtn = getattr(self, motor_good)
+		motor_green = QIcon('./icons/motorVerde.svg')
+		motor_red = QIcon('./icons/motorRojo.svg')
 
 		autopilot_good = "autopilot_good" + str(dron)
-		autopilot_green = getattr(self, autopilot_good)
-		autopilot_bad = "autopilot_bad" + str(dron)
-		autopilot_red = getattr(self, autopilot_bad)
+		autopilotBtn = getattr(self, autopilot_good)
+		autopilot_green = QIcon('./icons/cpuVerde.svg')
+		autopilot_red = QIcon('./icons/cpuRojo.svg')
+
 
 		imu_good = "imu_good" + str(dron)
-		imu_green = getattr(self, imu_good)
-		imu_bad = "imu_bad" + str(dron)
-		imu_red = getattr(self, imu_bad)
+		imuBtn = getattr(self, imu_good)
+		imu_green = QIcon('./icons/imuVerde.svg')
+		imu_red = QIcon('./icons/imuRojo.svg')
 
 		camera_good = "camera_good" + str(dron)
-		camera_green = getattr(self, camera_good)
-		camera_bad = "camera_bad" + str(dron)
-		camera_red = getattr(self, camera_bad)
+		cameraBtn = getattr(self, camera_good)
+		camera_green = QIcon('./icons/cameraVerde.svg')
+		camera_red = QIcon('./icons/cameraRojo.svg')
 
 		if estados[1] == "Ok":
-			battery_green.show()
+			batteryBtn.setIcon(battery_green)
 		else:
-			battery_red.show()
+			batteryBtn.setIcon(battery_red)
 
 		if estados[2] == "Ok":
-			gps_green.show()
+			gpsBtn.setIcon(gps_green)
 		else:
-			gps_red.show()
+			gpsBtn.setIcon(gps_red)
 
 		if estados[3] == "Ok":
-			motor_green.show()
+			motorBtn.setIcon(motor_green)
 		else:
-			motor_red.show()
+			motorBtn.setIcon(motor_red)
 
 		if estados[4] == "Ok":
-			autopilot_green.show()
+			autopilotBtn.setIcon(autopilot_green)
 		else:
-			autopilot_red.show()
+			autopilotBtn.setIcon(autopilot_red)
 
 		if estados[5] == "Ok" and estados[6] == "Ok" and estados[7] == "Ok" and estados[8] == "Ok":
-			imu_green.show()
+			imuBtn.setIcon(imu_green)
 		else:
-			imu_red.show()
+			imuBtn.setIcon(imu_red)
 
 		if estados[9] == "Ok":
-			camera_green.show()
+			cameraBtn.setIcon(camera_green)
 		else:
-			camera_red.show()
+			cameraBtn.setIcon(camera_red)
 		
 
 	def connection_page(self):
@@ -354,51 +307,6 @@ class MainWindow(QMainWindow):
 		except rospy.ServiceException as e:
 			print ("Service arm call failed: %s"%e)
 
-	def hide_all_drones(self):
-		self.drone_1.hide()
-		self.drone_1x.hide()
-		self.drone_2.hide()
-		self.drone_2x.hide()
-		self.drone_3.hide()
-		self.drone_3x.hide()
-		self.drone_4.hide()
-		self.drone_4x.hide()
-		self.drone_5.hide()
-		self.drone_5x.hide()
-		self.drone_6.hide()
-		self.drone_6x.hide()
-		self.drone_7.hide()
-		self.drone_7x.hide()
-		self.drone_8.hide()
-		self.drone_8x.hide()
-		self.drone_9.hide()
-		self.drone_9x.hide()
-
-	def hide_all_status(self):
-		self.conectado_status1.hide()
-		self.armado_status1.hide()
-		self.en_mision_status1.hide()
-		self.error_status1.hide()
-
-		self.conectado_status2.hide()
-		self.armado_status2.hide()
-		self.en_mision_status2.hide()
-		self.error_status2.hide()
-
-		self.conectado_status3.hide()
-		self.armado_status3.hide()
-		self.en_mision_status3.hide()
-		self.error_status3.hide()
-
-		self.conectado_status4.hide()
-		self.armado_status4.hide()
-		self.en_mision_status4.hide()
-		self.error_status4.hide()
-
-		self.conectado_status5.hide()
-		self.armado_status5.hide()
-		self.en_mision_status5.hide()
-		self.error_status5.hide()
 
 	def hide_all_frames(self):
 		self.frame_drone1.hide()
@@ -406,81 +314,6 @@ class MainWindow(QMainWindow):
 		self.frame_drone3.hide()
 		self.frame_drone4.hide()
 		self.frame_drone5.hide()
-
-
-	def hide_all_health(self):
-		
-		self.battery_good1.hide()
-		self.battery_good2.hide()
-		self.battery_good3.hide()
-		self.battery_good4.hide()
-		self.battery_good5.hide()	
-
-		self.battery_bad1.hide()
-		self.battery_bad2.hide()
-		self.battery_bad3.hide()
-		self.battery_bad4.hide()
-		self.battery_bad5.hide()
-
-		self.gps_good1.hide()
-		self.gps_good2.hide()
-		self.gps_good3.hide()
-		self.gps_good4.hide()
-		self.gps_good5.hide()
-
-		self.gps_bad1.hide()
-		self.gps_bad2.hide()
-		self.gps_bad3.hide()
-		self.gps_bad4.hide()
-		self.gps_bad5.hide()
-
-		self.motor_good1.hide()
-		self.motor_good2.hide()
-		self.motor_good3.hide()
-		self.motor_good4.hide()
-		self.motor_good5.hide()
-
-		self.motor_bad1.hide()
-		self.motor_bad2.hide()
-		self.motor_bad3.hide()
-		self.motor_bad4.hide()
-		self.motor_bad5.hide()
-
-		self.autopilot_good1.hide()
-		self.autopilot_good2.hide()
-		self.autopilot_good3.hide()
-		self.autopilot_good4.hide()
-		self.autopilot_good5.hide()
-
-		self.autopilot_bad1.hide()
-		self.autopilot_bad2.hide()
-		self.autopilot_bad3.hide()
-		self.autopilot_bad4.hide()
-		self.autopilot_bad5.hide()
-
-		self.imu_good1.hide()
-		self.imu_good2.hide()
-		self.imu_good3.hide()
-		self.imu_good4.hide()
-		self.imu_good5.hide()
-
-		self.imu_bad1.hide()
-		self.imu_bad2.hide()
-		self.imu_bad3.hide()
-		self.imu_bad4.hide()
-		self.imu_bad5.hide()
-
-		self.camera_good1.hide()
-		self.camera_good2.hide()
-		self.camera_good3.hide()
-		self.camera_good4.hide()
-		self.camera_good5.hide()
-
-		self.camera_bad1.hide()
-		self.camera_bad2.hide()
-		self.camera_bad3.hide()
-		self.camera_bad4.hide()
-		self.camera_bad5.hide()
 
 
 def on_message_received(message):
