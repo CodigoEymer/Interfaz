@@ -58,6 +58,7 @@ for j in range(nr):
     for i in range(p):
         
         x1, y1 = vertices[i]
+        
         if i == p-1:
             x2, y2 = vertices[0]
         else:
@@ -76,7 +77,8 @@ for j in range(nr):
         angleY = angle_between_vectors(vector1x, vector1y, vector2x, vector2y)
 
         angleY= angleY*math.pi/180
-        print("angleY:", angleY)
+        #print("angleY:", angleY)
+        print(x1,y1)
 
         if i == 0 and j == 0:    
             if angleY%90 != 0:
@@ -86,7 +88,7 @@ for j in range(nr):
         else:
                 di = distancia(x1, y1, x2, y2)
 
-        print("di:", di)             
+        #print("di:", di)             
 
         # Numero de waypoints
         nw = int(round((di-Ovy)/dw))
@@ -99,10 +101,9 @@ for j in range(nr):
             catetoy = dw
         else:
             angulo = math.atan(dy/dx) 
-            print("angulo"+str(angulo))   
+            #print("angulo"+str(angulo))   
             catetox = math.cos(angulo)*dw
             catetoy = math.sin(angulo)*dw
-
         for k in range(nw):
             if k == 0:
                 if i == 0 and j == 0:   
@@ -112,31 +113,21 @@ for j in range(nr):
                     else:  
                         catetoxO = math.cos(angulo)*(LX/math.tan(angleY))
                         catetoyO = math.sin(angulo)*(LX/math.tan(angleY))
-                    print((LX/2),(LY/2))
                     wp_dron.append(((x1-catetoxO)+(LX/2),(y1-catetoyO)+(LY/2)))
-                    print("PointOrigen"+str( wp_dron[k]))
-
                 else:    
                     wp_dron.append((x1+(LY/2),y1+LX/2))
             else:
                 xwp , ywp = wp_dron[k-1]
                 wp_dron.append((xwp+catetox,ywp+catetoy))
                 di = distancia(x1, y1, x2, y2)-(LX/(math.tan(angleY)))
-            
-            print("Point"+str( wp_dron[k]))
-
-
-
-                
-                
-
-
-
 
         # Ovy recalculado
         Ovy = (nw*LY-di)/(nw-1)
         # dw recalculado
         dw = (di-LY)/(nw-1)
+
+for l in range(nw*p):    
+    print("Point"+str( wp_dron[l]))
 
         
 
