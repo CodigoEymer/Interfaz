@@ -52,8 +52,6 @@ class MainWindow(QMainWindow):
 		self.generarTrayectBtn.clicked.connect(self.gen_tray)
 		self.iniciarTrayectBtn.clicked.connect(self.init_trayct)
 		self.settingsBtn.clicked.connect(self.settings_page)
-		self.connectionBtn.clicked.connect(self.connection_page)
-		self.telemetryBtn.clicked.connect(self.telemetry_page_2)
 		self.missionBtn.clicked.connect(self.mission_page)
 		self.playBtn.clicked.connect(self.armar)
 		self.pauseBtn.clicked.connect(self.pausingMission)
@@ -259,11 +257,6 @@ class MainWindow(QMainWindow):
 			cameraBtn.setIcon(camera_red)
 		
 
-	def connection_page(self):
-		self.stackedWidget_2.setCurrentWidget(self.page)
-
-	def telemetry_page_2(self):
-		self.stackedWidget_2.setCurrentWidget(self.page_2)
 
 	def mission_page(self):
 		self.set_default_icons()
