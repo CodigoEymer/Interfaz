@@ -518,7 +518,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>2</number>
+                    <number>0</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -793,7 +793,7 @@ border-radius: 10px;</string>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QLineEdit" name="mision_name_text">
+                                         <widget class="QLineEdit" name="mission_name_text">
                                           <property name="font">
                                            <font>
                                             <pointsize>10</pointsize>
@@ -1543,7 +1543,7 @@ border-radius: 10px;</string>
                               <enum>QFrame::Raised</enum>
                              </property>
                              <layout class="QHBoxLayout" name="horizontalLayout_34">
-                              <item>
+                              <item alignment="Qt::AlignHCenter">
                                <widget class="QLabel" name="label_16">
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);</string>
@@ -3209,7 +3209,7 @@ background-color: rgb(111, 110, 110);</string>
                               <enum>QFrame::Raised</enum>
                              </property>
                              <layout class="QVBoxLayout" name="verticalLayout_59">
-                              <item>
+                              <item alignment="Qt::AlignHCenter">
                                <widget class="QLabel" name="label_26">
                                 <property name="styleSheet">
                                  <string notr="true">color: rgb(255, 255, 255);</string>

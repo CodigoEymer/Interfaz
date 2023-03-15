@@ -29,7 +29,6 @@ def angle_between_vectors(x1, y1, x2, y2):
     mag_product = math.sqrt(x1**2 + y1**2) * math.sqrt(x2**2 + y2**2)
     return math.degrees(math.acos(dot_product/mag_product))
 
-print("Centroid: "+str(centroid_x)+","+str(centroid_y))
 
 dcp = float("inf")
 
@@ -46,11 +45,9 @@ for m in range(p):
     if distance < dcp:
         dcp = distance
 
-print("La apotema del poligono es:", dcp)
 
 # Numero de anillos
 nr = (dcp-Ovx)/dr
-print("Numero de anillos:", nr)
 
 nr = 1
 
@@ -76,7 +73,6 @@ for j in range(nr):
         angleY = angle_between_vectors(vector1x, vector1y, vector2x, vector2y)
 
         angleY= angleY*math.pi/180
-        print("angleY:", angleY)
 
         if i == 0 and j == 0:    
             if angleY%90 != 0:
@@ -85,8 +81,6 @@ for j in range(nr):
                 di = distancia(x1, y1, x2, y2)
         else:
                 di = distancia(x1, y1, x2, y2)
-
-        print("di:", di)             
 
         # Numero de waypoints
         nw = int(round((di-Ovy)/dw))
@@ -99,7 +93,6 @@ for j in range(nr):
             catetoy = dw
         else:
             angulo = math.atan(dy/dx) 
-            print("angulo"+str(angulo))   
             catetox = math.cos(angulo)*dw
             catetoy = math.sin(angulo)*dw
 
@@ -112,18 +105,22 @@ for j in range(nr):
                     else:  
                         catetoxO = math.cos(angulo)*(LX/math.tan(angleY))
                         catetoyO = math.sin(angulo)*(LX/math.tan(angleY))
-                    print((LX/2),(LY/2))
                     wp_dron.append(((x1-catetoxO)+(LX/2),(y1-catetoyO)+(LY/2)))
-                    print("PointOrigen"+str( wp_dron[k]))
+                    print("primer punto de la primera recta")
+                    print("wp_dron: ",wp_dron[i*nw+k])
 
-                else:    
-                    wp_dron.append((x1+(LY/2),y1+LX/2))
+                else:
+                    #print("x1: ",x1," x2: ",y1)
+                    print("primer punto de la recta ", i)    
+                    wp_dron.append((x1+(LX/2)*math.cos(2*angleY),y1+(LY/2)*math.sin(2*angleY)))
+                    print("wp_dron: ",wp_dron[i*nw+k])
             else:
-                xwp , ywp = wp_dron[k-1]
+                print("El resto de puntos de la recta ", i)
+                indice=  i*nw+k-1
+                xwp , ywp = wp_dron[indice]
                 wp_dron.append((xwp+catetox,ywp+catetoy))
                 di = distancia(x1, y1, x2, y2)-(LX/(math.tan(angleY)))
-            
-            print("Point"+str( wp_dron[k]))
+                print("wp_dron: ",wp_dron[i*nw+k])
 
 
 

@@ -118,7 +118,8 @@ class MainWindow(QMainWindow):
 		file = QFile("map2.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
-			self.webView.setHtml(html)	
+			self.webView.setHtml(html)
+
 		communication_module.communication_module()
 		self.startThread()
 
