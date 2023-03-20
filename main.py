@@ -283,48 +283,67 @@ class MainWindow(QMainWindow):
 		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
 		self.dropdown_widget.hide()
+		self.date_frame.hide()
+		self.city_frame.hide()
+		self.mission_frame.hide()
+
 
 	def list_db_options(self,db_list):
 		self.requestOptions.clear()
 		for element in db_list:
 			self.requestOptions.addItem(element)
 
+	def user_name_btn_function(self):
+		db_list=("JaimeG","EymerG","a", "Bladimir", "SantiS")
+		self.list_db_options(db_list)
+		self.dropdown_widget.show()
+		self.requestOptions.currentIndexChanged.connect(self.username_selected)
+
 	@pyqtSlot(int)
-	def on_index_changed(self):
+	def username_selected(self):
 		select_item = self.requestOptions.currentText()
-		self.selected_city.setText(select_item)
+		self.selected_username.setText(select_item)
 		self.dropdown_widget.hide()
-		
+		self.city_frame.show()
 
 	def city_btn_function(self):
 		db_list=("Cali","Jamundi","Yumbo", "Palmira", "asd")
 		self.list_db_options(db_list)
 		self.dropdown_widget.show()
-		self.requestOptions.currentIndexChanged.connect(self.on_index_changed)
-		
+		self.requestOptions.currentIndexChanged.connect(self.city_selected)
+
+	@pyqtSlot(int)
+	def city_selected(self):
+		select_item = self.requestOptions.currentText()
+		self.selected_city.setText(select_item)
+		self.dropdown_widget.hide()
+		self.mission_frame.show()
 
 	def mission_name_btn_function(self):
-		pass
-		# db_list=("Mision 1","Mision 2","Mision 45", "Mision de prueba", "jajaja")
-		# self.list_db_options(db_list)
-		# self.requestOptions.currentIndexChanged.connect(self.on_index_changed())
-		# self.city_label.setText(text)
+		db_list=("Mision 1","Mision 2","Mision 45", "Mision de prueba", "jajaja")
+		self.list_db_options(db_list)
+		self.dropdown_widget.show()
+		self.requestOptions.currentIndexChanged.connect(self.mission_selected)
 
-	def user_name_btn_function(self):
-		pass
-		# db_list=("JaimeG","EymerG","a", "Bladimir", "SantiS")
-		# self.list_db_options(db_list)
-		# label_name = getattr(self, "selected_username")
-		# self.requestOptions.currentIndexChanged.connect(self.on_index_changed())
+	@pyqtSlot(int)
+	def mission_selected(self):
+		select_item = self.requestOptions.currentText()
+		self.selected_mission.setText(select_item)
+		self.dropdown_widget.hide()
+		self.date_frame.show()
 
 	def date_btn_function(self):
-		pass
-		# db_list=("2023-02-18","2023-02-08","2023-02-03", "2023-01-31", "2023-01-21")
-		# self.list_db_options(db_list)
-		# label_name = getattr(self, "selected_date")
-		# self.requestOptions.currentIndexChanged.connect(self.on_index_changed())
+		db_list=("2023-02-18","2023-02-08","2023-02-03", "2023-01-31", "2023-01-21")
+		self.list_db_options(db_list)
+		self.dropdown_widget.show()
+		self.requestOptions.currentIndexChanged.connect(self.date_selected)
 
-
+	@pyqtSlot(int)
+	def date_selected(self):
+		select_item = self.requestOptions.currentText()
+		self.selected_date.setText(select_item)
+		self.dropdown_widget.hide()
+		
 	def pausingMission(self):
 		pass
 
