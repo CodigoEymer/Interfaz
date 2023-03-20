@@ -7,6 +7,7 @@ import resources_rc
 import json
 
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
+from Database.mision.mision_dao_imp import mision_dao_imp
 import config_module
 import communication_module
 import server
@@ -287,6 +288,48 @@ class MainWindow(QMainWindow):
 		self.city_frame.hide()
 		self.mission_frame.hide()
 
+		user_conect = usuarios_dao_imp(conn)
+		user_list = user_conect.get_all_users()
+		nameUsers = []
+
+		for user in user_list:
+			nameUsers.append(user.get_nombre_usuario()) 
+		nameUsers_Only = set(nameUsers)
+
+		userSelect = "EymerG"
+
+		for user in user_list:
+			db_user = str(user.get_nombre_usuario())
+			if db_user == userSelect:
+				id_usuario = str(user.get_id_usuario())
+				print(id_usuario)
+				break
+			else:
+				self.error_label.setText("Usuario no encontrado")
+		
+		mision_connect = mision_dao_imp(conn)
+		misions = mision_connect.get_all_missions_xUser(id_usuario)
+		ciudades = []
+
+		for mision in misions:
+			ciudades.append(mision.get_ciudad()) 
+		ciudades_unicas = set(ciudades)
+
+		#for ciudad in ciudades_unicas:
+			#print(ciudad)
+
+		cytySelect = "N"
+
+		misions = mision_connect.get_all_missions_xUserANDciudad(id_usuario, cytySelect)
+		name_misions =[]
+		for mision in misions:
+			name_misions.append(mision.get_nombre_mision()) 
+		name_misions_Only = set(name_misions)
+
+		for name_mision in name_misions_Only:
+			print(name_mision)
+
+
 
 	def list_db_options(self,db_list):
 		self.requestOptions.clear()
@@ -344,6 +387,7 @@ class MainWindow(QMainWindow):
 		self.selected_date.setText(select_item)
 		self.dropdown_widget.hide()
 		
+
 	def pausingMission(self):
 		pass
 
