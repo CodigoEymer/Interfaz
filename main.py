@@ -37,6 +37,7 @@ coords= []
 wp_recarga=[] 
 area= []
 id_usuario = ""
+db_user_id=""
 
 class MainWindow(QMainWindow):
 
@@ -288,48 +289,16 @@ class MainWindow(QMainWindow):
 		self.city_frame.hide()
 		self.mission_frame.hide()
 
+
+	def search_users(self):
 		user_conect = usuarios_dao_imp(conn)
 		user_list = user_conect.get_all_users()
 		nameUsers = []
 
 		for user in user_list:
 			nameUsers.append(user.get_nombre_usuario()) 
-		nameUsers_Only = set(nameUsers)
-
-		userSelect = "EymerG"
-
-		for user in user_list:
-			db_user = str(user.get_nombre_usuario())
-			if db_user == userSelect:
-				id_usuario = str(user.get_id_usuario())
-				print(id_usuario)
-				break
-			else:
-				self.error_label.setText("Usuario no encontrado")
 		
-		mision_connect = mision_dao_imp(conn)
-		misions = mision_connect.get_all_missions_xUser(id_usuario)
-		ciudades = []
-
-		for mision in misions:
-			ciudades.append(mision.get_ciudad()) 
-		ciudades_unicas = set(ciudades)
-
-		#for ciudad in ciudades_unicas:
-			#print(ciudad)
-
-		cytySelect = "N"
-
-		misions = mision_connect.get_all_missions_xUserANDciudad(id_usuario, cytySelect)
-		name_misions =[]
-		for mision in misions:
-			name_misions.append(mision.get_nombre_mision()) 
-		name_misions_Only = set(name_misions)
-
-		for name_mision in name_misions_Only:
-			print(name_mision)
-
-
+		return set(nameUsers)
 
 	def list_db_options(self,db_list):
 		self.requestOptions.clear()
@@ -337,10 +306,23 @@ class MainWindow(QMainWindow):
 			self.requestOptions.addItem(element)
 
 	def user_name_btn_function(self):
-		db_list=("JaimeG","EymerG","a", "Bladimir", "SantiS")
-		self.list_db_options(db_list)
+		global db_user_id
+		db_users_list= self.search_users()
+		db_user_id = self.getting_user_id(db_users_list)
+		self.list_db_options(db_users_list)
 		self.dropdown_widget.show()
 		self.requestOptions.currentIndexChanged.connect(self.username_selected)
+
+	def getting_user_id(self,user_list):
+		userSelect=self.selected_username.text()
+		for user in user_list:
+			db_user = str(user.get_nombre_usuario())
+			if db_user == userSelect:
+				user_id_filtered = str(user.get_id_usuario())
+				break
+			else:
+				self.error_label.setText("Usuario no encontrado")
+		return user_id_filtered
 
 	@pyqtSlot(int)
 	def username_selected(self):
@@ -350,7 +332,7 @@ class MainWindow(QMainWindow):
 		self.city_frame.show()
 
 	def city_btn_function(self):
-		db_list=("Cali","Jamundi","Yumbo", "Palmira", "asd")
+		db_list= self.search_cities()
 		self.list_db_options(db_list)
 		self.dropdown_widget.show()
 		self.requestOptions.currentIndexChanged.connect(self.city_selected)
@@ -362,8 +344,17 @@ class MainWindow(QMainWindow):
 		self.dropdown_widget.hide()
 		self.mission_frame.show()
 
+	def search_cities(self):
+		mision_connect = mision_dao_imp(conn)
+		misions = mision_connect.get_all_missions_xUser(db_user_id)
+		ciudades = []
+
+		for mision in misions:
+			ciudades.append(mision.get_ciudad()) 
+		return set(ciudades)
+
 	def mission_name_btn_function(self):
-		db_list=("Mision 1","Mision 2","Mision 45", "Mision de prueba", "jajaja")
+		db_list=self.search_mission_names()
 		self.list_db_options(db_list)
 		self.dropdown_widget.show()
 		self.requestOptions.currentIndexChanged.connect(self.mission_selected)
@@ -374,6 +365,15 @@ class MainWindow(QMainWindow):
 		self.selected_mission.setText(select_item)
 		self.dropdown_widget.hide()
 		self.date_frame.show()
+
+	def search_mission_names(self):
+		cytySelect = self.selected_mission.text()
+		mision_connect = mision_dao_imp(conn)
+		misions = mision_connect.get_all_missions_xUserANDciudad(db_user_id, cytySelect)
+		name_misions =[]
+		for mision in misions:
+			name_misions.append(mision.get_nombre_mision()) 
+		return set(name_misions)
 
 	def date_btn_function(self):
 		db_list=("2023-02-18","2023-02-08","2023-02-03", "2023-01-31", "2023-01-21")
