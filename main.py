@@ -17,6 +17,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidget, QTableWidge
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QThread, pyqtSignal
 from PyQt5.QtGui import QIcon, QColor
+from PyQt5.QtCore import pyqtSlot
 
 from mavros_msgs.srv import *
 import time
@@ -56,6 +57,10 @@ class MainWindow(QMainWindow):
 		self.playBtn.clicked.connect(self.armar)
 		self.pauseBtn.clicked.connect(self.pausingMission)
 		self.reportBtn.clicked.connect(self.report_page)
+		self.city_btn.clicked.connect(self.city_btn_function)
+		self.mission_name_btn.clicked.connect(self.mission_name_btn_function)
+		self.user_name_btn.clicked.connect(self.user_name_btn_function)
+		self.date_btn.clicked.connect(self.date_btn_function)
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
@@ -276,8 +281,49 @@ class MainWindow(QMainWindow):
 		icon = QIcon('./icons/IconoReporteGris.svg')
 		self.reportBtn.setIcon(icon)
 		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
-
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
+		self.dropdown_widget.hide()
+
+	def list_db_options(self,db_list):
+		self.requestOptions.clear()
+		for element in db_list:
+			self.requestOptions.addItem(element)
+
+	@pyqtSlot(int)
+	def on_index_changed(self):
+		select_item = self.requestOptions.currentText()
+		self.selected_city.setText(select_item)
+		self.dropdown_widget.hide()
+		
+
+	def city_btn_function(self):
+		db_list=("Cali","Jamundi","Yumbo", "Palmira", "asd")
+		self.list_db_options(db_list)
+		self.dropdown_widget.show()
+		self.requestOptions.currentIndexChanged.connect(self.on_index_changed)
+		
+
+	def mission_name_btn_function(self):
+		pass
+		# db_list=("Mision 1","Mision 2","Mision 45", "Mision de prueba", "jajaja")
+		# self.list_db_options(db_list)
+		# self.requestOptions.currentIndexChanged.connect(self.on_index_changed())
+		# self.city_label.setText(text)
+
+	def user_name_btn_function(self):
+		pass
+		# db_list=("JaimeG","EymerG","a", "Bladimir", "SantiS")
+		# self.list_db_options(db_list)
+		# label_name = getattr(self, "selected_username")
+		# self.requestOptions.currentIndexChanged.connect(self.on_index_changed())
+
+	def date_btn_function(self):
+		pass
+		# db_list=("2023-02-18","2023-02-08","2023-02-03", "2023-01-31", "2023-01-21")
+		# self.list_db_options(db_list)
+		# label_name = getattr(self, "selected_date")
+		# self.requestOptions.currentIndexChanged.connect(self.on_index_changed())
+
 
 	def pausingMission(self):
 		pass
