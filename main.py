@@ -38,6 +38,8 @@ wp_recarga=[]
 area= []
 id_usuario = ""
 db_user_id=""
+db_user_list=[]
+
 
 class MainWindow(QMainWindow):
 
@@ -63,6 +65,7 @@ class MainWindow(QMainWindow):
 		self.mission_name_btn.clicked.connect(self.mission_name_btn_function)
 		self.user_name_btn.clicked.connect(self.user_name_btn_function)
 		self.date_btn.clicked.connect(self.date_btn_function)
+		self.generate_report.clicked.connect(self.report_function)
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
@@ -284,65 +287,58 @@ class MainWindow(QMainWindow):
 		self.reportBtn.setIcon(icon)
 		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
-		self.dropdown_widget.hide()
-		self.date_frame.hide()
-		self.city_frame.hide()
-		self.mission_frame.hide()
-
-
-	def search_users(self):
-		user_conect = usuarios_dao_imp(conn)
-		user_list = user_conect.get_all_users()
-		nameUsers = []
-
-		for user in user_list:
-			nameUsers.append(user.get_nombre_usuario()) 
+		self.stackedWidget_2.setCurrentWidget(self.filers_widget)
 		
-		return set(nameUsers)
-
-	def list_db_options(self,db_list):
-		self.requestOptions.clear()
-		for element in db_list:
-			self.requestOptions.addItem(element)
+		# self.date_frame.hide()
+		# self.city_frame.hide()
+		# self.mission_frame.hide()
 
 	def user_name_btn_function(self):
-		global db_user_id
+		global db_users_list
 		db_users_list= self.search_users()
-		db_user_id = self.getting_user_id(db_users_list)
-		self.list_db_options(db_users_list)
-		self.dropdown_widget.show()
-		self.requestOptions.currentIndexChanged.connect(self.username_selected)
+		for element in db_users_list:
+			self.user_options.addItem(element)
+		self.user_options.currentIndexChanged.connect(self.username_selected)
 
-	def getting_user_id(self,user_list):
+	def search_users(self):
+		global db_user_list
+		nameUsers= []
+		user_conect = usuarios_dao_imp(conn)
+		db_user_list = user_conect.get_all_users()
+		for user in db_user_list:
+			nameUsers.append(user.get_nombre_usuario()) 
+		
+		nameUsers = set(nameUsers)
+
+		return nameUsers
+
+	def search_user_id(self):
+		global db_user_id
 		userSelect=self.selected_username.text()
-		for user in user_list:
+		for user in db_user_list:
 			db_user = str(user.get_nombre_usuario())
 			if db_user == userSelect:
-				user_id_filtered = str(user.get_id_usuario())
+				db_user_id = str(user.get_id_usuario())
 				break
 			else:
 				self.error_label.setText("Usuario no encontrado")
-		return user_id_filtered
-
+		
 	@pyqtSlot(int)
 	def username_selected(self):
-		select_item = self.requestOptions.currentText()
+		select_item = self.user_options.currentText()
 		self.selected_username.setText(select_item)
-		self.dropdown_widget.hide()
-		self.city_frame.show()
+		self.search_user_id()
 
 	def city_btn_function(self):
 		db_list= self.search_cities()
-		self.list_db_options(db_list)
-		self.dropdown_widget.show()
-		self.requestOptions.currentIndexChanged.connect(self.city_selected)
+		for element in db_list:
+			self.city_options.addItem(element)
+		self.city_options.currentIndexChanged.connect(self.city_selected)
 
 	@pyqtSlot(int)
 	def city_selected(self):
-		select_item = self.requestOptions.currentText()
+		select_item = self.city_options.currentText()
 		self.selected_city.setText(select_item)
-		self.dropdown_widget.hide()
-		self.mission_frame.show()
 
 	def search_cities(self):
 		mision_connect = mision_dao_imp(conn)
@@ -355,19 +351,18 @@ class MainWindow(QMainWindow):
 
 	def mission_name_btn_function(self):
 		db_list=self.search_mission_names()
-		self.list_db_options(db_list)
-		self.dropdown_widget.show()
-		self.requestOptions.currentIndexChanged.connect(self.mission_selected)
+		for element in db_list:
+			self.missionname_options.addItem(element)
+		self.missionname_options.currentIndexChanged.connect(self.mission_selected)
 
 	@pyqtSlot(int)
 	def mission_selected(self):
-		select_item = self.requestOptions.currentText()
+		select_item = self.missionname_options.currentText()
 		self.selected_mission.setText(select_item)
-		self.dropdown_widget.hide()
-		self.date_frame.show()
 
 	def search_mission_names(self):
-		cytySelect = self.selected_mission.text()
+		cytySelect = self.selected_city.text()
+		print(cytySelect)
 		mision_connect = mision_dao_imp(conn)
 		misions = mision_connect.get_all_missions_xUserANDciudad(db_user_id, cytySelect)
 		name_misions =[]
@@ -377,16 +372,17 @@ class MainWindow(QMainWindow):
 
 	def date_btn_function(self):
 		db_list=("2023-02-18","2023-02-08","2023-02-03", "2023-01-31", "2023-01-21")
-		self.list_db_options(db_list)
-		self.dropdown_widget.show()
-		self.requestOptions.currentIndexChanged.connect(self.date_selected)
+		for element in db_list:
+			self.date_options.addItem(element)
+		self.date_options.currentIndexChanged.connect(self.date_selected)
 
 	@pyqtSlot(int)
 	def date_selected(self):
-		select_item = self.requestOptions.currentText()
+		select_item = self.date_options.currentText()
 		self.selected_date.setText(select_item)
-		self.dropdown_widget.hide()
 		
+	def report_function(self):
+		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
 
 	def pausingMission(self):
 		pass
