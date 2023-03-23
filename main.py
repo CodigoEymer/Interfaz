@@ -371,7 +371,6 @@ class MainWindow(QMainWindow):
 
 	def search_mission_names(self):
 		cytySelect = self.selected_city.text()
-		print(cytySelect)
 		mision_connect = mision_dao_imp(conn)
 		misions = mision_connect.get_all_missions_xUserANDciudad(db_user_id, cytySelect)
 		name_misions =[]
@@ -386,8 +385,7 @@ class MainWindow(QMainWindow):
 		date_conect = mision_dao_imp(conn)
 		db_dates_list = date_conect.get_all_missions_xUserANDciudadANDname(db_user_id,cytySelect,name_mision)
 		for date in db_dates_list:
-			print(date.get_hora_inicio())
-			dates.append(str(date.get_fecha())+"  "+date.get_hora_inicio())	
+			dates.append(str(date.get_fecha())+" "+date.get_hora_inicio())	
 		dates = set(dates)
 
 		return dates
@@ -406,7 +404,27 @@ class MainWindow(QMainWindow):
 		self.selected_date.setText(select_item)
 		
 	def report_function(self):
+		user_load = usuarios_dao_imp(conn)
+		usuario = user_load.get_user(db_user_id)
+		self.label_36.setText(usuario.get_nombre())
+		self.label_37.setText(usuario.get_correo())
+		self.label_38.setText(usuario.get_celular())
+
+		dateTimeList = self.selected_date.text().split()
+		mision_load = mision_dao_imp(conn)
+		mision = mision_load.get_mission(dateTimeList[0],dateTimeList[1])
+
+		self.label_47.setText(mision.get_nombre_mision())
+		self.label_48.setText(mision.get_ciudad())
+		self.label_49.setText(mision.get_nombre_ubicacion())
+		self.label_50.setText(mision.get_descripcion())
+		self.label_51.setText(str(mision.get_dimension())+" m2")
+		self.label_52.setText("TO DO")
+		self.label_53.setText("TO DO")
+		self.label_55.setText(str(mision.get_fecha()))
+
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
+
 
 	def pausingMission(self):
 		pass

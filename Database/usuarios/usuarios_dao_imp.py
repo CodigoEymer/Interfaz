@@ -23,11 +23,12 @@ class usuarios_dao_imp:
     def get_user(self, id_usuario):
         res_user= None
         query="select nombre, nombre_usuario, correo, celular from Usuario where id_usuario=" + str(id_usuario)
+        print(query)
         try:
             cursor = self.connection.cursor()
             result = cursor.execute(query)
             tupla1 = cursor.fetchone()
-            res_user = usuarios.usuarios(tupla1[0],tupla1[1],tupla1[2],tupla1[3])
+            res_user = usuarios.usuarios(str(id_usuario),tupla1[0],tupla1[1],tupla1[2],tupla1[3])
         except Exception as e: print(e)
         cursor.close()
         return res_user

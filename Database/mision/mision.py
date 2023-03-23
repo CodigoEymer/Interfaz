@@ -80,3 +80,9 @@ class mision:
 
     def set_sobrelapamiento(self,sobrelapamiento):
         self.sobrelapamiento = sobrelapamiento
+
+    def get_nombre_ubicacion(self):
+        return self.nombre_ubicacion
+
+    def set_nombre_ubicacion(self,nombre_ubicacion):
+        self.nombre_ubicacion = nombre_ubicacion
