@@ -5,6 +5,7 @@ import rospy
 import rospkg
 import resources_rc
 import json
+import datetime
 
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 from Database.mision.mision_dao_imp import mision_dao_imp
@@ -39,6 +40,7 @@ area= []
 id_usuario = ""
 db_user_id=""
 db_user_list=[]
+
 
 
 class MainWindow(QMainWindow):
@@ -294,8 +296,10 @@ class MainWindow(QMainWindow):
 		# self.mission_frame.hide()
 
 	def user_name_btn_function(self):
+		self.user_options.clear()
 		global db_users_list
 		db_users_list= self.search_users()
+		self.user_options.addItem("Select")
 		for element in db_users_list:
 			self.user_options.addItem(element)
 		self.user_options.currentIndexChanged.connect(self.username_selected)
@@ -322,7 +326,8 @@ class MainWindow(QMainWindow):
 				break
 			else:
 				self.error_label.setText("Usuario no encontrado")
-		
+
+	
 	@pyqtSlot(int)
 	def username_selected(self):
 		select_item = self.user_options.currentText()
@@ -330,7 +335,9 @@ class MainWindow(QMainWindow):
 		self.search_user_id()
 
 	def city_btn_function(self):
+		self.city_options.clear()
 		db_list= self.search_cities()
+		self.city_options.addItem("Select")
 		for element in db_list:
 			self.city_options.addItem(element)
 		self.city_options.currentIndexChanged.connect(self.city_selected)
@@ -351,6 +358,8 @@ class MainWindow(QMainWindow):
 
 	def mission_name_btn_function(self):
 		db_list=self.search_mission_names()
+		self.missionname_options.clear()
+		self.missionname_options.addItem("Select")
 		for element in db_list:
 			self.missionname_options.addItem(element)
 		self.missionname_options.currentIndexChanged.connect(self.mission_selected)
@@ -370,8 +379,23 @@ class MainWindow(QMainWindow):
 			name_misions.append(mision.get_nombre_mision()) 
 		return set(name_misions)
 
+	def search_dates(self):
+		cytySelect = self.selected_city.text()
+		name_mision = self.selected_mission.text()
+		dates= []
+		date_conect = mision_dao_imp(conn)
+		db_dates_list = date_conect.get_all_missions_xUserANDciudadANDname(db_user_id,cytySelect,name_mision)
+		for date in db_dates_list:
+			print(date.get_hora_inicio())
+			dates.append(str(date.get_fecha())+"  "+date.get_hora_inicio())	
+		dates = set(dates)
+
+		return dates
+
 	def date_btn_function(self):
-		db_list=("2023-02-18","2023-02-08","2023-02-03", "2023-01-31", "2023-01-21")
+		self.date_options.clear()
+		db_list = self.search_dates()
+		self.date_options.addItem("Select")
 		for element in db_list:
 			self.date_options.addItem(element)
 		self.date_options.currentIndexChanged.connect(self.date_selected)

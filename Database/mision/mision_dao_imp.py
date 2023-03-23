@@ -40,8 +40,7 @@ class mision_dao_imp():
         tupla = cursor.fetchall()
         n_filas = len(tupla)
         for i in range(n_filas):
-            mission = mision.mision(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8],tupla[i][9],tupla[i][10],tupla[i][11]) 
-            #print([i][1])       
+            mission = mision.mision(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8],tupla[i][9],tupla[i][10],tupla[i][11])       
             self.missions.append(mission)
         cursor.close()
         return self.missions
@@ -56,6 +55,19 @@ class mision_dao_imp():
         for i in range(n_filas):
             mission = mision.mision(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8],tupla[i][9],tupla[i][10],tupla[i][11]) 
             #print([i][1])       
+            self.missions.append(mission)
+        cursor.close()
+        return self.missions
+
+    def get_all_missions_xUserANDciudadANDname(self,idUsuario,ciudad,name_mision):
+        self.missions = []
+        cursor = self.connection.cursor()
+        query="select id_mision, id_usuario, ciudad, descripcion, dimension, direccion, fecha, hora_inicio, hora_fin, nombre_mision, nombre_ubicacion, sobrelapamiento from Mision where id_usuario= '" + str(idUsuario)+"' AND ciudad='" + str(ciudad)+"' AND nombre_mision='" + str(name_mision)+"'"
+        cursor.execute(query)
+        tupla = cursor.fetchall()
+        n_filas = len(tupla)
+        for i in range(n_filas):
+            mission = mision.mision(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],str(tupla[i][7]),tupla[i][8],tupla[i][9],tupla[i][10],tupla[i][11])   
             self.missions.append(mission)
         cursor.close()
         return self.missions
@@ -83,43 +95,6 @@ class mision_dao_imp():
         cursor.close()
         return self.missions
     
-    def FiltroConjunto(Ccolumnas, Vc1, Vc2, Vc3, Vc4, Vc5, Vc6):
-        S1 = "ciudad"
-        S2 = "nombre_mision"
-        S3 = "id_usuario"
-
-
-        S4 = "tiempo"
-        S5 = "fecha"
-        S6 = "hora"
-
-        Registro = None
-        filtroR = ""
-        rGeneral = 0
-
-        if Ccolumnas[0] == 1:
-            filtroR += " and " + S1 + " like '" + Vc1 + "'"
-            rGeneral = 1
-        if Ccolumnas[1] == 1:
-            filtroR += " and " + S2 + " like '" + Vc2 + "'"
-            rGeneral = 1
-        if Ccolumnas[2] == 1:
-            filtroR += " and " + S3 + " like '" + Vc3 + "'"
-            rGeneral = 1
-        if Ccolumnas[3] == 1:
-            filtroR += " and " + S4 + " like '" + Vc4 + "'"
-            rGeneral = 1
-        if Ccolumnas[4] == 1:
-            filtroR += " and " + S5 + " like '" + Vc5 + "'"
-            rGeneral = 1
-        if Ccolumnas[5] == 1:
-            filtroR += " and " + S6 + " like '" + Vc6 + "'"
-            rGeneral = 1
-        if rGeneral == 1:
-            filtroR = "where " + filtroR.replace(" and ", "", 1)
-
-        return filtroR
-
 
     def update_mission(self, mission):
         cursor = self.connection.cursor()
