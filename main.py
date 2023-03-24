@@ -186,7 +186,9 @@ class MainWindow(QMainWindow):
 
 		
 	def init_trayct(self):
-		pass
+		list=[(3.3693474,-76.5349926),(3.41166,-76.5103233),(3.4108154,-76.5597078)]
+		for item in list:
+			handler.broadcast(str(item))
 
 	def home_page(self):
 		self.set_default_icons()

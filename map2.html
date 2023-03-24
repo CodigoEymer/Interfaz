@@ -86,7 +86,12 @@
         };
 
         websocket.onmessage = function(event) {
-          console.log(`Received message: ${event.data}`);
+          var dato = event.data
+          var sin_comillas = dato.slice(1,-1)
+          var tupla = sin_comillas.split(",")
+          var latitud=Number(tupla[0])
+          var longitud=Number(tupla[1])
+          L.marker([latitud,longitud]).addTo(map);
         };
 
         websocket.onclose = function(event) {

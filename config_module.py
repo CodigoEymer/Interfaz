@@ -56,7 +56,7 @@ class config_module():
         
         global id_mision
         #prueba.get_all_missions()
-        current_mission = prueba.get_mission(hora_inicio)
+        current_mission = prueba.get_mission(fecha, hora_inicio)
         print(current_mission)
         id_mision = str(current_mission.get_id_mision())
     
