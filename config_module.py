@@ -58,6 +58,7 @@ class config_module():
         
         global id_mision
         current_mission = prueba.get_mission(fecha,hora_inicio)
+
         id_mision = str(current_mission.get_id_mision())
     
     def calcular_autonomia():

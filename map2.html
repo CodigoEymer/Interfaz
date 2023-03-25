@@ -55,28 +55,28 @@
       })
 
       map.addControl(drawControl);
+      
+      var linePoints = [];
 
       var datos = {"wp_region":{},"area":{},"wp_recarga":{}}
 
       map.on(L.Draw.Event.CREATED, function (event) {
         var layer = event.layer,coords;
         var jsonLayer = layer.toGeoJSON();
-        
         var tipo = jsonLayer.geometry.type;
-        drawnItems.addLayer(layer);
-        
-        
+        drawnItems.addLayer(layer);  
         if (tipo =="Polygon") {
           var area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0])
           datos.wp_region = jsonLayer.geometry.coordinates;
           datos.area= area
         }
         if (tipo == "Point"){
+          L.polyline(linePoints, {color: 'red'}).addTo(map);
           datos.wp_recarga = jsonLayer.geometry.coordinates;
         }
-
         var coords = JSON.stringify(datos);
         enviarinfo(coords);
+        
       });
 
       function enviarinfo(mensaje){
@@ -86,11 +86,18 @@
         };
 
         websocket.onmessage = function(event) {
-          console.log(`Received message: ${event.data}`);
+          var dato = event.data
+          var sin_comillas = dato.slice(1,-1)
+          var tupla = sin_comillas.split(",")
+          var latitud=Number(tupla[0])
+          var longitud=Number(tupla[1])
+          var wp= [latitud,longitud]
+          L.marker(wp).addTo(map);
+          linePoints.push(wp);
         };
 
         websocket.onclose = function(event) {
-          console.log("WebSocket disconnected!");
+          alert("WebSocket disconnected!");
         };
       }
       
