@@ -21,7 +21,8 @@ class wp_dron_dao_imp:
 
     def insert_wp_dron(self, id_dron, latitud_ruta, longitud_ruta, altitud_ruta):
         res_rows = 0
-        query="INSERT INTO wp_dron SET id_dron='"+id_dron+"',latitud_ruta='"+latitud_ruta+"', longitud_ruta='"+longitud_ruta+"', altitud_ruta='"+altitud_ruta+"'"
+        query="INSERT INTO wp_dron SET id_dron='"+str(id_dron)+"',latitud_ruta='"+str(latitud_ruta)+"', longitud_ruta='"+str(longitud_ruta)+"', altitud_ruta='"+str(altitud_ruta)+"'"
+        
         cursor = self.connection.cursor()
         res_rows = cursor.execute(query)
         self.connection.commit()
