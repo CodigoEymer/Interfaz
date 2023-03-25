@@ -58,6 +58,7 @@ class MainWindow(QMainWindow):
 		self.homeBtn.clicked.connect(self.home_page)
 		self.generarTrayectBtn.clicked.connect(self.gen_tray)
 		self.iniciarTrayectBtn.clicked.connect(self.init_trayct)
+		self.drone_1.clicked.connect(self.disconnect_socket)
 		self.settingsBtn.clicked.connect(self.settings_page)
 		self.missionBtn.clicked.connect(self.mission_page)
 		self.playBtn.clicked.connect(self.armar)
@@ -189,6 +190,9 @@ class MainWindow(QMainWindow):
 		list=[(3.3693474,-76.5349926),(3.41166,-76.5103233),(3.4108154,-76.5597078)]
 		for item in list:
 			handler.broadcast(str(item))
+
+	def disconnect_socket(self):
+		handler.on_disconnected()
 
 	def home_page(self):
 		self.set_default_icons()
