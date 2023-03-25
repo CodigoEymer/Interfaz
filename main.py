@@ -9,6 +9,7 @@ import datetime
 
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 from Database.mision.mision_dao_imp import mision_dao_imp
+from Database.wp_dron.wp_dron import wp_dron
 import config_module
 import communication_module
 import server
@@ -183,6 +184,9 @@ class MainWindow(QMainWindow):
 		datos.insertar_wp_region()
 		datos.insertar_wp_recarga()
 		datos.insertar_dron()
+		Vwp = [(-1,-2),(1,-2),(3,0),(1,1),(-1,1),(-3,0)]
+		h_max = self.max_height_text.text()
+		datos.insertar_wp_dron(Vwp,h_max)
 
 		
 	def init_trayct(self):
