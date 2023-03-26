@@ -6,6 +6,7 @@ from Database.wp_recarga.wp_recarga_dao_imp import wp_recarga_dao_imp
 from Database.dron.dron_dao_imp import dron_dao_imp
 from Database.wp_dron.wp_dron_dao_imp import wp_dron_dao_imp
 import MySQLdb
+import Trayectorias
 DB_HOST = '127.0.0.1' 
 DB_USER = 'root' 
 DB_PASS = '1234' 
@@ -58,16 +59,20 @@ class config_module():
         
         global id_mision
         current_mission = prueba.get_mission(fecha,hora_inicio)
-
         id_mision = str(current_mission.get_id_mision())
     
     def calcular_autonomia():
         pass
 
+    def generar_trayectoria(self):
+        variables = Trayectorias.Trayectorias(self.coordenadas)
+        path = variables.ciclos()
+        return path
+
     def insertar_wp_region(self):
         prueba = wp_region_dao_imp(conn)
         wp_list = self.coordenadas
-        for wp in wp_list[:-1]:
+        for wp in wp_list:
             prueba.insert_wp_region(id_mision,str(wp))
 
     def insertar_wp_recarga(self):
@@ -86,6 +91,7 @@ class config_module():
     def insertar_wp_dron(self,Vwp,h):
         prueba = wp_dron_dao_imp(conn)
         for wp_dron in Vwp:
+            print(wp_dron[0],wp_dron[1])
             prueba.insert_wp_dron(id_dron,wp_dron[0],wp_dron[1],h)
 
 

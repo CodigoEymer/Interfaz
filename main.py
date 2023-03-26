@@ -185,15 +185,15 @@ class MainWindow(QMainWindow):
 		datos.insertar_wp_region()
 		datos.insertar_wp_recarga()
 		datos.insertar_dron()
-		Vwp = [(-1,-2),(1,-2),(3,0),(1,1),(-1,1),(-3,0)]
+		Vwp = coords
 		h_max = self.max_height_text.text()
-		datos.insertar_wp_dron(Vwp,h_max)
-
+		lista = datos.generar_trayectoria()
+		for item in lista:
+			handler.broadcast(str(item))
+		datos.insertar_wp_dron(lista,h_max)
 		
 	def init_trayct(self):
-		list=[(3.3693474,-76.5349926),(3.41166,-76.5103233),(3.4108154,-76.5597078)]
-		for item in list:
-			handler.broadcast(str(item))
+		pass
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
@@ -472,6 +472,7 @@ def on_message_received(message):
     global wp_recarga
     global area
     coords = coords_dict['wp_region'][0]
+    coords.pop()
     wp_recarga = coords_dict['wp_recarga']
     area = coords_dict['area']
 
