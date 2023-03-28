@@ -11,15 +11,15 @@ class Trayectorias():
         self.vertices_global = ast.literal_eval(self.coords)
         self.vertices=[]
         for punto in self.vertices_global:
-            x,y=self.to_cartesian(punto[0],punto[1])
+            x,y=self.to_cartesian(punto[1],punto[0])
             self.vertices.append((x,y))
         #output
         self.wp_dron =[] 
         # Campo de vision
-        self.LX = 1.0
-        self.LY = 1.0
+        self.LX = 1.0/20
+        self.LY = 1.0/20
         # Sobrelapamiento minimo en Y
-        self.Ovx = 0.1
+        self.Ovx = 0.1/20
         # Distancia entre vertices
         self.di = 0
 
@@ -95,14 +95,11 @@ class Trayectorias():
         centroid_y = sum_y / self.p
         cp=(centroid_x,centroid_y)
         self.dcp = float("inf")
-        print(self.vertices)
         for m in range(self.p): 
             x1, y1 = self.vertices[m]
-            print(x1,y1)
             x2, y2 = self.vertices[(m + 1) % self.p]
             dx = x2 - x1
             dy = y2 - y1
-            print(dx,dy)
             distance = abs(dx * (centroid_y - y1) - dy * (centroid_x - x1)) / math.sqrt(dx**2 + dy**2)
             if distance < self.dcp:
                 self.dcp = distance
@@ -127,7 +124,6 @@ class Trayectorias():
                 vector2x = float(x2 - x1)
                 vector2y = float(y2 - y1)
                 angleY = self.angle_between_vectors(vector1x, vector1y, vector2x, vector2y)
-                #print("angle interior: ", str(angleY*180/(math.pi)))
                 
                 if i == 0 and j == 0:    
                     di = self.distancia(x1, y1, x2, y2)-(self.LX/(math.tan(angleY)))      
@@ -135,7 +131,7 @@ class Trayectorias():
                     di = self.distancia(x1, y1, x2, y2)
 
                 # Sobrelapamiento minimo en Y
-                Ovy = 0.1
+                Ovy = 0.1/20
 
                 # Distancia entre weypoints
                 dw = self.LY-Ovy
@@ -147,13 +143,10 @@ class Trayectorias():
                 if num_wp_line==1:
                     Ovy = 0.0
                 else:
-                    # Ovy recalculado
-                    #print(nw,LY,di,nw)    
+                    # Ovy recalculado  
                     Ovy = (num_wp_line*self.LY-di)/(num_wp_line-1)
-                    #print("Ovy: ", str(Ovy))
                     # dw recalculado
                     dw = (di-self.LY)/(num_wp_line-1)
-                    #print("dw: ", str(dw))
 
                 dx = float(x2 - x1)
                 dy = float(y2 - y1)
@@ -166,9 +159,7 @@ class Trayectorias():
                     if k == 0:
                         h=   math.sqrt((self.LX/2)**2 + (self.LY/2)**2)
                         angulo_phi=math.atan(self.LX/self.LY)
-                        #print("angle phi: ", str(angulo_phi*180/(math.pi)))
                         angulo_alpha = angulo_phi+angulo
-                        #print("angulo: ", str(angulo*180/(math.pi)))
                         if i == 0 and j == 0:   
                             if dx == 0:
                                 catetoxO = 0
@@ -184,8 +175,6 @@ class Trayectorias():
                         indice=  (len(self.wp_dron))-1
                         xwp , ywp = self.wp_dron[indice]
                         self.wp_dron.append((xwp+catetox,ywp+catetoy))
-
-                    print(str(self.wp_dron[(len(self.wp_dron))-1]))
         
         wp_dron_global=[]
         for punto in self.wp_dron:
