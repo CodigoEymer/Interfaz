@@ -104,9 +104,27 @@ class Trayectorias():
             if distance < self.dcp:
                 self.dcp = distance
 
+    def intersection_point(p1, p2, p3, p4):
+        x1, y1 = p1
+        x2, y2 = p2
+        x3, y3 = p3
+        x4, y4 = p4
 
+        d = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4)
+
+        if d == 0:
+            return None
+
+        x = ((x3-x4)*(x1*y2-y1*x2)-(x1-x2)*(x3*y4-y3*x4))/d
+        y = ((y3-y4)*(x1*y2-y1*x2)-(y1-y2)*(x3*y4-y3*x4))/d
+
+        return x, y
+    
     def ciclos(self):
+        new_vertices = self.vertices
         for j in range(self.num_rings):
+            self.vertices = new_vertices
+            new_vertices = []
             for i in range(self.p):
                 x0, y0 = self.vertices[i-1]
                 if i == self.p-1:
