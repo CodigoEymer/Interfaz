@@ -91,7 +91,6 @@ class config_module():
     def insertar_wp_dron(self,Vwp,h):
         prueba = wp_dron_dao_imp(conn)
         for wp_dron in Vwp:
-            print(wp_dron[0],wp_dron[1])
             prueba.insert_wp_dron(id_dron,wp_dron[0],wp_dron[1],h)
 
 
