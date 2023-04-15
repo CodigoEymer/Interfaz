@@ -35,10 +35,15 @@ class Trayectorias():
         self.nr = (self.dcp-self.Ovx)/self.dr
         self.num_rings = int(math.ceil(self.nr))
 
-        #Ovx recalculado
-        self.Ovx=(self.num_rings*self.LX-self.dcp)/(self.num_rings-1)
-        #dr recalculado
-        self.dr=(self.dcp-self.LX)/(self.num_rings-1)
+
+        
+        if self.num_rings==1:
+            self.Ovx = 0.0
+        else:
+            #Ovx recalculado
+            self.Ovx=(self.num_rings*self.LX-self.dcp)/(self.num_rings-1)
+            #dr recalculado
+            self.dr=(self.dcp-self.LX)/(self.num_rings-1)
          
 
     def to_cartesian(self, latitude, longitude):
@@ -109,35 +114,35 @@ class Trayectorias():
         x3, y3 = p3
         x4, y4 = p4
 
-        d = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4)
+        # Compute slopes and y-intercepts of each line
+        m1 = (y2 - y1) / (x2 - x1)
+        b1 = y1 - m1 * x1
+        m2 = (y4 - y3) / (x4 - x3)
+        b2 = y3 - m2 * x3
 
-        if d == 0:
-            return None
-
-        x = ((x3-x4)*(x1*y2-y1*x2)-(x1-x2)*(x3*y4-y3*x4))/d
-        y = ((y3-y4)*(x1*y2-y1*x2)-(y1-y2)*(x3*y4-y3*x4))/d
-
-        return x, y
+        # Compute x and y coordinates of intersection point
+        x_intersect = (b2 - b1) / (m1 - m2)
+        y_intersect = m1 * x_intersect + b1
+        #print("Interseccion: "+str(x_intersect)+", "+str(y_intersect))
+        return x_intersect, y_intersect
     
     def findUpperPoints(self, centroid, x, y, theta):
         x0,y0 = centroid
         # Convertir el angulo de grados a radianes
-        theta = math.radians(theta)
+        #theta = math.radians(theta)
 
         # Calcular las coordenadas del punto rotado
         x_rotated = (x - x0) * math.cos(theta) - (y - y0) * math.sin(theta) + x0
         y_rotated = (x - x0) * math.sin(theta) + (y - y0) * math.cos(theta) + y0
-
+        #print("Punto: "+str(x_rotated)+", "+str(y_rotated))
         return (x_rotated, y_rotated)
 
     def ciclos(self):
         new_vertices = self.vertices
         for j in range(self.num_rings):
             self.vertices = new_vertices
-            print("Vertices")
-            print(self.vertices)
-            print(new_vertices)
             new_vertices = []
+            #print("Vertices: "+str(self.vertices))
             #Actualizar p?
             for i in range(self.p):
                 x0, y0 = self.vertices[i-1]
@@ -221,8 +226,6 @@ class Trayectorias():
                             punto = self.intersection_point(p1, p2, p3, p4)
                             new_vertices.append(punto)
 
-                            if i==0:
-                                px2,py2 = punto
                     else:
                         indice=  (len(self.wp_dron))-1
                         xwp , ywp = self.wp_dron[indice]
