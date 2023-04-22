@@ -190,6 +190,7 @@ class MainWindow(QMainWindow):
 		lista = datos.generar_trayectoria()
 		for item in lista:
 			handler.broadcast(str(item))
+		handler.broadcast("last")
 		datos.insertar_wp_dron(lista,h_max)
 		
 	def init_trayct(self):

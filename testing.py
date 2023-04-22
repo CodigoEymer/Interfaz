@@ -1,23 +1,17 @@
-import math
-
-# Definir las coordenadas del punto a rotar
-x = 0
-y = 6
-
-# Definir las coordenadas del centroide
-x0 = 3
-y0 = 4
-
-# Definir el angulo de rotacion en grados
-theta = -30
-
-# Convertir el angulo de grados a radianes
-theta = math.radians(theta)
-
-# Calcular las coordenadas del punto rotado
-x_rotated = (x - x0) * math.cos(theta) - (y - y0) * math.sin(theta) + x0
-y_rotated = (x - x0) * math.sin(theta) + (y - y0) * math.cos(theta) + y0
-
-# Mostrar las coordenadas del punto original y del punto rotado
-print("Punto original: ({}, {})".format(x, y))
-print("Punto rotado: ({}, {})".format(x_rotated, y_rotated))
+def intersection_point():
+    vertices = [(1,2),(2,3),(3,4),(4,5),(5,6)]
+    p=len(vertices)
+    new_vertices = []
+    print(new_vertices)
+    print(vertices)
+    if vertices[0][1] <= vertices[1][1]:
+        for index in range(p):
+            print(index)
+            if index > 0:
+                new_vertices.append(vertices[p-(index)])
+                print(new_vertices)
+                print(vertices)
+            else:
+                new_vertices.append(vertices[0])
+    return new_vertices
+intersect = intersection_point()
