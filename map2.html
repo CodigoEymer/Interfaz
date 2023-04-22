@@ -23,6 +23,12 @@
       var drawnItems = new L.FeatureGroup();
       map.addLayer(drawnItems);
 
+
+      var myIcon = L.icon({
+        iconUrl: 'icons/feather/download.svg',
+        iconSize: [24, 24]
+      });
+      
       var drawControl = new L.Control.Draw({
         draw: {
           polygon: {
@@ -71,7 +77,6 @@
           datos.area= area
         }
         if (tipo == "Point"){
-          L.polyline(linePoints, {color: 'red'}).addTo(map);
           datos.wp_recarga = jsonLayer.geometry.coordinates;
         }
         var coords = JSON.stringify(datos);
@@ -86,18 +91,23 @@
         };
 
         websocket.onmessage = function(event) {
-          var dato = event.data
-          var sin_comillas = dato.slice(1,-1)
-          var tupla = sin_comillas.split(",")
-          var latitud=Number(tupla[0])
-          var longitud=Number(tupla[1])
-          var wp= [latitud,longitud]
-          L.marker(wp).addTo(map);
-          linePoints.push(wp);
+          if (event.data == "last"){
+            L.polyline(linePoints, {color: 'red'}).addTo(map);
+          }
+          else {
+            var dato = event.data
+            var sin_comillas = dato.slice(1,-1)
+            var tupla = sin_comillas.split(",")
+            var latitud=Number(tupla[0])
+            var longitud=Number(tupla[1])
+            var wp= [latitud,longitud]
+            L.marker(wp).addTo(map);
+            linePoints.push(wp);
+          }
         };
 
         websocket.onclose = function(event) {
-          alert("WebSocket disconnected!");
+          console.log("WebSocket disconnected!");
         };
       }
       
