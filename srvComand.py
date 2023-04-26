@@ -18,8 +18,8 @@ def setGuidedMode():
         flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
         #http://wiki.ros.org/mavros/CustomModes for custom modes
         isModeChanged = flightModeService(custom_mode='GUIDED') #return true or false
-    except rospy.ServiceException, e:
-        print "service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e
+    except rospy.ServiceException as e:
+        print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
         
 def setStabilizeMode():
     rospy.wait_for_service('/mavros/set_mode')
@@ -27,8 +27,8 @@ def setStabilizeMode():
         flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
         #http://wiki.ros.org/mavros/CustomModes for custom modes
         isModeChanged = flightModeService(custom_mode='STABILIZE') #return true or false
-    except rospy.ServiceException, e:
-        print "service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e
+    except rospy.ServiceException as e:
+        print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
 def setLandMode():
     rospy.wait_for_service('/mavros/cmd/land')
@@ -36,24 +36,24 @@ def setLandMode():
         landService = rospy.ServiceProxy('/mavros/cmd/land', mavros_msgs.srv.CommandTOL)
         #http://wiki.ros.org/mavros/CustomModes for custom modes
         isLanding = landService(altitude = 0, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
-    except rospy.ServiceException, e:
-        print "service land call failed: %s. The vehicle cannot land "%e
+    except rospy.ServiceException as e:
+        print("service land call failed: %s. The vehicle cannot land "%e)
           
 def setArm():
     rospy.wait_for_service('/mavros/cmd/arming')
     try:
         armService = rospy.ServiceProxy('/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
         armService(True)
-    except rospy.ServiceException, e:
-        print "Service arm call failed: %s"%e
+    except rospy.ServiceExceptiona as e:
+        print("Service arm call failed: %s"%e)
         
 def setDisarm():
     rospy.wait_for_service('/mavros/cmd/arming')
     try:
         armService = rospy.ServiceProxy('/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
         armService(False)
-    except rospy.ServiceException, e:
-        print "Service arm call failed: %s"%e
+    except rospy.ServiceException as e:
+        print("Service arm call failed: %s"%e)
 
 
 def setTakeoffMode():
@@ -62,16 +62,16 @@ def setTakeoffMode():
         flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
         #http://wiki.ros.org/mavros/CustomModes for custom modes
         isModeChanged = flightModeService(custom_mode='GUIDED') #return true or false
-    except rospy.ServiceException, e:
-        print "service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e
+    except rospy.ServiceException as e:
+        print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
 
     rospy.wait_for_service('/mavros/cmd/takeoff')
     try:
         takeoffService = rospy.ServiceProxy('/mavros/cmd/takeoff', mavros_msgs.srv.CommandTOL) 
         takeoffService(altitude = 1, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
-    except rospy.ServiceException, e:
-        print "Service takeoff call failed: %s"%e
+    except rospy.ServiceException as e:
+        print("Service takeoff call failed: %s"%e)
     
     
 
@@ -152,26 +152,26 @@ def startMission():
     # Activar la mision
     rospy.wait_for_service('/mavros/cmd/mission/start')
     mission_start = rospy.ServiceProxy('/mavros/cmd/mission/start',CommandLong)
-    mission_start_response = mission_start(command=3001)
+    mission_start_response = mission_start(command=300)
 
 def menu():
-    print "Press"
-    print "1: to set mode to GUIDED"
-    print "2: to set mode to STABILIZE"
-    print "3: to set mode to ARM the drone"
-    print "4: to set mode to DISARM the drone"
-    print "5: to set mode to TAKEOFF"
-    print "6: to set mode to LAND"
-    print "7: print GPS coordinates"
-    print "8: cargar WP"
-    print "9: START MISSION"
-    print "10: Validar WP"
+    print("Press")
+    print("1: to set mode to GUIDED")
+    print("2: to set mode to STABILIZE")
+    print("3: to set mode to ARM the drone")
+    print("4: to set mode to DISARM the drone")
+    print("5: to set mode to TAKEOFF")
+    print("6: to set mode to LAND")
+    print("7: print GPS coordinates")
+    print("8: cargar WP")
+    print("9: START MISSION")
+    print("10: Validar WP")
     
 def myLoop():
     x='1'
     while ((not rospy.is_shutdown())and (x in ['1','2','3','4','5','6','7','8','9','10'])):
         menu()
-        x = raw_input("Enter your input: ");
+        x = raw_input("Enter your input: ")
         if (x=='1'):
             setGuidedMode()
         elif(x=='2'):
@@ -197,7 +197,7 @@ def myLoop():
         elif(x=='10'):
             validarWp()
         else: 
-            print "Exit"
+            print("Exit")
         
         
     
