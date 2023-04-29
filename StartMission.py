@@ -70,7 +70,7 @@ response = waypoint_push(start_index=0, waypoints=waypoints.waypoints)
 
 # Esperar a que se complete la carga de la mision
 rospy.sleep(1)
-"""
+
 # Armar el drone
 rospy.wait_for_service('/mavros/cmd/arming')
 arm_service = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
@@ -95,8 +95,6 @@ try:
     isModeChanged = flightModeService(custom_mode='GUIDED') #return true or false
 except rospy.ServiceException, e:
     print "service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e
-
-
 
 # Despegar
 print("despegando dron")
@@ -140,4 +138,4 @@ disarm_response = disarm_service(False)
 while not disarm_response.success:
     rospy.sleep(0.1)
 
-rospy.signal_shutdown('Mission complete')"""
+rospy.signal_shutdown('Mission complete')
