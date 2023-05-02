@@ -16,8 +16,8 @@ class Trayectorias():
         #output
         self.wp_dron =[] 
         # Campo de vision
-        self.LX = 1.0/20
-        self.LY = 1.0/20
+        self.LX = 1.0/40
+        self.LY = 1.0/40
         # Sobrelapamiento minimo en Y
         self.Ovx = 0.1/20
         # Distancia entre vertices

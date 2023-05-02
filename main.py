@@ -13,6 +13,7 @@ from Database.wp_dron.wp_dron import wp_dron
 import config_module
 import communication_module
 import server
+import Cobertura
 
 from std_msgs.msg import String
 from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
@@ -51,6 +52,8 @@ class MainWindow(QMainWindow):
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
 		
+		self.lista_wp = []
+
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
 		self.crearUsuarioBtn.clicked.connect(self.signup_page)
@@ -74,6 +77,7 @@ class MainWindow(QMainWindow):
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
+		
 
 		self.hide_all_frames()
 
@@ -187,13 +191,17 @@ class MainWindow(QMainWindow):
 		datos.insertar_dron()
 		Vwp = coords
 		h_max = self.max_height_text.text()
-		lista = datos.generar_trayectoria()
-		for item in lista:
+		self.lista_wp = datos.generar_trayectoria()
+		for item in self.lista_wp:
 			handler.broadcast(str(item))
+		
 		handler.broadcast("last")
-		datos.insertar_wp_dron(lista,h_max)
+		datos.insertar_wp_dron(self.lista_wp,h_max)
 		
 	def init_trayct(self):
+		self.switchPagesStacked.setCurrentWidget(self.missionPage)
+		Cobertura.StartMission(self.lista_wp,self.progressBar_4)
+		
 		pass
 
 	def disconnect_socket(self):
