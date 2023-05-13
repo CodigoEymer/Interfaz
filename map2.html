@@ -92,7 +92,6 @@
          var wpr=0;
         websocket.onmessage = function(event) {
           if (event.data == "last" || wpr >=1){
-            alert("ALERTA IF"+event.data.toString())
             L.polyline(linePoints, {color: 'red'}).addTo(map);
             if(wpr>=1){
               
@@ -102,7 +101,6 @@
               var latitud2=Number(tupla2[0]);
               var longitud2=Number(tupla2[1]);
               var wp2= [latitud2,longitud2];
-              alert("ALERTA retorno  "+wp2.toString());
 
               var circle1 = L.circle(wp2, {
                   radius: 5, // Radio del círculo en metros
@@ -114,7 +112,6 @@
               wpr=0;
             }
             wpr=wpr+1;
-            alert("last"+wpr.toString())
           }
           else {
             var dato = event.data;
