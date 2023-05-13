@@ -27,6 +27,7 @@ from mavros_msgs.srv import *
 import time
 import prueba
 import MySQLdb
+
 DB_HOST = '127.0.0.1' 
 DB_USER = 'root' 
 DB_PASS = '1234' 
@@ -191,11 +192,22 @@ class MainWindow(QMainWindow):
 		datos.insertar_dron()
 		Vwp = coords
 		h_max = self.max_height_text.text()
-		self.lista_wp = datos.generar_trayectoria()
+
+
+		Trayectorias = datos.generar_trayectoria()
+
+		self.lista_wp = Trayectorias.ciclos()
+		wp_retorno_aut = Trayectorias.calcular_wp_retorno(0.25)
+
+
 		for item in self.lista_wp:
 			handler.broadcast(str(item))
+			print("wp:"+str(item))
 		
 		handler.broadcast("last")
+		for item2 in wp_retorno_aut:
+			handler.broadcast(str(item2))
+			print("retorno:"+str(item2))
 		datos.insertar_wp_dron(self.lista_wp,h_max)
 		
 	def init_trayct(self):

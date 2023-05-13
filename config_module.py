@@ -61,13 +61,20 @@ class config_module():
         current_mission = prueba.get_mission(fecha,hora_inicio)
         id_mision = str(current_mission.get_id_mision())
     
-    def calcular_autonomia():
-        pass
+    def calcular_autonomia(peso,potenciaXKg,voltaje_b,capacidad_b, seguridad,factor_seguridad):
+        corriente_empuje = 1000*(peso*potenciaXKg)/voltaje_b
+
+        autonomia_vuelo = capacidad_b*seguridad*60/(corriente_empuje*factor_seguridad)
+
+        return autonomia_vuelo
 
     def generar_trayectoria(self):
         variables = Trayectorias.Trayectorias(self.coordenadas)
-        path = variables.ciclos()
-        return path
+        #path = variables.ciclos()
+        #print(variables.calcular_distancia_total())
+        
+        #return path
+        return variables
 
     def insertar_wp_region(self):
         prueba = wp_region_dao_imp(conn)
