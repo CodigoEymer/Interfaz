@@ -292,7 +292,7 @@ class MainWindow(QMainWindow):
 		else:
 			imuBtn.setIcon(imu_red)
 
-		if estados[9] == "Ok":
+		if estados[9] != "null":
 			cameraBtn.setIcon(camera_green)
 		else:
 			cameraBtn.setIcon(camera_red)
