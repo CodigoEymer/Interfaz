@@ -32,7 +32,7 @@ class DroneController:
         try:
             # Convert your ROS Image message to OpenCV2
             cv2_img = CvBridge().imgmsg_to_cv2(msg, "bgr8")
-        except CvBridgeError, e:
+        except CvBridgeError as e:
             print(e)
         else:
             # Save your OpenCV2 image as a jpeg 
