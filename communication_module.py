@@ -1,16 +1,7 @@
-import rospkg
-
 import rospy
-from std_msgs.msg import String
-from sensor_msgs.msg import NavSatFix, Image
+from sensor_msgs.msg import NavSatFix, CameraInfo
 from sensor_msgs.msg import Imu
 from diagnostic_msgs.msg import DiagnosticArray
-import main
-
-
-from mavros_msgs.srv import *
-
-from std_msgs.msg import String
 from mavros_msgs.srv import *
 
 class communication_module():
@@ -27,13 +18,11 @@ class communication_module():
             rospy.Subscriber("diagnostics", DiagnosticArray,self.status_dron)
             rospy.Subscriber("/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
             rospy.Subscriber("/mavros/imu/data", Imu, self.imu_callback)
-            rospy.Subscriber("/mavros/camera/image_raw", Image, self.camera_callback)
+            rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
 
     def camera_callback(self, data):
         height = data.height
-        width = data.width
-        step = data.step
-        self.Estados[9] = step
+        self.Estados[9] = height
         
     def imu_callback(self,data):
         roll = data.orientation.x
