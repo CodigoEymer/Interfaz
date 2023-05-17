@@ -180,6 +180,21 @@ class MainWindow(QMainWindow):
 		acc_maxima = self.max_acc_text.text()
 		sobrelapamiento = self.overlap_text.text()
 
+		# peso = self.peso_text.text()
+		# factor_seguridad = self.factor_seguridad_text.text()
+		# seguridad = self.seguridad_text.text()
+		# capacidad_b = self.capacidadB_text.text()
+		# Voltaje_b = self.voltajeB_text.text()
+		# potenciaKg = self.potenciaXkig_text.text()
+
+		peso = 2.11
+		factor_seguridad = 1.5
+		seguridad = 0.7
+		capacidad_b = 6000
+		Voltaje_b = 22.8
+		potenciaKg = 275.3
+		
+
 		controladora = communication_module.communication_module.Dron[2]
 		votaje_bateria = communication_module.communication_module.Dron[3]
 		tipo = communication_module.communication_module.Dron[1]
@@ -190,14 +205,19 @@ class MainWindow(QMainWindow):
 		datos.insertar_wp_region()
 		datos.insertar_wp_recarga()
 		datos.insertar_dron()
-		Vwp = coords
+
+		distancia_wp_recarga = datos.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(vel_maxima))
+
 		h_max = self.max_height_text.text()
 
 
 		Trayectorias = datos.generar_trayectoria()
 
 		self.lista_wp = Trayectorias.ciclos()
-		wp_retorno_aut = Trayectorias.calcular_wp_retorno(0.25)
+		
+		distancia_trayectoria = Trayectorias.calcular_distancia_total()
+		print("distancia_trayectoria ",distancia_trayectoria)
+		wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_recarga)
 
 
 		for item in self.lista_wp:

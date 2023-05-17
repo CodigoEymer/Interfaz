@@ -612,9 +612,9 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                                 <widget class="QWidget" name="scrollAreaWidgetContents_2">
                                  <property name="geometry">
                                   <rect>
-                                   <x>-25</x>
-                                   <y>-127</y>
-                                   <width>313</width>
+                                   <x>0</x>
+                                   <y>-505</y>
+                                   <width>299</width>
                                    <height>1364</height>
                                   </rect>
                                  </property>
@@ -933,6 +933,9 @@ border-radius: 10px;</string>
                                         <enum>QFrame::Raised</enum>
                                        </property>
                                        <layout class="QHBoxLayout" name="horizontalLayout_3">
+                                        <property name="leftMargin">
+                                         <number>2</number>
+                                        </property>
                                         <item>
                                          <widget class="QFrame" name="frame_107">
                                           <property name="frameShape">
@@ -942,6 +945,9 @@ border-radius: 10px;</string>
                                            <enum>QFrame::Raised</enum>
                                           </property>
                                           <layout class="QVBoxLayout" name="verticalLayout_40">
+                                           <property name="leftMargin">
+                                            <number>2</number>
+                                           </property>
                                            <item>
                                             <widget class="QFrame" name="visionField_2">
                                              <property name="frameShape">

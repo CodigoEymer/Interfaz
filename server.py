@@ -28,5 +28,5 @@ class WebSocketHandler(QObject):
         c=0
         for client in self.clients:
             client.sendTextMessage(message)
-            print("cliente",c)
+            #print("cliente",c)
             c=c+1

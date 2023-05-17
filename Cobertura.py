@@ -130,7 +130,7 @@ class StartMission():
         except rospy.ServiceException as e:
             print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
-        self.progress_bar.setMaximum(len(lista_wp)-1)
+        self.progress_bar.setMaximum(len(lista_wp))
         print("n_wp",len(lista_wp)-1)
 
         def callback(data):
