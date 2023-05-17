@@ -1,8 +1,11 @@
 import rospy
+from mavros_msgs.msg import  WaypointReached
 from sensor_msgs.msg import NavSatFix, CameraInfo
 from sensor_msgs.msg import Imu
 from diagnostic_msgs.msg import DiagnosticArray
 from mavros_msgs.srv import *
+from cv_bridge import CvBridge
+import cv2
 
 class communication_module():
 
@@ -19,6 +22,18 @@ class communication_module():
             rospy.Subscriber("/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
             rospy.Subscriber("/mavros/imu/data", Imu, self.imu_callback)
             rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+            rospy.Subscriber("/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
+
+    def waypoint_reached_callback(self, msg):
+        print("Waypoint reached: %s" % msg.wp_seq)
+        try:
+            # Convert your ROS Image message to OpenCV2
+            cv2_img = CvBridge().imgmsg_to_cv2(msg, "bgr8")
+        except CvBridgeError as e:
+            print(e)
+        else:
+            # Save your OpenCV2 image as a jpeg 
+            cv2.imwrite('/home/pi/images/camera_image.jpeg', cv2_img)
 
     def camera_callback(self, data):
         height = data.height
