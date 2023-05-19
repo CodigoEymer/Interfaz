@@ -12,6 +12,7 @@ from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 import config_module
 import communication_module
+import photo_capture
 import server
 import Cobertura
 
@@ -230,8 +231,7 @@ class MainWindow(QMainWindow):
 		
 	def init_trayct(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
-		Cobertura.StartMission(self.lista_wp,self.progressBar_4)		
-		pass
+		Cobertura.StartMission(self.lista_wp,self.progressBar_4)
 
 	def disconnect_socket(self):
 		handler.on_disconnected()

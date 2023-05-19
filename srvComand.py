@@ -202,11 +202,11 @@ def myLoop():
         
     
 
-if __name__ == '__main__':
-    rospy.init_node('srvComand_node', anonymous=True)
-    rospy.Subscriber("/mavros/global_position/raw/fix", NavSatFix, globalPositionCallback)
+#if __name__ == '__main__':
+    #rospy.init_node('srvComand_node', anonymous=True)
+    #rospy.Subscriber("/mavros/global_position/raw/fix", NavSatFix, globalPositionCallback)
     # spin() simply keeps python from exiting until this node is stopped
     
     #listener()
-    myLoop()
+    #myLoop()
     #rospy.spin()

@@ -75,7 +75,6 @@ class StartMission():
         current_altitude = None
         rospy.Subscriber('/mavros/local_position/pose', PoseStamped, pose_callback)
         while current_altitude is None or current_altitude < desired_altitude:
-            print(current_altitude)
             rospy.sleep(0.1)
 
 
@@ -85,7 +84,6 @@ class StartMission():
         for wp in lista_wp:
             latitud = wp[0]
             longitud = wp[1]
-            print({latitud}, {longitud})
 
             wp = Waypoint()
             wp.frame = 3 # MAV_FRAME_GLOBAL_RELATIVE_ALT
