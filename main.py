@@ -25,7 +25,7 @@ from PyQt5.QtCore import pyqtSlot
 
 from mavros_msgs.srv import *
 import time
-import prueba
+import Telemetria
 import MySQLdb
 
 DB_HOST = '127.0.0.1' 
@@ -134,7 +134,7 @@ class MainWindow(QMainWindow):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		
-		file = QFile("map2.html")
+		file = QFile("mapa.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
 			self.webView.setHtml(html)
@@ -143,7 +143,7 @@ class MainWindow(QMainWindow):
 		self.startThread()
 
 	def startThread(self):
-		self.thread = prueba.Worker()
+		self.thread = Telemetria.Worker()
 		self.thread.dataLoaded.connect(self.setData)
 		self.thread.start()
 
@@ -326,7 +326,7 @@ class MainWindow(QMainWindow):
 		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
-		file = QFile("map2.html")
+		file = QFile("mapa.html")
 		if file.open(QFile.ReadOnly | QFile.Text):
 			html = str(file.readAll())
 			self.webView_2.setHtml(html)	

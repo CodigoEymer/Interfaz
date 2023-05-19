@@ -49,8 +49,6 @@ class communication_module():
         latitude = globalPositionCallback.latitude
         longitude = globalPositionCallback.longitude
         altitude = globalPositionCallback.altitude
-        #print ("longitude: %.7f" %longitude)
-        #print ("latitude: %.7f" %latitude)
         self.Posiciones[1] = latitude
         self.Posiciones[2] = longitude
         self.Posiciones[3] = altitude

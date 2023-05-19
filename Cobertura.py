@@ -140,3 +140,13 @@ class StartMission():
 
 
         rospy.Subscriber("mavros/mission/reached", WaypointReached, callback)
+
+
+    def land():
+        rospy.wait_for_service('/mavros/cmd/land')
+        try:
+            land_service = rospy.ServiceProxy('/mavros/cmd/land', CommandTOL)
+            response = land_service(altitude = 0, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
+            return response.success
+        except rospy.ServiceException as e:
+            print("Service call failed: {}".format(e))
