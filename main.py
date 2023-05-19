@@ -232,10 +232,6 @@ class MainWindow(QMainWindow):
 	def init_trayct(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		Cobertura.StartMission(self.lista_wp,self.progressBar_4)
-		try:		
-			photos = photo_capture.DroneController(self.lista_wp)
-		except rospy.ROSInterruptException:
-			pass
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
