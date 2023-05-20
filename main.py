@@ -12,7 +12,6 @@ from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 import config_module
 import communication_module
-import photo_capture
 import server
 import Cobertura
 
@@ -28,6 +27,7 @@ from mavros_msgs.srv import *
 import time
 import Telemetria
 import MySQLdb
+from Database.usuarios import usuarios
 
 DB_HOST = '127.0.0.1' 
 DB_USER = 'root' 
@@ -37,12 +37,9 @@ DB_NAME = 'drones'
 datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME] 
 conn = MySQLdb.connect(*datos)
 
-
 coords= []
 wp_recarga=[] 
 area= []
-id_usuario = ""
-db_user_id=""
 db_user_list=[]
 
 
@@ -55,6 +52,8 @@ class MainWindow(QMainWindow):
 		loadUi('interface.ui', self)
 		
 		self.lista_wp = []
+		self.current_user = usuarios.usuarios("","","","","")
+		self.db_user = usuarios.usuarios("","","","","")
 
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
@@ -111,10 +110,10 @@ class MainWindow(QMainWindow):
 		nombre_usuario = self.user_name_text.toPlainText()
 		celular = self.phone_text.toPlainText()
 		correo = self.email_text.toPlainText()
-
 		connection = usuarios_dao_imp(conn)
 		connection.insert_user(nombre, nombre_usuario, correo, celular)
 		self.stackedWidget_3.setCurrentWidget(self.logInPage)
+		self.error_label.setText("Registro exitoso")
 
 	def login_page(self):
 			self.stackedWidget_3.setCurrentWidget(self.logInPage)
@@ -154,20 +153,19 @@ class MainWindow(QMainWindow):
 			self.tableWidget.setItem(0, j, QTableWidgetItem(str(item)))
 
 	def user_validation(self):
-		global id_usuario
 		user_name = self.user_name_login.text()
-		connection = usuarios_dao_imp(conn)
-		user_list = connection.get_all_users()
+		request = usuarios_dao_imp(conn)
+		user_list = request.get_all_users()
 		
 		for user in user_list:
-			db_user = str(user.get_nombre_usuario())
-			if db_user == user_name:
-				id_usuario = str(user.get_id_usuario())
+			db_user_name = str(user.get_nombre_usuario())
+			if db_user_name == user_name:
+				self.current_user = user
 				self.main_window()
 				self.settings_page()
 				break
 			else:
-				self.error_label.setText("Usuario no encontrado")
+				self.error_label.setText("Usuario no registrado, por favor registrese")
 
 	def gen_tray(self):
 		ciudad = self.city_text.text()
@@ -200,7 +198,7 @@ class MainWindow(QMainWindow):
 		votaje_bateria = communication_module.communication_module.Dron[3]
 		tipo = communication_module.communication_module.Dron[1]
 
-		datos= config_module.config_module(id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo)
+		datos= config_module.config_module(self.current_user.get_id_usuario(), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo)
 		
 		datos.insertar_mision()
 		datos.insertar_wp_region()
@@ -365,12 +363,11 @@ class MainWindow(QMainWindow):
 		return nameUsers
 
 	def search_user_id(self):
-		global db_user_id
 		userSelect=self.selected_username.text()
 		for user in db_user_list:
-			db_user = str(user.get_nombre_usuario())
-			if db_user == userSelect:
-				db_user_id = str(user.get_id_usuario())
+			db_user_name = str(user.get_nombre_usuario())
+			if db_user_name == userSelect:
+				self.db_user = user
 				break
 			else:
 				self.error_label.setText("Usuario no encontrado")
@@ -397,7 +394,7 @@ class MainWindow(QMainWindow):
 
 	def search_cities(self):
 		mision_connect = mision_dao_imp(conn)
-		misions = mision_connect.get_all_missions_xUser(db_user_id)
+		misions = mision_connect.get_all_missions_xUser(self.db_user.get_id_usuario())
 		ciudades = []
 
 		for mision in misions:
@@ -420,7 +417,7 @@ class MainWindow(QMainWindow):
 	def search_mission_names(self):
 		cytySelect = self.selected_city.text()
 		mision_connect = mision_dao_imp(conn)
-		misions = mision_connect.get_all_missions_xUserANDciudad(db_user_id, cytySelect)
+		misions = mision_connect.get_all_missions_xUserANDciudad(self.db_user.get_id_usuario(), cytySelect)
 		name_misions =[]
 		for mision in misions:
 			name_misions.append(mision.get_nombre_mision()) 
@@ -431,7 +428,7 @@ class MainWindow(QMainWindow):
 		name_mision = self.selected_mission.text()
 		dates= []
 		date_conect = mision_dao_imp(conn)
-		db_dates_list = date_conect.get_all_missions_xUserANDciudadANDname(db_user_id,cytySelect,name_mision)
+		db_dates_list = date_conect.get_all_missions_xUserANDciudadANDname(self.db_user.get_id_usuario(),cytySelect,name_mision)
 		for date in db_dates_list:
 			dates.append(str(date.get_fecha())+" "+date.get_hora_inicio())	
 		dates = set(dates)
@@ -452,11 +449,9 @@ class MainWindow(QMainWindow):
 		self.selected_date.setText(select_item)
 		
 	def report_function(self):
-		user_load = usuarios_dao_imp(conn)
-		usuario = user_load.get_user(db_user_id)
-		self.label_36.setText(usuario.get_nombre())
-		self.label_37.setText(usuario.get_correo())
-		self.label_38.setText(usuario.get_celular())
+		self.label_36.setText(self.db_user.get_nombre())
+		self.label_37.setText(self.db_user.get_correo())
+		self.label_38.setText(self.db_user.get_celular())
 
 		dateTimeList = self.selected_date.text().split()
 		mision_load = mision_dao_imp(conn)
