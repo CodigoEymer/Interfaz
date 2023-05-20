@@ -52,8 +52,6 @@ class MainWindow(QMainWindow):
 		loadUi('interface.ui', self)
 		
 		self.lista_wp = []
-		self.current_user = usuarios.usuarios("","","","","")
-		self.db_user = usuarios.usuarios("","","","","")
 
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
@@ -197,8 +195,9 @@ class MainWindow(QMainWindow):
 		controladora = communication_module.communication_module.Dron[2]
 		votaje_bateria = communication_module.communication_module.Dron[3]
 		tipo = communication_module.communication_module.Dron[1]
+		print(type(self.current_user.get_id_usuario()))
 
-		datos= config_module.config_module(self.current_user.get_id_usuario(), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo)
+		datos= config_module.config_module(str(self.current_user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo)
 		
 		datos.insertar_mision()
 		datos.insertar_wp_region()
@@ -363,9 +362,9 @@ class MainWindow(QMainWindow):
 		return nameUsers
 
 	def search_user_id(self):
-		userSelect=self.selected_username.text()
+		userSelect=self.selected_username.text().decode('utf-8')
 		for user in db_user_list:
-			db_user_name = str(user.get_nombre_usuario())
+			db_user_name = user.get_nombre_usuario().decode('utf-8')
 			if db_user_name == userSelect:
 				self.db_user = user
 				break

@@ -15,7 +15,7 @@
 
 
       var c = 0;
-      var map = L.map('map').setView([3.4154936, -76.5183181], 13);
+      var map = L.map('map').setView([3.371387,-76.533004], 17);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
@@ -54,10 +54,10 @@
       });
 
       drawControl.setDrawingOptions({
-        circle: true,
+        circle: false,
         rectangle: false,
         polyline: false,
-        circlemarker: true
+        circlemarker: false
       })
 
       map.addControl(drawControl);
