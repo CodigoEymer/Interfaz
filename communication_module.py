@@ -18,6 +18,7 @@ class communication_module():
   # Posiciones =[id,latitud,longitud,altitud, ginada,alabeo,cabeceo]
 
     def __init__(self):
+            self.counter=0
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.status_dron)
             rospy.Subscriber("/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
@@ -28,17 +29,20 @@ class communication_module():
 
     def waypoint_reached_callback(self, msg):
         print("Waypoint reached: %s" % msg.wp_seq)
+        self.counter= self.counter+1
         try:
             # Convert your ROS Image message to OpenCV2
             cv2_img = CvBridge().imgmsg_to_cv2(self.image, "bgr8")
+            print("cv2: "+ str(cv2_img))
         except CvBridgeError as e:
             print(e)
         else:
             # Save your OpenCV2 image as a jpeg 
-            cv2.imwrite('/home/pi/images/camera_image.jpeg', cv2_img)
+            cv2.imwrite("/home/dronespsi/Interfaz/Images/Mision/wp"+str(self.counter)+".jpeg", cv2_img)
 
     def image_callback(self, image):
         self.image = image
+        
     def camera_callback(self, data):
         height = data.height
         self.Estados[9] = height
