@@ -10,17 +10,16 @@ import datetime
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
+import user_setting
 import config_module
 import communication_module
 import server
 import Cobertura
-
-from std_msgs.msg import String
-from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidget, QTableWidgetItem
+from PyQt5 import QtNetwork, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import QFile, QThread, pyqtSignal
-from PyQt5.QtGui import QIcon, QColor
+from PyQt5.QtCore import QFile
+from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
 from mavros_msgs.srv import *
@@ -120,8 +119,10 @@ class MainWindow(QMainWindow):
 			self.stackedWidget_3.setCurrentWidget(self.signUpPage)
 
 	def config_user_page(self):
-		self.signin_window()
-		self.stackedWidget_3.setCurrentWidget(self.userConfiPage)
+		self.Form = QtWidgets.QWidget()
+		self.ui = user_setting.Ui_Form()
+		self.ui.setupUi(self.Form)
+		self.Form.show()
 
 	def settings_page(self):
 		self.set_default_icons()
