@@ -10,13 +10,13 @@ import datetime
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
-import user_setting
 import config_module
 import communication_module
+from user_settings import SecondWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QWidget
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile
 from PyQt5.QtGui import QIcon
@@ -119,10 +119,8 @@ class MainWindow(QMainWindow):
 			self.stackedWidget_3.setCurrentWidget(self.signUpPage)
 
 	def config_user_page(self):
-		self.Form = QtWidgets.QWidget()
-		self.ui = user_setting.Ui_Form()
-		self.ui.setupUi(self.Form)
-		self.Form.show()
+		second_window = SecondWindow()
+		second_window.show()
 
 	def settings_page(self):
 		self.set_default_icons()
