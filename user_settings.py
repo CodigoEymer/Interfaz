@@ -8,7 +8,11 @@ class SecondWindow(QWidget):
 
         super(SecondWindow, self).__init__()
         loadUi('user_settings.ui', self)
-
+        screen = app.primaryScreen()
+        rect = screen.availableGeometry()
+        x = rect.width() - self.width()
+        y = 100
+        self.move(int(x), int(y))
         self.logoutBtn.clicked.connect(self.logout)
         self.my_dataBtn.clicked.connect(self.data)
 
@@ -22,16 +26,6 @@ class SecondWindow(QWidget):
 
 if __name__ == "__main__":
     app = QApplication([])
-    ex = SecondWindow()
-    # get screen size
-    screen = app.primaryScreen()
-    rect = screen.availableGeometry()
-
-    # calculate desired position (for example, center of the screen)
-    x = rect.width() - ex.width()
-    y = 100
-
-    # move window
-    ex.move(int(x), int(y))
-    ex.show()
+    second_window = SecondWindow()
+    second_window.show()
     sys.exit(app.exec_())
