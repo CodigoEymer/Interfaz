@@ -49,9 +49,8 @@ class MainWindow(QMainWindow):
 
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
-		
 		self.lista_wp = []
-
+		self.second_window = None
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
 		self.crearUsuarioBtn.clicked.connect(self.signup_page)
@@ -75,23 +74,16 @@ class MainWindow(QMainWindow):
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
-		
-
 		self.hide_all_frames()
 
 	def set_default_icons(self):
-
 		default = "background-color: rgb(203, 218, 216);"
-
 		self.settingsBtn.setIcon(QIcon('./icons/IconoConfiAzul.svg'))
 		self.settingsBtn.setStyleSheet(default)
-
 		self.homeBtn.setIcon(QIcon('./icons/IconoHomeAzul.svg'))
 		self.homeBtn.setStyleSheet(default)
-
 		self.missionBtn.setIcon(QIcon('./icons/IconoMisionAzul.svg'))
 		self.missionBtn.setStyleSheet(default)
-
 		self.reportBtn.setIcon(QIcon('./icons/IconoReporteAzul.svg'))
 		self.reportBtn.setStyleSheet(default)
 
@@ -113,14 +105,15 @@ class MainWindow(QMainWindow):
 		self.error_label.setText("Registro exitoso")
 
 	def login_page(self):
-			self.stackedWidget_3.setCurrentWidget(self.logInPage)
+		self.stackedWidget_3.setCurrentWidget(self.logInPage)
 
 	def signup_page(self):
-			self.stackedWidget_3.setCurrentWidget(self.signUpPage)
+		self.stackedWidget_3.setCurrentWidget(self.signUpPage)
 
 	def config_user_page(self):
-		second_window = SecondWindow()
-		second_window.show()
+		if self.second_window is None:
+			self.second_window = SecondWindow()
+		self.second_window.show()
 
 	def settings_page(self):
 		self.set_default_icons()
