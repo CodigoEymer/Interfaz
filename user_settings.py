@@ -7,12 +7,6 @@ class SecondWindow(QDialog):
         loadUi('user_settings.ui', self)
         self.setModal(True)
         
-        self.logoutBtn.clicked.connect(self.logout)
-        self.my_dataBtn.clicked.connect(self.data)
+        self.logoutBtn.clicked.connect(parent.logout)
+        self.my_dataBtn.clicked.connect(parent.update_user_data)
         
-
-    def logout(self):
-        print("it works!!")
-
-    def data(self):
-        print("it works")

@@ -101,7 +101,7 @@ class MainWindow(QMainWindow):
 		correo = self.email_text.toPlainText()
 		connection = usuarios_dao_imp(conn)
 		connection.insert_user(nombre, nombre_usuario, correo, celular)
-		self.stackedWidget_3.setCurrentWidget(self.logInPage)
+		self.login_page()
 		self.error_label.setText("Registro exitoso")
 
 	def login_page(self):
@@ -114,7 +114,17 @@ class MainWindow(QMainWindow):
 		if self.second_window is None:
 			self.second_window = SecondWindow(self)
 		self.second_window.exec_()
-		    
+	
+	def update_user_data(self):
+		self.signin_window()
+		self.stackedWidget_3.setCurrentWidget(self.logInPage)
+		self.second_window.close()
+
+	def logout(self):
+		self.signin_window()
+		self.user_name_login.clear()
+		self.second_window.close()
+
 	def settings_page(self):
 		self.set_default_icons()
 		icon = QIcon('./icons/IconoConfiGris.svg')
@@ -153,6 +163,7 @@ class MainWindow(QMainWindow):
 				self.current_user = user
 				self.main_window()
 				self.settings_page()
+				self.error_label.setText("")
 				break
 			else:
 				self.error_label.setText("Usuario no registrado, por favor registrese")
