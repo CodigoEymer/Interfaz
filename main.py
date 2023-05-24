@@ -117,11 +117,12 @@ class MainWindow(QMainWindow):
 	
 	def update_user_data(self):
 		self.signin_window()
-		self.stackedWidget_3.setCurrentWidget(self.logInPage)
+		self.stackedWidget_3.setCurrentWidget(self.userConfiPage)
 		self.second_window.close()
 
 	def logout(self):
 		self.signin_window()
+		self.stackedWidget_3.setCurrentWidget(self.logInPage)
 		self.user_name_login.clear()
 		self.second_window.close()
 
