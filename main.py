@@ -18,7 +18,7 @@ import Cobertura
 from PyQt5 import QtNetwork, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QWidget
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import QFile
+from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
@@ -112,9 +112,9 @@ class MainWindow(QMainWindow):
 
 	def config_user_page(self):
 		if self.second_window is None:
-			self.second_window = SecondWindow()
-		self.second_window.show()
-
+			self.second_window = SecondWindow(self)
+		self.second_window.exec_()
+		    
 	def settings_page(self):
 		self.set_default_icons()
 		icon = QIcon('./icons/IconoConfiGris.svg')
