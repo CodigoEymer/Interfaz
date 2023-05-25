@@ -12,15 +12,14 @@ from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 import config_module
 import communication_module
+from user_settings import SecondWindow
 import server
 import Cobertura
-
-from std_msgs.msg import String
-from PyQt5 import QtCore, QtGui, QtWidgets, QtWebSockets, QtNetwork
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidget, QTableWidgetItem
+from PyQt5 import QtNetwork, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QWidget
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import QFile, QThread, pyqtSignal
-from PyQt5.QtGui import QIcon, QColor
+from PyQt5.QtCore import QFile, QEvent, Qt
+from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 
 from mavros_msgs.srv import *
@@ -50,9 +49,8 @@ class MainWindow(QMainWindow):
 
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
-		
 		self.lista_wp = []
-
+		self.second_window = None
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
 		self.crearUsuarioBtn.clicked.connect(self.signup_page)
@@ -76,23 +74,16 @@ class MainWindow(QMainWindow):
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
-		
-
 		self.hide_all_frames()
 
 	def set_default_icons(self):
-
 		default = "background-color: rgb(203, 218, 216);"
-
 		self.settingsBtn.setIcon(QIcon('./icons/IconoConfiAzul.svg'))
 		self.settingsBtn.setStyleSheet(default)
-
 		self.homeBtn.setIcon(QIcon('./icons/IconoHomeAzul.svg'))
 		self.homeBtn.setStyleSheet(default)
-
 		self.missionBtn.setIcon(QIcon('./icons/IconoMisionAzul.svg'))
 		self.missionBtn.setStyleSheet(default)
-
 		self.reportBtn.setIcon(QIcon('./icons/IconoReporteAzul.svg'))
 		self.reportBtn.setStyleSheet(default)
 
@@ -110,18 +101,30 @@ class MainWindow(QMainWindow):
 		correo = self.email_text.toPlainText()
 		connection = usuarios_dao_imp(conn)
 		connection.insert_user(nombre, nombre_usuario, correo, celular)
-		self.stackedWidget_3.setCurrentWidget(self.logInPage)
+		self.login_page()
 		self.error_label.setText("Registro exitoso")
 
 	def login_page(self):
-			self.stackedWidget_3.setCurrentWidget(self.logInPage)
+		self.stackedWidget_3.setCurrentWidget(self.logInPage)
 
 	def signup_page(self):
-			self.stackedWidget_3.setCurrentWidget(self.signUpPage)
+		self.stackedWidget_3.setCurrentWidget(self.signUpPage)
 
 	def config_user_page(self):
+		if self.second_window is None:
+			self.second_window = SecondWindow(self)
+		self.second_window.exec_()
+	
+	def update_user_data(self):
 		self.signin_window()
 		self.stackedWidget_3.setCurrentWidget(self.userConfiPage)
+		self.second_window.close()
+
+	def logout(self):
+		self.signin_window()
+		self.stackedWidget_3.setCurrentWidget(self.logInPage)
+		self.user_name_login.clear()
+		self.second_window.close()
 
 	def settings_page(self):
 		self.set_default_icons()
@@ -161,6 +164,7 @@ class MainWindow(QMainWindow):
 				self.current_user = user
 				self.main_window()
 				self.settings_page()
+				self.error_label.setText("")
 				break
 			else:
 				self.error_label.setText("Usuario no registrado, por favor registrese")

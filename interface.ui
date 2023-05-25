@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1347</width>
-    <height>825</height>
+    <width>1414</width>
+    <height>826</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -613,7 +613,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
                                  <property name="geometry">
                                   <rect>
                                    <x>0</x>
-                                   <y>-505</y>
+                                   <y>0</y>
                                    <width>299</width>
                                    <height>1364</height>
                                   </rect>
