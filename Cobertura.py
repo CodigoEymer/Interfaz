@@ -44,7 +44,7 @@ class StartMission():
                 break
             rate.sleep()
 
-        # Modo automatico
+        # Modo Guiado
         print("Activando modo GUIADO")
         rospy.wait_for_service('/mavros/set_mode')
         try:
@@ -129,22 +129,32 @@ class StartMission():
             print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
         self.progress_bar.setMaximum(len(lista_wp))
-        print("n_wp",len(lista_wp)-1)
+        print("n_wp",len(lista_wp))
 
         def callback(data):
             rospy.loginfo(rospy.get_caller_id() + " Waypoint reached: %d", data.wp_seq)
             
             self.progress_bar.setValue(data.wp_seq)
 
+            if data.wp_seq==len(lista_wp)-1:
+
+                # Modo Guiado
+                print("Activando modo GUIADO")
+                rospy.wait_for_service('/mavros/set_mode')
+                try:
+                    flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
+                    #http://wiki.ros.org/mavros/CustomModes for custom modes
+                    isModeChanged = flightModeService(custom_mode='GUIDED') #return true or false
+                except rospy.ServiceException as e:
+                    print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+
+                rospy.wait_for_service('/mavros/cmd/command')
+
+                try:
+                    flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
+                    #http://wiki.ros.org/mavros/CustomModes for custom modes
+                    isModeChanged = flightModeService(custom_mode='RTL') #return true or false
+                except rospy.ServiceException as e:
+                    print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
         rospy.Subscriber("mavros/mission/reached", WaypointReached, callback)
-
-
-    def land():
-        rospy.wait_for_service('/mavros/cmd/land')
-        try:
-            land_service = rospy.ServiceProxy('/mavros/cmd/land', CommandTOL)
-            response = land_service(altitude = 0, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
-            return response.success
-        except rospy.ServiceException as e:
-            print("Service call failed: {}".format(e))

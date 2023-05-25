@@ -76,6 +76,13 @@ class MainWindow(QMainWindow):
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
 
+		self.file = QFile("mapa.html")
+		if self.file.open(QFile.ReadOnly | QFile.Text):
+
+			self.html = str(self.file.readAll())
+			self.webView.setHtml(self.html)
+			self.webView_2.setHtml(self.html)
+
 	def set_default_icons(self):
 		default = "background-color: rgb(203, 218, 216);"
 		self.settingsBtn.setIcon(QIcon('./icons/IconoConfiAzul.svg'))
@@ -134,11 +141,6 @@ class MainWindow(QMainWindow):
 		
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
-		
-		file = QFile("mapa.html")
-		if file.open(QFile.ReadOnly | QFile.Text):
-			html = str(file.readAll())
-			self.webView.setHtml(html)
 
 		communication_module.communication_module()
 		self.startThread()
@@ -170,6 +172,19 @@ class MainWindow(QMainWindow):
 				self.error_label.setText("Usuario no registrado, por favor registrese")
 
 	def gen_tray(self):
+		######
+		self.city_text.setText("Cali")
+		self.address_text.setText("2")
+		self.mission_name_text.setText("2")
+		self.roi_name_text.setText("2")
+		self.description_text.setText("2")
+		self.vision_field_text.setText("2")
+		self.max_height_text.setText("2")
+		self.max_speed_text.setText("2")
+		self.max_acc_text.setText("2")
+		self.overlap_text.setText("2")
+		######
+
 		ciudad = self.city_text.text()
 		direccion = self.address_text.text()
 		nombre_mision = self.mission_name_text.text()
@@ -181,6 +196,8 @@ class MainWindow(QMainWindow):
 		acc_maxima = self.max_acc_text.text()
 		sobrelapamiento = self.overlap_text.text()
 
+		print(ciudad)
+
 		# peso = self.peso_text.text()
 		# factor_seguridad = self.factor_seguridad_text.text()
 		# seguridad = self.seguridad_text.text()
@@ -188,14 +205,15 @@ class MainWindow(QMainWindow):
 		# Voltaje_b = self.voltajeB_text.text()
 		# potenciaKg = self.potenciaXkig_text.text()
 
+		######
 		peso = 2.11
 		factor_seguridad = 1.5
 		seguridad = 0.7
 		capacidad_b = 6000
 		Voltaje_b = 22.8
 		potenciaKg = 275.3
+		######
 		
-
 		controladora = communication_module.communication_module.Dron[2]
 		votaje_bateria = communication_module.communication_module.Dron[3]
 		tipo = communication_module.communication_module.Dron[1]
@@ -216,19 +234,22 @@ class MainWindow(QMainWindow):
 		Trayectorias = datos.generar_trayectoria()
 
 		self.lista_wp = Trayectorias.ciclos()
+
+		for item in self.lista_wp:
+			handler.broadcast(str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		print("distancia_trayectoria ",distancia_trayectoria)
 		wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_recarga)
 
-
-		for item in self.lista_wp:
-			handler.broadcast(str(item))
-		
-		handler.broadcast("last")
-		for item2 in wp_retorno_aut:
-			handler.broadcast(str(item2))
-		datos.insertar_wp_dron(self.lista_wp,h_max)
+		if wp_retorno_aut is None:
+			print("No es necesario generar un punto de retorno")
+			handler.broadcast("last")
+		else:	
+			handler.broadcast("last")
+			for item2 in wp_retorno_aut:
+				handler.broadcast(str(item2))
+			datos.insertar_wp_dron(self.lista_wp,h_max)
 		
 	def init_trayct(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
@@ -327,10 +348,6 @@ class MainWindow(QMainWindow):
 		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
-		file = QFile("mapa.html")
-		if file.open(QFile.ReadOnly | QFile.Text):
-			html = str(file.readAll())
-			self.webView_2.setHtml(html)	
 
 	def report_page(self):
 		self.set_default_icons()
