@@ -49,7 +49,6 @@ class MainWindow(QMainWindow):
 
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
-		self.lista_wp = []
 		self.second_window = None
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
@@ -78,7 +77,6 @@ class MainWindow(QMainWindow):
 		diagnostics_topic(self)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
-
 			self.html = str(self.file.readAll())
 			self.webView.setHtml(self.html)
 			self.webView_2.setHtml(self.html)
@@ -107,14 +105,22 @@ class MainWindow(QMainWindow):
 		celular = self.phone_text.toPlainText()
 		correo = self.email_text.toPlainText()
 		connection = usuarios_dao_imp(conn)
-		connection.insert_user(nombre, nombre_usuario, correo, celular)
-		self.login_page()
-		self.error_label.setText("Registro exitoso")
+		try:
+			connection.insert_user(nombre, nombre_usuario, correo, celular)
+			self.login_page()
+			self.error_label.setStyleSheet("color: green;")
+			self.error_label.setText("Registro exitoso")
+		except MySQLdb._exceptions.IntegrityError as e:
+			self.user_feedback.setStyleSheet("color: red;")
+			self.user_feedback.setText("Nombre de usuario ya existe")
+		
 
 	def login_page(self):
+		self.error_label.clear()
 		self.stackedWidget_3.setCurrentWidget(self.logInPage)
 
 	def signup_page(self):
+		self.user_feedback.clear()
 		self.stackedWidget_3.setCurrentWidget(self.signUpPage)
 
 	def config_user_page(self):
@@ -152,7 +158,7 @@ class MainWindow(QMainWindow):
 		for user in user_list:
 			db_user_name = str(user.get_nombre_usuario())
 			if db_user_name == user_name:
-				self.current_user = user
+				self.user = user
 				self.main_window()
 				self.settings_page()
 				self.error_label.setText("")
@@ -206,9 +212,9 @@ class MainWindow(QMainWindow):
 		controladora = communication_module.communication_module.Dron[2]
 		votaje_bateria = communication_module.communication_module.Dron[3]
 		tipo = communication_module.communication_module.Dron[1]
-		print(type(self.current_user.get_id_usuario()))
+		print(type(self.user.get_id_usuario()))
 
-		datos= config_module.config_module(str(self.current_user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo,cvV)
+		datos= config_module.config_module(str(self.user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo,cvV)
 		
 		datos.insertar_mision()
 		datos.insertar_wp_region()
@@ -257,7 +263,6 @@ class MainWindow(QMainWindow):
 		icon = QIcon('./icons/IconoMisionGris.svg')
 		self.missionBtn.setIcon(icon)
 		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
-
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
 
 	def report_page(self):

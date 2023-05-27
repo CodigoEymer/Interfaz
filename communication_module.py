@@ -62,7 +62,7 @@ class communication_module():
         self.Posiciones[3] = altitude
         for item in range(3):
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
-        self.main.tableWidget.update()
+        self.main.tableWidget.repaint()
 
         # for  dron in self.Dron:
         #     print(dron)

@@ -40,8 +40,6 @@ class usuarios_dao_imp:
         cursor = self.connection.cursor()
         res_rows = cursor.execute(query)
         self.connection.commit()
-        #res_user = usuarios.usuarios(nombre,nombre_usuario,correo,celular)
-        #self.users.append(res_user)
         cursor.close()
         return res_rows
 
