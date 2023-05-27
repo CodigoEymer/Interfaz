@@ -16,7 +16,7 @@ import communication_module
 from user_settings import SecondWindow
 import server
 import Cobertura
-from PyQt5 import QtNetwork, QtWidgets
+from PyQt5 import QtNetwork, QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QWidget
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt

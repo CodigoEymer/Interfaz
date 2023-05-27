@@ -15,11 +15,10 @@ DB_NAME = 'drones'
 datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME] 
 conn = MySQLdb.connect(*datos)
 
-id_mision = ""
-id_dron = ""
-
 class config_module():
     def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,voltaje_bateria,tipo,cvV):
+        self.id_mision = ""
+        self.id_dron = ""
         self.id_usuario = id_usuario
         self.ciudad = ciudad
         self.direccion = direccion
@@ -58,9 +57,8 @@ class config_module():
             self.nombre_rdi, #nombre_ubicacion
             self.sobrelapamiento) #sobrelapamiento
         
-        global id_mision
         current_mission = prueba.get_mission(fecha,hora_inicio)
-        id_mision = str(current_mission.get_id_mision())
+        self.id_mision = str(current_mission.get_id_mision())
     
     def calcular_autonomia(self,peso,potenciaXKg,voltaje_b,capacidad_b, seguridad,factor_seguridad,velocidad):
         corriente_empuje = 1000*(peso*potenciaXKg)/voltaje_b
@@ -80,25 +78,24 @@ class config_module():
         prueba = wp_region_dao_imp(conn)
         wp_list = self.coordenadas
         for wp in wp_list:
-            prueba.insert_wp_region(id_mision,str(wp))
+            prueba.insert_wp_region(self.id_mision,str(wp))
 
     def insertar_wp_recarga(self):
         wp_recarga = self.wp_recarga
         prueba = wp_recarga_dao_imp(conn)
-        prueba.insert_wp_recarga(id_mision,wp_recarga)
+        prueba.insert_wp_recarga(self.id_mision,wp_recarga)
         pass
 
     def insertar_dron(self):
         prueba = dron_dao_imp(conn)
-        prueba.insert_dron(id_mision, self.acc_maxima, self.vel_maxima,self.alt_maxima, self.cvH,self.controladora,self.voltaje_bateria,self.tipo,self.cvV)
-        global id_dron
-        current_dron = prueba.get_dron(id_mision) 
-        id_dron = str(current_dron.get_id_dron())
+        prueba.insert_dron(self.id_mision, self.acc_maxima, self.vel_maxima,self.alt_maxima, self.cvH,self.controladora,self.voltaje_bateria,self.tipo,self.cvV)
+        current_dron = prueba.get_dron(self.id_mision) 
+        self.id_dron = str(current_dron.get_id_dron())
 
     def insertar_wp_dron(self,Vwp,h):
         prueba = wp_dron_dao_imp(conn)
         for wp_dron in Vwp:
-            prueba.insert_wp_dron(id_dron,wp_dron[0],wp_dron[1],h)
+            prueba.insert_wp_dron(self.id_dron,wp_dron[0],wp_dron[1],h)
 
 
 

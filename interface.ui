@@ -3728,7 +3728,7 @@ background-color: rgb(111, 110, 110);</string>
                                   <set>AlignCenter</set>
                                  </property>
                                  <property name="flags">
-                                  <set>ItemIsEditable</set>
+                                  <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
                                  </property>
                                 </item>
                                 <item row="0" column="1">
