@@ -11,6 +11,7 @@ from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuario
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 import config_module
+from diagnostics_topic import diagnostics_topic
 import communication_module
 from user_settings import SecondWindow
 import server
@@ -75,7 +76,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
-
+		diagnostics_topic(self)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 
@@ -264,82 +265,6 @@ class MainWindow(QMainWindow):
 		self.homeBtn.setIcon(icon)
 		self.homeBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
-		estados = communication_module.communication_module.Estados
-		self.show_states(estados, 1)
-
-	def show_states(self, estados, dron):
-
-		frame_name = "frame_drone" + str(dron)
-		frame = getattr(self,frame_name)
-		frame.show()
-
-		conectado_status = "conectado_status" + str(dron)
-		conectado = getattr(self,conectado_status)
-		conectado.setText("Conectado")
-		
-		battery = "battery_good" + str(dron)
-		batteryBtn = getattr(self, battery)
-		battery_green = QIcon('./icons/batteryVerde.svg')
-		battery_red = QIcon('./icons/batteryRojo.svg')
-
-
-		gps_good = "gps_good" + str(dron)
-		gpsBtn = getattr(self, gps_good)
-		gps_green = QIcon('./icons/gpsVerde.svg')
-		gps_red = QIcon('./icons/gpsRojo.svg')
-
-		motor_good = "motor_good" + str(dron)
-		motorBtn = getattr(self, motor_good)
-		motor_green = QIcon('./icons/motorVerde.svg')
-		motor_red = QIcon('./icons/motorRojo.svg')
-
-		autopilot_good = "autopilot_good" + str(dron)
-		autopilotBtn = getattr(self, autopilot_good)
-		autopilot_green = QIcon('./icons/cpuVerde.svg')
-		autopilot_red = QIcon('./icons/cpuRojo.svg')
-
-
-		imu_good = "imu_good" + str(dron)
-		imuBtn = getattr(self, imu_good)
-		imu_green = QIcon('./icons/imuVerde.svg')
-		imu_red = QIcon('./icons/imuRojo.svg')
-
-		camera_good = "camera_good" + str(dron)
-		cameraBtn = getattr(self, camera_good)
-		camera_green = QIcon('./icons/cameraVerde.svg')
-		camera_red = QIcon('./icons/cameraRojo.svg')
-
-		if estados[1] == "Ok":
-			batteryBtn.setIcon(battery_green)
-		else:
-			batteryBtn.setIcon(battery_red)
-
-		if estados[2] == "Ok":
-			gpsBtn.setIcon(gps_green)
-		else:
-			gpsBtn.setIcon(gps_red)
-
-		if estados[3] == "Ok":
-			motorBtn.setIcon(motor_green)
-		else:
-			motorBtn.setIcon(motor_red)
-
-		if estados[4] == "Ok":
-			autopilotBtn.setIcon(autopilot_green)
-		else:
-			autopilotBtn.setIcon(autopilot_red)
-
-		if estados[5] == "Ok" and estados[6] == "Ok" and estados[7] == "Ok" and estados[8] == "Ok":
-			imuBtn.setIcon(imu_green)
-		else:
-			imuBtn.setIcon(imu_red)
-
-		if estados[9] != "null":
-			cameraBtn.setIcon(camera_green)
-		else:
-			cameraBtn.setIcon(camera_red)
-		
-
 
 	def mission_page(self):
 		self.set_default_icons()
