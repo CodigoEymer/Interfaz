@@ -12,7 +12,7 @@ desired_altitude = 1
 
 class StartMission():
 
-    def __init__(self,lista_wp, progress_bar):
+    def __init__(self,lista_wp, progress_bar,altura):
         
         self.progress_bar = progress_bar
         # Inicializar el nodo de ROS
@@ -92,7 +92,7 @@ class StartMission():
             wp.autocontinue = True
             wp.x_lat = latitud # Latitud en grados
             wp.y_long = longitud # Longitud en grados
-            wp.z_alt = 10 # Altitud en metros
+            wp.z_alt = altura # Altitud en metros
             waypoints.append(wp)
 
         # Publish waypoints to /mavros/mission/push

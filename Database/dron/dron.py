@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 
 class dron:
-    def __init__(self, id_dron,id_mision, aceleracion_max, velocidad_max,altura_max,campo_vision,controladora,duracion_bateria,tipo):
+    def __init__(self, id_dron,id_mision, aceleracion_max, velocidad_max,altura_max,cvH,controladora,duracion_bateria,tipo,cvV):
         self.id_dron = id_dron
         self.id_mision = id_mision
         self.aceleracion_max = aceleracion_max
         self.velocidad_max =velocidad_max
         self.altura_max =altura_max
-        self.campo_vision =campo_vision
+        self.cvH =cvH
         self.controladora =controladora
         self.duracion_bateria =duracion_bateria
         self.tipo =tipo
+        self.cvV = cvV
 
     def get_id_dron(self):
         return self.id_dron
@@ -36,11 +37,17 @@ class dron:
     def set_altura_max(self, altura_max):
         self.altura_max =  altura_max
 
-    def get_campo_vision(self):
-        return self.campo_vision
+    def get_cvH(self):
+        return self.cvH
 
-    def set_campo_vision(self, campo_vision):
-        self.campo_vision =  campo_vision
+    def set_cvH(self, cvH):
+        self.cvH =  cvH
+
+    def get_cvV(self):
+        return self.cvV
+
+    def set_cvV(self, cvV):
+        self.cvV =  cvV
 
     def get_controladora(self):
         return self.controladora
