@@ -5,6 +5,8 @@ from sensor_msgs.msg import Imu
 from mavros_msgs.srv import *
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QTableWidgetItem
 import cv2
 
 class communication_module():
@@ -14,13 +16,16 @@ class communication_module():
   # Dron     = [id,tipo,controladora,voltaje]
   # Posiciones =[id,latitud,longitud,altitud, ginada,alabeo,cabeceo]
 
-    def __init__(self):
+    def __init__(self, parent):
+            self.main = parent
             self.counter=0
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
             rospy.Subscriber("/mavros/imu/data", Imu, self.imu_callback)
             rospy.Subscriber("/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
             rospy.Subscriber("/mavros/camera/image_raw",  Image, self.image_callback)
+            
+            self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
 
     def waypoint_reached_callback(self, msg):
         print("Waypoint reached: %s" % msg.wp_seq)
@@ -56,7 +61,8 @@ class communication_module():
         self.Posiciones[1] = latitude
         self.Posiciones[2] = longitude
         self.Posiciones[3] = altitude
-
+        for item in range(3):
+            self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
 
 
         # for  dron in self.Dron:
