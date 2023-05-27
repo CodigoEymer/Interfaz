@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 
 class dron:
-    def __init__(self, id_dron,id_mision, aceleracion_max, velocidad_max,altura_max,cvH,controladora,duracion_bateria,tipo,cvV):
+    def __init__(self,id_dron, id_mision,ac_max,vel_max,alt_max,cvH,cvV,controladora,voltaje_inicial,tipo,hardware_id):
         self.id_dron = id_dron
         self.id_mision = id_mision
-        self.aceleracion_max = aceleracion_max
-        self.velocidad_max =velocidad_max
-        self.altura_max =altura_max
+        self.aceleracion_max = ac_max
+        self.velocidad_max =vel_max
+        self.altura_max =alt_max
         self.cvH =cvH
         self.controladora =controladora
-        self.duracion_bateria =duracion_bateria
+        self.voltaje_inicial =voltaje_inicial
         self.tipo =tipo
         self.cvV = cvV
+        self.hardware_id = hardware_id
 
     def get_id_dron(self):
         return self.id_dron
@@ -55,14 +56,20 @@ class dron:
     def set_controladora(self, controladora):
         self.controladora =  controladora
 
-    def get_duracion_bateria(self):
-        return self.duracion_bateria
+    def get_voltaje_inicial(self):
+        return self.voltaje_inicial
 
-    def set_duracion_bateria(self, duracion_bateria):
-        self.duracion_bateria =  duracion_bateria
+    def set_voltaje_inicial(self, voltaje_inicial):
+        self.voltaje_inicial =  voltaje_inicial
 
     def get_tipo(self):
         return self.tipo
 
     def set_tipo(self, tipo):
         self.tipo =  tipo
+
+    def get_hardware_id(self):
+        return self.hardware_id
+
+    def set_hardware_id(self, hardware_id):
+        self.hardware_id =  hardware_id

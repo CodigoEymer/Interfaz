@@ -24,14 +24,14 @@ class StartMission():
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
             #http://wiki.ros.org/mavros/CustomModes for custom modes
-            isModeChanged = flightModeService(custom_mode='STABILIZE') #return true or false
+            flightModeService(custom_mode='STABILIZE') #return true or false
         except rospy.ServiceException as e:
             print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
         # Armar el drone
         rospy.wait_for_service('/mavros/cmd/arming')
         arm_service = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
-        arm_response = arm_service(True)
+        arm_service(True)
         print("armando dron")
 
         # Esperar a que el drone este armado

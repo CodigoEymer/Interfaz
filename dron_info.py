@@ -4,14 +4,16 @@ from sensor_msgs.msg import CameraInfo
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QTableWidgetItem
 
-class diagnostics_topic():
+class dron_info():
     
       # Estados   = [id,bateria,gps,motor,rc_receiver,giroscopio, magnetometro,acelerometro,presion,camara]
     def __init__(self, parent):
+        # Dron     = [id_mision,ac_max,vel_max,alt_max,cvH,cvV,controladora,voltaje_inicial,tipo,hardware_id]
+        self.Dron = ["null","null","null","null","null","null","null","null","null","null"]
+
         self.Estados = ["null","null","null","null","null","null","null","null","null","null"]
         self.main = parent
         dron=1
-        #rospy.init_node('droneData_node', anonymous=True)
         rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
         rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         
@@ -70,10 +72,32 @@ class diagnostics_topic():
         
     def drone_data(self,data):
         for item in data.status:
+
             if item.name == 'mavros: Heartbeat':
                     id = item.hardware_id
                     self.Estados[0] = id
-                    self.main.tableWidget.setItem(0, 0, QTableWidgetItem(str(id)))
+                    self.Dron[0] = id
+                    self.Posiciones[0] = id
+
+                    for v in item.values:
+                        if v.key == 'Vehicle type':
+                            tipo = v.value
+                            self.Dron[1] = tipo
+
+                        if v.key == 'Autopilot type':
+                            controladora = v.value
+                            self.Dron[2] = controladora
+
+
+            if item.name == "mavros: Battery":
+                if value.key == "Voltage":
+                    voltage = value.value
+                    self.Dron[3] = voltage
+                if value.key == "Remaining":
+                    porcentaje = value.value
+                    print("Nivel de porcentaje de la bateria:", porcentaje)
+
+
             if item.name == "mavros: System":
                 for value in item.values:
                     if value.key == "Battery":

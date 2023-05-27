@@ -12,8 +12,8 @@ import cv2
 class communication_module():
 
     Dron = ["udp","prueba","autopilot","21.5"]
+    
     Posiciones =["null","null","null","null","null","null","null"]
-  # Dron     = [id,tipo,controladora,voltaje]
   # Posiciones =[id,latitud,longitud,altitud, ginada,alabeo,cabeceo]
 
     def __init__(self, parent):
