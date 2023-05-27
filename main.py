@@ -143,19 +143,8 @@ class MainWindow(QMainWindow):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 
-		communication_module.communication_module()
-		self.startThread()
-
-	def startThread(self):
-		self.thread = Telemetria.Worker()
-		self.thread.dataLoaded.connect(self.setData)
-		self.thread.start()
-
-	def setData(self, data):
-		self.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
-		for j, item in enumerate(data):
-			self.tableWidget.setItem(0, j, QTableWidgetItem(str(item)))
-
+		communication_module.communication_module(self)
+		
 	def user_validation(self):
 		user_name = self.user_name_login.text()
 		request = usuarios_dao_imp(conn)

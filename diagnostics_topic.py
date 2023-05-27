@@ -2,6 +2,7 @@ import rospy
 from diagnostic_msgs.msg import DiagnosticArray
 from sensor_msgs.msg import CameraInfo
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QTableWidgetItem
 
 class diagnostics_topic():
     
@@ -69,6 +70,10 @@ class diagnostics_topic():
         
     def drone_data(self,data):
         for item in data.status:
+            if item.name == 'mavros: Heartbeat':
+                    id = item.hardware_id
+                    self.Estados[0] = id
+                    self.main.tableWidget.setItem(0, 0, QTableWidgetItem(str(id)))
             if item.name == "mavros: System":
                 for value in item.values:
                     if value.key == "Battery":
