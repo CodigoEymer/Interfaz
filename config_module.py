@@ -19,14 +19,14 @@ id_mision = ""
 id_dron = ""
 
 class config_module():
-    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,voltaje_bateria,tipo):
+    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,voltaje_bateria,tipo,cvV):
         self.id_usuario = id_usuario
         self.ciudad = ciudad
         self.direccion = direccion
         self.nombre_mision = nombre_mision
         self.nombre_rdi = nombre_rdi
         self.descripcion = descripcion
-        self.campo_de_vision = campo_de_vision
+        self.cvH = cvH
         self.alt_maxima = alt_maxima
         self.vel_maxima = vel_maxima
         self.acc_maxima = acc_maxima
@@ -37,6 +37,7 @@ class config_module():
         self.controladora = controladora
         self.voltaje_bateria = voltaje_bateria
         self.tipo = tipo
+        self.cvV = cvV
 
     def insertar_mision(self):
         prueba = mision_dao_imp(conn)
@@ -72,7 +73,7 @@ class config_module():
         return dwr
 
     def generar_trayectoria(self):
-        variables = Trayectorias.Trayectorias(self.coordenadas)
+        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.alt_maxima), float(self.cvH),float(self.cvV),float(self.sobrelapamiento))
         return variables
 
     def insertar_wp_region(self):
@@ -89,7 +90,7 @@ class config_module():
 
     def insertar_dron(self):
         prueba = dron_dao_imp(conn)
-        prueba.insert_dron(id_mision, self.acc_maxima, self.vel_maxima,self.alt_maxima, self.campo_de_vision,self.controladora,self.voltaje_bateria,self.tipo)
+        prueba.insert_dron(id_mision, self.acc_maxima, self.vel_maxima,self.alt_maxima, self.cvH,self.controladora,self.voltaje_bateria,self.tipo,self.cvV)
         global id_dron
         current_dron = prueba.get_dron(id_mision) 
         id_dron = str(current_dron.get_id_dron())

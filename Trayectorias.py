@@ -2,7 +2,7 @@ import math
 import ast
 
 class Trayectorias():
-    def __init__(self,coords):
+    def __init__(self,coords,altura,cvH,cvV,sobrelapamiento):
         #input
         self.coords = str(coords)
         self.coords.replace("[","(")
@@ -16,10 +16,18 @@ class Trayectorias():
         #output
         self.wp_dron =[] 
         # Campo de vision
-        self.LX = 1.0/20
-        self.LY = 1.0/20
+
+        #self.LX = 1.0/20
+        #self.LY = 1.0/20
+
+        self.LX = 2*altura*math.tan((cvH*math.pi/180)/2)/1000
+        self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
+        print("LX: ",self.LX)
+        print("LY: ",self.LY) 
+
         # Sobrelapamiento minimo en Y
-        self.Ovx = 0.1/20
+        self.Ovx = sobrelapamiento
+        print("Ovx: ",self.Ovx)
         # Distancia entre vertices
         self.di = 0
         self.p = len(self.vertices)
@@ -38,8 +46,6 @@ class Trayectorias():
             #dr recalculado
             self.dr=(self.dcp-self.LX)/(self.num_rings-1)
          
-
-
     def to_cartesian(self, latitude, longitude):
         # Convertir a radianes
         lat_rad = math.radians(latitude)

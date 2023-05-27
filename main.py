@@ -178,11 +178,12 @@ class MainWindow(QMainWindow):
 		self.mission_name_text.setText("2")
 		self.roi_name_text.setText("2")
 		self.description_text.setText("2")
-		self.vision_field_text.setText("2")
-		self.max_height_text.setText("2")
+		self.vision_field_text.setText("60")
+		self.vision_field_text_2.setText("60")
+		self.max_height_text.setText("10")
 		self.max_speed_text.setText("2")
 		self.max_acc_text.setText("2")
-		self.overlap_text.setText("2")
+		self.overlap_text.setText("0.005")
 		######
 
 		ciudad = self.city_text.text()
@@ -190,13 +191,12 @@ class MainWindow(QMainWindow):
 		nombre_mision = self.mission_name_text.text()
 		nombre_rdi = self.roi_name_text.text()
 		descripcion = self.description_text.text()
-		campo_de_vision = self.vision_field_text.text()
+		cvH = self.vision_field_text.text()
+		cvV = self.vision_field_text_2.text()
 		alt_maxima = self.max_height_text.text()
 		vel_maxima = self.max_speed_text.text()
 		acc_maxima = self.max_acc_text.text()
 		sobrelapamiento = self.overlap_text.text()
-
-		print(ciudad)
 
 		# peso = self.peso_text.text()
 		# factor_seguridad = self.factor_seguridad_text.text()
@@ -219,7 +219,7 @@ class MainWindow(QMainWindow):
 		tipo = communication_module.communication_module.Dron[1]
 		print(type(self.current_user.get_id_usuario()))
 
-		datos= config_module.config_module(str(self.current_user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, campo_de_vision, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo)
+		datos= config_module.config_module(str(self.current_user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo,cvV)
 		
 		datos.insertar_mision()
 		datos.insertar_wp_region()
@@ -227,9 +227,6 @@ class MainWindow(QMainWindow):
 		datos.insertar_dron()
 
 		distancia_wp_recarga = datos.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(vel_maxima))
-
-		h_max = self.max_height_text.text()
-
 
 		Trayectorias = datos.generar_trayectoria()
 
@@ -249,11 +246,12 @@ class MainWindow(QMainWindow):
 			handler.broadcast("last")
 			for item2 in wp_retorno_aut:
 				handler.broadcast(str(item2))
-			datos.insertar_wp_dron(self.lista_wp,h_max)
+			datos.insertar_wp_dron(self.lista_wp,alt_maxima)
 		
 	def init_trayct(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
-		Cobertura.StartMission(self.lista_wp,self.progressBar_4)
+		altura = self.max_height_text.text()
+		Cobertura.StartMission(self.lista_wp,self.progressBar_4,altura)
 
 	def disconnect_socket(self):
 		handler.on_disconnected()

@@ -32,7 +32,8 @@ CREATE TABLE `Dron` (
   `aceleracion_max` float NOT NULL,
   `velocidad_max` float NOT NULL,
   `altura_max` float NOT NULL,
-  `campo_vision` float NOT NULL,
+  `cvH` float NOT NULL,
+  `cvV` float NOT NULL,
   `controladora` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `duracion_bateria` int(11) NOT NULL,
   `tipo` varchar(25) COLLATE utf8_unicode_ci NOT NULL
