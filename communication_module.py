@@ -33,7 +33,6 @@ class communication_module():
         try:
             # Convert your ROS Image message to OpenCV2
             cv2_img = CvBridge().imgmsg_to_cv2(self.image, "bgr8")
-            print("cv2: "+ str(cv2_img))
         except CvBridgeError as e:
             print(e)
         else:
@@ -63,7 +62,7 @@ class communication_module():
         self.Posiciones[3] = altitude
         for item in range(3):
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
-
+        self.main.tableWidget.update()
 
         # for  dron in self.Dron:
         #     print(dron)
