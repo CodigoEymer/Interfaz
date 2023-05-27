@@ -25,7 +25,6 @@ from PyQt5.QtCore import pyqtSlot
 
 from mavros_msgs.srv import *
 import time
-import Telemetria
 import MySQLdb
 from Database.usuarios import usuarios
 
