@@ -67,9 +67,9 @@ class communication_module():
 
     def setFlightParameters(self):
         parameters = config_module.getParameters()
-        params_to_set = {
-            'WPNAV_ACCEL' : parameters[0],
-            'WPNAV_SPEED' : parameters[1],
+        params_to_set = {                  # Increment  Range    Units
+            'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
+            'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
         }
         for id, value in params_to_set.items():
             if not self.set_param(id, value):
