@@ -8,7 +8,6 @@ from sensor_msgs.msg import Image
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QTableWidgetItem
 import cv2
-from config_module import config_module
 
 class communication_module():
 
