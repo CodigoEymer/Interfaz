@@ -17,14 +17,12 @@ class Trayectorias():
         self.wp_dron =[] 
         # Campo de vision
 
-        #self.LX = 1.0/20
-        #self.LY = 1.0/20
-
         self.LX = 2*altura*math.tan((cvH*math.pi/180)/2)/1000
         self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
         print("LX: ",self.LX)
         print("LY: ",self.LY) 
-
+        self.LX = 1.0/20
+        self.LY = 1.0/20
         # Sobrelapamiento minimo en Y
         self.Ovx = sobrelapamiento
         print("Ovx: ",self.Ovx)
@@ -140,6 +138,9 @@ class Trayectorias():
         elif m2 == float('inf'):
             x_intersect = b2
             y_intersect = m1 * x_intersect + b1
+        elif m1==m2: #Este if hay que revisarlo, se puso porque estaba ocurriendo este caso
+            x_intersect = x2
+            y_intersect = y3
         else:
             x_intersect = (b2 - b1) / (m1 - m2)
             y_intersect = m1 * x_intersect + b1
@@ -178,7 +179,9 @@ class Trayectorias():
             #print("Entramos al loop principal")
             self.vertices = new_vertices
             new_vertices = []
-            #print("Vertices: "+str(self.vertices))
+            print("P: "+str(self.p))
+            print("vertices: "+str(len(self.vertices)))
+            print("new vertices: "+str(len(new_vertices)))
             for i in range(self.p):
                 x0, y0 = self.vertices[i-1]
                 x1, y1 = self.vertices[i]
@@ -227,7 +230,7 @@ class Trayectorias():
                 angulo = self.angle_between_vectors(1.0, 0.0, dx, dy)
                 catetox = math.cos(angulo)*dw
                 catetoy = math.sin(angulo)*dw
-
+                print("num_wp_line: ",str(num_wp_line))
                 for k in range(num_wp_line):
                     if k == 0:
                         h = math.sqrt((self.LX/2)**2 + (self.LY/2)**2)

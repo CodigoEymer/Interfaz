@@ -11,7 +11,7 @@ import cv2
 
 class communication_module():
 
-    Dron = ["null","null","null","null"]
+    Dron = ["udp","prueba","autopilot","21.5"]
     Posiciones =["null","null","null","null","null","null","null"]
   # Dron     = [id,tipo,controladora,voltaje]
   # Posiciones =[id,latitud,longitud,altitud, ginada,alabeo,cabeceo]
@@ -72,7 +72,7 @@ class communication_module():
         }
         for id, value in params_to_set.items():
             if not self.set_param(id, value):
-                print("Falla al poner el parametro" %id)
+                print("Falla al poner el parametro %s" %id)
         
     def set_param(self, id, value):
         rospy.wait_for_service('/mavros/param/set')
@@ -83,4 +83,4 @@ class communication_module():
             resp = set_param_srv(id, param_value)
             return resp.success
         except rospy.ServiceException as e:
-            print("Fallo al llamar el servicio: %$" %e)
+            print("Fallo al llamar el servicio: %s" %e)
