@@ -65,8 +65,8 @@ class communication_module():
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
         self.main.tableWidget.repaint()
 
-    def setFlightParameters(self):
-        parameters = config_module.getParameters()
+    def setFlightParameters(self, conf_module):
+        parameters = conf_module.getParameters()
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s

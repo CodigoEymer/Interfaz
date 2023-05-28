@@ -219,7 +219,7 @@ class MainWindow(QMainWindow):
 		datos.insertar_wp_region()
 		datos.insertar_wp_recarga()
 		datos.insertar_dron()
-		self.commu_module.setFlightParameters()
+		self.commu_module.setFlightParameters(datos)
 
 		distancia_wp_recarga = datos.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(vel_maxima))
 
