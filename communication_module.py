@@ -1,5 +1,5 @@
 import rospy
-from mavros_msgs.msg import  WaypointReached
+from mavros_msgs.msg import  WaypointReached, ParamValue
 from sensor_msgs.msg import NavSatFix
 from sensor_msgs.msg import Imu
 from mavros_msgs.srv import ParamSet
@@ -79,7 +79,9 @@ class communication_module():
         rospy.wait_for_service('/mavros/param/set')
         try:
             set_param_srv = rospy.ServiceProxy('/mavros/param/set',ParamSet)
-            resp = set_param_srv(id, value)
+            param_value = ParamValue()
+            param_value.integer = int(value)
+            resp = set_param_srv(id, param_value)
             return resp.success
         except rospy.ServiceException as e:
             print("Fallo al llamar el servicio: %$" %e)
