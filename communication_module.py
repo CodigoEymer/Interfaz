@@ -2,12 +2,13 @@ import rospy
 from mavros_msgs.msg import  WaypointReached
 from sensor_msgs.msg import NavSatFix
 from sensor_msgs.msg import Imu
-from mavros_msgs.srv import *
+from mavros_msgs.srv import ParamSet
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QTableWidgetItem
 import cv2
+from config_module import config_module
 
 class communication_module():
 
@@ -64,15 +65,21 @@ class communication_module():
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
         self.main.tableWidget.repaint()
 
-        # for  dron in self.Dron:
-        #     print(dron)
-        # print("\n")
-        # for  estado in self.Estados:
-        #     print(estado)
-        # print("\n")
-        # for  posicion in self.Posiciones:
-        #     print(posicion)
-        # print("\n")
-                              
-
-                    
+    def setFlightParameters(self):
+        parameters = config_module.getParameters()
+        params_to_set = {
+            'WPNAV_ACCEL' : parameters[0],
+            'WPNAV_SPEED' : parameters[1],
+        }
+        for id, value in params_to_set.items():
+            if not self.set_param(id, value):
+                print("Falla al poner el parametro" %id)
+        
+    def set_param(self, id, value):
+        rospy.wait_for_service('/mavros/param/set')
+        try:
+            set_param_srv = rospy.ServiceProxy('/mavros/param/set',ParamSet)
+            resp = set_param_srv(id, value)
+            return resp.success
+        except rospy.ServiceException as e:
+            print("Fallo al llamar el servicio: %$" %e)

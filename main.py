@@ -12,7 +12,7 @@ from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 import config_module
 from diagnostics_topic import diagnostics_topic
-import communication_module
+from communication_module import communication_module
 from user_settings import SecondWindow
 import server
 import Cobertura
@@ -148,7 +148,7 @@ class MainWindow(QMainWindow):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 
-		communication_module.communication_module(self)
+		communication_module(self)
 		
 	def user_validation(self):
 		user_name = self.user_name_login.text()
@@ -192,7 +192,7 @@ class MainWindow(QMainWindow):
 		vel_maxima = self.max_speed_text.text()
 		acc_maxima = self.max_acc_text.text()
 		sobrelapamiento = self.overlap_text.text()
-
+  
 		# peso = self.peso_text.text()
 		# factor_seguridad = self.factor_seguridad_text.text()
 		# seguridad = self.seguridad_text.text()
@@ -209,10 +209,9 @@ class MainWindow(QMainWindow):
 		potenciaKg = 275.3
 		######
 		
-		controladora = communication_module.communication_module.Dron[2]
-		votaje_bateria = communication_module.communication_module.Dron[3]
-		tipo = communication_module.communication_module.Dron[1]
-		print(type(self.user.get_id_usuario()))
+		controladora = communication_module.Dron[2]
+		votaje_bateria = communication_module.Dron[3]
+		tipo = communication_module.Dron[1]
 
 		datos= config_module.config_module(str(self.user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo,cvV)
 		
@@ -220,6 +219,7 @@ class MainWindow(QMainWindow):
 		datos.insertar_wp_region()
 		datos.insertar_wp_recarga()
 		datos.insertar_dron()
+		communication_module.setFlightParameters()
 
 		distancia_wp_recarga = datos.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(vel_maxima))
 
