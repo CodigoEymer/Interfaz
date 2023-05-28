@@ -148,7 +148,7 @@ class MainWindow(QMainWindow):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 
-		communication_module(self)
+		self.commu_module = communication_module(self)
 		
 	def user_validation(self):
 		user_name = self.user_name_login.text()
