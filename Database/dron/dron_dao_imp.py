@@ -19,9 +19,9 @@ class dron_dao_imp:
             self.drones.append(user)
         cursor.close()
 
-    def insert_dron(self,id_mision, aceleracion_max, velocidad_max,altura_max, cvH,controladora,duracion_bateria,tipo,cvV):
+    def insert_dron(self,id_mision, aceleracion_max, velocidad_max,altura_max, cvH,controladora,voltaje_bateria,tipo,cvV):
         res_rows= 0
-        query="INSERT INTO Dron SET id_mision='"+id_mision+"', aceleracion_max='"+aceleracion_max+"',velocidad_max='"+velocidad_max+"',altura_max='"+altura_max+"',cvH='"+cvH+"',controladora='"+controladora+"',duracion_bateria='"+duracion_bateria+"',cvV='"+cvV+"', tipo='"+tipo+"'"
+        query="INSERT INTO Dron SET id_mision='"+id_mision+"', aceleracion_max='"+aceleracion_max+"',velocidad_max='"+velocidad_max+"',altura_max='"+altura_max+"',cvH='"+cvH+"',controladora='"+controladora+"',duracion_bateria='"+voltaje_bateria+"',cvV='"+cvV+"', tipo='"+tipo+"'"
         cursor = self.connection.cursor()
         res_rows = cursor.execute(query)
         self.connection.commit()
