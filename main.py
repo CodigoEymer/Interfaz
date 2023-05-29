@@ -11,8 +11,8 @@ from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuario
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 import config_module
-from diagnostics_topic import diagnostics_topic
-from communication_module import communication_module
+from dron_info import dron_info
+import communication_module
 from user_settings import SecondWindow
 import server
 import Cobertura
@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
-		diagnostics_topic(self)
+		dron_info(self)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
