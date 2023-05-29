@@ -97,8 +97,6 @@ class config_module():
         for wp_dron in Vwp:
             prueba.insert_wp_dron(self.id_dron,wp_dron[0],wp_dron[1],h)
 
-
-
-
-
-
+    def getParameters(self):
+        parameters = [self.acc_maxima, self.vel_maxima]
+        return parameters

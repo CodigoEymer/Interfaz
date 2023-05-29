@@ -1,8 +1,8 @@
 import rospy
-from mavros_msgs.msg import  WaypointReached
+from mavros_msgs.msg import  WaypointReached, ParamValue
 from sensor_msgs.msg import NavSatFix
 from sensor_msgs.msg import Imu
-from mavros_msgs.srv import *
+from mavros_msgs.srv import ParamSet
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from PyQt5.QtGui import QIcon
@@ -11,7 +11,7 @@ import cv2
 
 class communication_module():
 
-    Dron = ["null","null","null","null"]
+    Dron = ["udp","prueba","autopilot","21.5"]
     Posiciones =["null","null","null","null","null","null","null"]
   # Dron     = [id,tipo,controladora,voltaje]
   # Posiciones =[id,latitud,longitud,altitud, ginada,alabeo,cabeceo]
@@ -64,15 +64,23 @@ class communication_module():
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
         self.main.tableWidget.repaint()
 
-        # for  dron in self.Dron:
-        #     print(dron)
-        # print("\n")
-        # for  estado in self.Estados:
-        #     print(estado)
-        # print("\n")
-        # for  posicion in self.Posiciones:
-        #     print(posicion)
-        # print("\n")
-                              
-
-                    
+    def setFlightParameters(self, conf_module):
+        parameters = conf_module.getParameters()
+        params_to_set = {                  # Increment  Range    Units
+            'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
+            'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
+        }
+        for id, value in params_to_set.items():
+            if not self.set_param(id, value):
+                print("Falla al poner el parametro %s" %id)
+        
+    def set_param(self, id, value):
+        rospy.wait_for_service('/mavros/param/set')
+        try:
+            set_param_srv = rospy.ServiceProxy('/mavros/param/set',ParamSet)
+            param_value = ParamValue()
+            param_value.integer = int(value)
+            resp = set_param_srv(id, param_value)
+            return resp.success
+        except rospy.ServiceException as e:
+            print("Fallo al llamar el servicio: %s" %e)
