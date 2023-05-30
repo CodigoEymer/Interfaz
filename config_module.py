@@ -16,7 +16,7 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():  
-    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_ubicacion, descripcion, cvH, alt_maxima, vel_maxima, ac_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,voltaje_bateria,tipo,cvV):
+    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_ubicacion, descripcion, cvH, alt_maxima, vel_maxima, ac_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,voltaje_inicial,tipo,cvV,hardware_id):
         self.id_mision = ""
         self.id_dron = ""
         self.id_usuario = id_usuario
@@ -35,8 +35,9 @@ class config_module():
         self.dimension = dimension
         self.wp_recarga = wp_recarga
         self.controladora = controladora
-        self.voltaje_bateria = voltaje_bateria
+        self.voltaje_inicial = voltaje_inicial
         self.tipo = tipo
+        self.hardware_id= hardware_id
 
 
     def insertar_mision(self):
@@ -59,7 +60,7 @@ class config_module():
             self.sobrelapamiento) #sobrelapamiento
         
         current_mission = prueba.get_mission(fecha,hora_inicio)
-        id_mision = str(current_mission.get_id_mision())
+        self.id_mision = str(current_mission.get_id_mision())
 
 
     def insertar_wp_region(self):
@@ -76,9 +77,9 @@ class config_module():
 
     def insertar_dron(self):
         prueba = dron_dao_imp(conn)
-        prueba.insert_dron(id_mision, self.ac_maxima, self.vel_maxima,self.alt_maxima, self.cvH,self.controladora,self.voltaje_bateria,self.tipo,self.cvV)
+        prueba.insert_dron(self.id_mision, self.ac_maxima, self.vel_maxima,self.alt_maxima, self.cvH,self.controladora,self.voltaje_inicial,self.tipo,self.cvV,self.hardware_id)
         global id_dron
-        current_dron = prueba.get_dron(id_mision) 
+        current_dron = prueba.get_dron(self.id_mision) 
         id_dron = str(current_dron.get_id_dron())
 
     def insertar_wp_dron(self,Vwp,h):
@@ -101,12 +102,6 @@ class config_module():
         variables = Trayectorias.Trayectorias(self.coordenadas,float(self.alt_maxima), float(self.cvH),float(self.cvV),float(self.sobrelapamiento))
         return variables
 
-
-
-
-
-
-
     def getParameters(self):
-        parameters = [self.acc_maxima, self.vel_maxima]
+        parameters = [self.ac_maxima, self.vel_maxima]
         return parameters
