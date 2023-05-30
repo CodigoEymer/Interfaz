@@ -103,5 +103,6 @@ class config_module():
         return variables
 
     def getParameters(self):
-        parameters = [self.ac_maxima, self.vel_maxima]
+        velocidad_cm = int(self.vel_maxima)*100
+        parameters = [self.ac_maxima, velocidad_cm]
         return parameters

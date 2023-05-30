@@ -178,7 +178,7 @@ class MainWindow(QMainWindow):
 		self.vision_field_text.setText("60")
 		self.vision_field_text_2.setText("60")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("200")
+		self.max_speed_text.setText("3")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("0.005")
 		######
@@ -229,14 +229,14 @@ class MainWindow(QMainWindow):
 		Trayectorias = datos.generar_trayectoria()
 
 		self.lista_wp = Trayectorias.ciclos()
-		self.wp_tramos = Trayectorias.get_tramos()
 
 		for item in self.lista_wp:
 			handler.broadcast(str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		print("distancia_trayectoria ",distancia_trayectoria)
-		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/1000)
+		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/10)
+		self.wp_tramos = Trayectorias.get_tramos()
 
 		if len(self.wp_retorno_aut) == 0:
 			print("No es necesario generar un punto de retorno")

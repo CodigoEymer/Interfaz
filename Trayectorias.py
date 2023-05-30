@@ -300,7 +300,7 @@ class Trayectorias():
         for punto in self.wp_dron:
             lat,long=self.to_geographic(punto[0],punto[1])
             wp_dron_global.append((lat,long))
-
+        print("wp_dron_global:______",wp_dron_global)
         return wp_dron_global
 
 
@@ -312,17 +312,13 @@ class Trayectorias():
         wp_tramos_actual = []
         self.wp_tramos = []
         
-
         for i in range(1, len(V)):
             punto_siguiente = V[i]
     
             distancia_al_siguiente = math.sqrt((punto_siguiente[0] - punto_actual[0])**2 + (punto_siguiente[1] - punto_actual[1])**2)
-            print("dista_objetivo: ",distancia_objetivo)
-            print("dista_actual: ",distancia_actual + distancia_al_siguiente )
             if distancia_actual + distancia_al_siguiente == distancia_objetivo:
                 lat,long=self.to_geographic(punto_siguiente[0],punto_siguiente[1])
                 wp_retorno.append((lat,long))
-                print("if")
                 #return wp_retorno
             elif distancia_actual + distancia_al_siguiente > distancia_objetivo:
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
@@ -333,16 +329,21 @@ class Trayectorias():
                 self.wp_tramos.append(wp_tramos_actual) 
                 distancia_actual = 0
                 wp_tramos_actual= []
-                print("wp_tramos_actual",wp_tramos_actual)
-                print("elseif")
+                punto_actual = punto_siguiente
+                #print("wp_tramos_actual",wp_tramos_actual)
             else:
                 distancia_actual += distancia_al_siguiente
-                punto_actual = punto_siguiente
-
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
-                wp_tramos_actual.append((lat,long)) 
-                print("else")
+                wp_tramos_actual.append((lat,long))
+                punto_actual = punto_siguiente
+                
+        self.wp_tramos.append(wp_tramos_actual) 
+                 
 
+        print("tramos:_______",self.wp_tramos)
+        print("wp_dron:______",self.wp_dron)
+ 
+        print("long_tramos:______",len(self.wp_tramos))
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo
     
     def get_tramos(self):

@@ -21,6 +21,7 @@ class Cobertura():
         self.current_altitude = None
         self.wp_retorno_aut = wp_retorno_aut
         self.tramo_actual = 0
+        self.long_tramo = len(self.lista_wp)-1
 
     def StartMision(self):
 
@@ -33,6 +34,7 @@ class Cobertura():
             self.modo_automatico()
         else:
             self.set_wp(self.wp_tramos[self.tramo_actual])
+            self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
             self.modo_automatico()
 
     def reanudar_mision(self):
@@ -54,10 +56,8 @@ class Cobertura():
             
         self.progress_bar.setValue(data.wp_seq)
 
-        if data.wp_seq==len(self.lista_wp)-1:
-            self.modo_guiado()
+        if data.wp_seq==self.long_tramo:
             self.modo_rtl()
-        
 
     def pose_callback(self,data):
         self.current_altitude = data.pose.position.z  
