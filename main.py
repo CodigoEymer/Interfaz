@@ -11,8 +11,7 @@ from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuario
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 import config_module
-from dron_info import dron_info
-import communication_module
+from communication_module import communication_module
 from user_settings import SecondWindow
 import server
 import Cobertura
@@ -74,7 +73,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
-		dron_info(self)
+		self.commu_module = communication_module(self)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
@@ -148,7 +147,7 @@ class MainWindow(QMainWindow):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 
-		self.commu_module = communication_module(self)
+		
 		
 	def user_validation(self):
 		user_name = self.user_name_login.text()
@@ -176,8 +175,8 @@ class MainWindow(QMainWindow):
 		self.vision_field_text.setText("60")
 		self.vision_field_text_2.setText("60")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("2")
-		self.max_acc_text.setText("2")
+		self.max_speed_text.setText("200")
+		self.max_acc_text.setText("100")
 		self.overlap_text.setText("0.005")
 		######
 
@@ -210,10 +209,11 @@ class MainWindow(QMainWindow):
 		######
 		
 		controladora = communication_module.Dron[2]
-		votaje_bateria = communication_module.Dron[3]
+		voltaje_inicial = communication_module.Dron[3]
 		tipo = communication_module.Dron[1]
+		hardware_id = communication_module.Dron[0]
 
-		datos= config_module.config_module(str(self.user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(votaje_bateria),tipo,cvV)
+		datos= config_module.config_module(str(self.user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(voltaje_inicial),tipo,cvV,hardware_id)
 		
 		datos.insertar_mision()
 		datos.insertar_wp_region()
@@ -246,7 +246,8 @@ class MainWindow(QMainWindow):
 	def init_trayct(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		altura = self.max_height_text.text()
-		Cobertura.StartMission(self.lista_wp,self.progressBar_4,altura)
+		mision = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura)
+		mision.StartMision()
 
 	def disconnect_socket(self):
 		handler.on_disconnected()

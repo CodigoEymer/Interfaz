@@ -21,8 +21,8 @@ class Trayectorias():
         self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
         print("LX: ",self.LX)
         print("LY: ",self.LY) 
-        self.LX = 1.0/20
-        self.LY = 1.0/20
+        #self.LX = 1.0/20
+        #self.LY = 1.0/20
         # Sobrelapamiento minimo en Y
         self.Ovx = sobrelapamiento
         print("Ovx: ",self.Ovx)
@@ -58,8 +58,6 @@ class Trayectorias():
         y_km = y / 1000
         return x_km, y_km
 
-
-
     def to_geographic(self, x_km, y_km):
         # Convertir a metros
         x_m = x_km * 1000
@@ -86,8 +84,6 @@ class Trayectorias():
         else:
             tetha= (math.acos(dot_product/mag_product))
         return tetha
-
-
 
     def apotema(self):
         sum_x = sum([v[0] for v in self.vertices])
