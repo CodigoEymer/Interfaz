@@ -10,6 +10,7 @@ class Trayectorias():
         self.coords="["+self.coords[1:-1]+"]"
         self.vertices_global = ast.literal_eval(self.coords)
         self.vertices=[]
+        self.wp_tramos= []
         for punto in self.vertices_global:
             x,y=self.to_cartesian(punto[1],punto[0])
             self.vertices.append((x,y))
@@ -21,8 +22,8 @@ class Trayectorias():
         self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
         print("LX: ",self.LX)
         print("LY: ",self.LY) 
-        #self.LX = 1.0/20
-        #self.LY = 1.0/20
+        self.LX = 1.0/20
+        self.LY = 1.0/20
         # Sobrelapamiento minimo en Y
         self.Ovx = sobrelapamiento
         print("Ovx: ",self.Ovx)
@@ -307,25 +308,45 @@ class Trayectorias():
         distancia_actual = 0
         V = self.wp_dron
         punto_actual = V[0]
-        wp_retorno=[]
+        wp_retorno= []
+        wp_tramos_actual = []
+        self.wp_tramos = []
+        
+
         for i in range(1, len(V)):
             punto_siguiente = V[i]
+    
             distancia_al_siguiente = math.sqrt((punto_siguiente[0] - punto_actual[0])**2 + (punto_siguiente[1] - punto_actual[1])**2)
-
+            print("dista_objetivo: ",distancia_objetivo)
+            print("dista_actual: ",distancia_actual + distancia_al_siguiente )
             if distancia_actual + distancia_al_siguiente == distancia_objetivo:
                 lat,long=self.to_geographic(punto_siguiente[0],punto_siguiente[1])
                 wp_retorno.append((lat,long))
-                return wp_retorno
+                print("if")
+                #return wp_retorno
             elif distancia_actual + distancia_al_siguiente > distancia_objetivo:
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 
                 wp_retorno.append((lat,long))
-                return (wp_retorno)
+
+                wp_tramos_actual.append((lat,long))
+                self.wp_tramos.append(wp_tramos_actual) 
+                distancia_actual = 0
+                wp_tramos_actual= []
+                print("wp_tramos_actual",wp_tramos_actual)
+                print("elseif")
             else:
                 distancia_actual += distancia_al_siguiente
                 punto_actual = punto_siguiente
 
-        return None  # No se puede alcanzar la distancia objetivo
+                lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
+                wp_tramos_actual.append((lat,long)) 
+                print("else")
+
+        return (wp_retorno)  # No se puede alcanzar la distancia objetivo
+    
+    def get_tramos(self):
+        return self.wp_tramos
     
     def calcular_distancia_total(self):
         V = self.wp_dron

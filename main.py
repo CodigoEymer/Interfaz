@@ -45,6 +45,9 @@ db_user_list=[]
 class MainWindow(QMainWindow):
 
 	def __init__(self):
+		self.wp_retorno_aut = None
+		self.wp_tramos = None
+		self.mision = None
 
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
@@ -60,7 +63,6 @@ class MainWindow(QMainWindow):
 		self.drone_1.clicked.connect(self.disconnect_socket)
 		self.settingsBtn.clicked.connect(self.settings_page)
 		self.missionBtn.clicked.connect(self.mission_page)
-		self.playBtn.clicked.connect(self.armar)
 		self.pauseBtn.clicked.connect(self.pausingMission)
 		self.reportBtn.clicked.connect(self.report_page)
 		self.city_btn.clicked.connect(self.city_btn_function)
@@ -68,6 +70,7 @@ class MainWindow(QMainWindow):
 		self.user_name_btn.clicked.connect(self.user_name_btn_function)
 		self.date_btn.clicked.connect(self.date_btn_function)
 		self.generate_report.clicked.connect(self.report_function)
+		self.playBtn.clicked.connect(self.reanudar_mision)		
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
@@ -221,33 +224,37 @@ class MainWindow(QMainWindow):
 		datos.insertar_dron()
 		self.commu_module.setFlightParameters(datos)
 
-		distancia_wp_recarga = datos.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(vel_maxima))
+		distancia_wp_retorno = datos.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(vel_maxima))
 
 		Trayectorias = datos.generar_trayectoria()
 
 		self.lista_wp = Trayectorias.ciclos()
+		self.wp_tramos = Trayectorias.get_tramos()
 
 		for item in self.lista_wp:
 			handler.broadcast(str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		print("distancia_trayectoria ",distancia_trayectoria)
-		wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_recarga)
+		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/1000)
 
-		if wp_retorno_aut is None:
+		if len(self.wp_retorno_aut) == 0:
 			print("No es necesario generar un punto de retorno")
 			handler.broadcast("last")
 		else:	
 			handler.broadcast("last")
-			for item2 in wp_retorno_aut:
+			for item2 in self.wp_retorno_aut:
 				handler.broadcast(str(item2))
 			datos.insertar_wp_dron(self.lista_wp,alt_maxima)
-		
+
+	def reanudar_mision(self):
+		self.mision.reanudar_mision()
+
 	def init_trayct(self):
 		self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		altura = self.max_height_text.text()
-		mision = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura)
-		mision.StartMision()
+		self.mision = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos)
+		self.mision.StartMision()
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
