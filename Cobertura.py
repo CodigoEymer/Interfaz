@@ -10,13 +10,17 @@ from geometry_msgs.msg import PoseStamped
 
 class Cobertura():
 
-    def __init__(self,lista_wp, progress_bar,altura):
+    def __init__(self,lista_wp, progress_bar,altura,wp_retorno_aut,wp_tramos):
         rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.pose_callback)
         rospy.Subscriber("mavros/mission/reached", WaypointReached, self.retorno)
         self.progress_bar = progress_bar
         self.lista_wp = lista_wp
+        self.wp_tramos = wp_tramos
+        self.n_tramos = len(self.wp_tramos)
         self.altura = float(altura)
         self.current_altitude = None
+        self.wp_retorno_aut = wp_retorno_aut
+        self.tramo_actual = 0
 
     def StartMision(self):
 
@@ -24,8 +28,26 @@ class Cobertura():
         self.armar_dron()
         self.modo_guiado()
         self.despegar()
-        self.set_wp()
-        self.modo_automatico()
+        if len(self.wp_retorno_aut)==0:
+            self.set_wp(self.lista_wp)
+            self.modo_automatico()
+        else:
+            self.set_wp(self.wp_tramos[self.tramo_actual])
+            self.modo_automatico()
+
+    def reanudar_mision(self):
+        respuesta = ""
+        if self.tramo_actual <= self.n_tramos:           
+            self.StartMision()
+            respuesta = "Mision reanudada"
+            self.tramo_actual=self.tramo_actual+1
+            print(respuesta)
+            return respuesta
+        else:
+            print("No hay mas tramos")
+            respuesta = "No hay mas tramos"
+            print(respuesta)
+            return respuesta
 
     def retorno(self,data):
         rospy.loginfo(rospy.get_caller_id() + " Waypoint reached: %d", data.wp_seq)
@@ -92,10 +114,10 @@ class Cobertura():
         while self.current_altitude is None or self.current_altitude < self.altura:
             rospy.sleep(0.1)
 
-    def set_wp(self):
+    def set_wp(self,lista_wp):
         waypoints = []
 
-        for wp in self.lista_wp:
+        for wp in lista_wp:
             latitud = wp[0]
             longitud = wp[1]
 
