@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Client</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js" integrity="sha512-ttqbKrGZiTtSLguBZ2xNvZrhUv02IO/TRq5U6TG5TK90wbaXWup5kIJ1A1tLzjOk5Mea/G4seVNrU+lwTLfAzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+    var socket = io("", {
+  withCredentials: true,
+  extraHeaders: {
+    "my-custom-header": "abcd"
+  }});
+
+socket.on("connect", () => {
+  console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+});
+ 
+ 
+
+socket.on("wp_region", (data) => {
+    console.log(data);
+  });
+
+      /* const socket = io();
+      socket.on('connect', (socket) => {
+    console.log('New client connected');
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+
+    socket.on('message', (message) => {
+        console.log('Message received:', message);
+    });
+}); */
+ function sendMessage(){
+  console.log("psuh")
+  socket.emit('wp_region',{ "data": "hello from server"});
+ }
+    </script>
+</head>
+<body>
+    <input type="text" id="message" placeholder="Enter a message">
+    <button onclick="sendMessage()">Send</button>
+    <ul id="messages"></ul>
+</body>
+</html>

@@ -7,6 +7,9 @@ import resources_rc
 import json
 import datetime
 
+import socketio
+import eventlet
+
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
@@ -40,14 +43,20 @@ wp_recarga=[]
 area= []
 db_user_list=[]
 
-
+# create a Socket.IO server
+sio = socketio.Server(cors_allowed_origins='*')
+app = socketio.WSGIApp(sio, static_files={'/':{'countent_type':'text/html', 'filename':'mapa.html'}})
 
 class MainWindow(QMainWindow):
 
-	def __init__(self, handler):
+	def __init__(self):
 		self.wp_retorno_aut = None
 		self.wp_tramos = None
 		self.mision = None
+
+		self.handler = server.WebSocketHandler()
+		self.handler.message_received.connect(self.on_message_received)
+		self.handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
 
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
@@ -76,12 +85,33 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
-		self.commu_module = communication_module(self, handler)
+		self.commu_module = communication_module(self, self.handler)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
 			self.webView.setHtml(self.html)
 			self.webView_2.setHtml(self.html)
+
+		@sio.event
+		def connect(sid, environ):
+			print('connect ', sid)
+
+		@sio.event
+		def disconnect(sid):
+			print('disconnect ', sid)
+
+
+		@sio.event
+		def my_event(sid, data):
+			sio.emit('my event', {'data': 'foobar'})
+
+		@sio.on('wp_region')
+		def another_event(sid, data):
+			print("Data: ")
+			print("sid",sid)
+			print("data",data)
+			#sio.emit('wp_region', {'data': 'si se recibio'})
+
 
 	def set_default_icons(self):
 		default = "background-color: rgb(203, 218, 216);"
@@ -231,7 +261,7 @@ class MainWindow(QMainWindow):
 		self.lista_wp = Trayectorias.ciclos()
 
 		for item in self.lista_wp:
-			handler.broadcast(str(item))
+			self.handler.broadcast(str(item))
 			print("Broadcast:_________",str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
@@ -241,11 +271,11 @@ class MainWindow(QMainWindow):
 
 		if len(self.wp_retorno_aut) == 0:
 			print("No es necesario generar un punto de retorno")
-			handler.broadcast("last")
+			self.handler.broadcast("last")
 		else:	
-			handler.broadcast("last")
+			self.handler.broadcast("last")
 			for item2 in self.wp_retorno_aut:
-				handler.broadcast(str(item2))
+				self.handler.broadcast(str(item2))
 			datos.insertar_wp_dron(self.lista_wp,alt_maxima)
 
 	def reanudar_mision(self):
@@ -256,9 +286,10 @@ class MainWindow(QMainWindow):
 		altura = self.max_height_text.text()
 		self.mision = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos)
 		self.mision.StartMision()
+		self.control = 1
 
 	def disconnect_socket(self):
-		handler.on_disconnected()
+		self.handler.on_disconnected()
 
 	def home_page(self):
 		self.set_default_icons()
@@ -443,24 +474,25 @@ class MainWindow(QMainWindow):
 		self.frame_drone5.hide()
 
 
-def on_message_received(message):
-    coords_dict = json.loads(message)
+	def on_message_received(self,message):
+		coords_dict = json.loads(message)
 
-    global coords
-    global wp_recarga
-    global area
-    coords = coords_dict['wp_region'][0]
-    coords.pop()
-    wp_recarga = coords_dict['wp_recarga']
-    area = coords_dict['area']
-    print("on_message:______", coords)
+		global coords
+		global wp_recarga
+		global area
+		coords = coords_dict['wp_region'][0]
+		coords.pop()
+		wp_recarga = coords_dict['wp_recarga']
+		area = coords_dict['area']
+		print("on_message:______", coords)
 
 if __name__ == "__main__":
-    handler = server.WebSocketHandler()
+    
     app = QApplication([])
-    window = MainWindow(handler)
-    handler.message_received.connect(on_message_received)
-    handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
+    window = MainWindow()
+    
     window.show()
+    eventlet.wsgi.server(eventlet.listen(('localhost', 3000)), app)
     sys.exit(app.exec_())
+    
 

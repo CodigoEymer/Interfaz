@@ -8,33 +8,10 @@
     crossorigin=""></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.js" integrity="sha512-ttqbKrGZiTtSLguBZ2xNvZrhUv02IO/TRq5U6TG5TK90wbaXWup5kIJ1A1tLzjOk5Mea/G4seVNrU+lwTLfAzA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </head>
   <body>
     <div id="map" style="height: 100%; width: 100%"></div>
     <script>
-      var socket = io("", {
-      withCredentials: true,
-      extraHeaders: {
-        "my-custom-header": "abcd"
-      }});
-
-      socket.on("connect", () => {
-        console.log(socket.id);
-      });
-
-      socket.on("wp_region", (data) => {
-      console.log(data);
-      });
-
-      function sendMessage(mensaje){
-        console.log("figura_enviada")
-        alert("figura_enviada")
-        //socket.emit('wp_region',{ "data": "hello from server"});
-        alert('wp_region',mensaje)
-        socket.emit('wp_region',mensaje)
-      }
-
       var c = 0;
       var map = L.map('map').setView([3.371387,-76.533004], 17);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -101,12 +78,17 @@
           datos.wp_recarga = jsonLayer.geometry.coordinates;
         }
         var coords = JSON.stringify(datos);
-        sendMessage(coords);
-        console.log("figura_capturada")
-        alert("figura_capturada")     
+        enviarinfo(coords);
+        sendMessage(coords)
+        
       });
 
-/*          var wpr=0;
+      function enviarinfo(mensaje){
+        const websocket = new WebSocket("ws://localhost:8765");
+        websocket.onopen = function() {
+        websocket.send(mensaje);
+        };
+         var wpr=0;
         websocket.onmessage = function(event) {
           alert("onmessage");
           if (event.data == "last" || wpr >=1){
@@ -145,7 +127,9 @@
 
         websocket.onclose = function(event) {
           console.log("WebSocket disconnected!");
-        };   */
+        };
+      }
+      
     </script>
   </body>
 </html>

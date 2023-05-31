@@ -62,7 +62,7 @@ class communication_module():
         #rospy.loginfo("Roll: %f, Pitch: %f, Yaw: %f", roll, pitch, yaw)
 
 
-    def globalPositionCallback(self,globalPositionCallback):
+    def globalPositionCallback(self,globalPositionCallback,control):
         latitude = globalPositionCallback.latitude
         longitude = globalPositionCallback.longitude
         altitude = globalPositionCallback.altitude
@@ -73,7 +73,9 @@ class communication_module():
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
         self.main.tableWidget.repaint()
         wp = (latitude,longitude)
-        self.handler.broadcast("_"+str(wp))
+
+        if(control == 1):
+            self.handler.broadcast("_"+str(wp))
         
 
     def setFlightParameters(self, conf_module):
