@@ -232,6 +232,7 @@ class MainWindow(QMainWindow):
 
 		for item in self.lista_wp:
 			handler.broadcast(str(item))
+			print("Broadcast:_________")
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		print("distancia_trayectoria ",distancia_trayectoria)
@@ -452,13 +453,14 @@ def on_message_received(message):
     coords.pop()
     wp_recarga = coords_dict['wp_recarga']
     area = coords_dict['area']
+    print("on_message:______", coords)
 
 if __name__ == "__main__":
     handler = server.WebSocketHandler()
-    handler.message_received.connect(on_message_received)
-    handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
     app = QApplication([])
     window = MainWindow(handler)
+    handler.message_received.connect(on_message_received)
+    handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
     window.show()
     sys.exit(app.exec_())
 
