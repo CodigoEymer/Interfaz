@@ -20,7 +20,7 @@ class communication_module():
     Posiciones =["null","null","null","null","null","null","null"]
   # Posiciones =[id,latitud,longitud,altitud, ginada,alabeo,cabeceo]
 
-    def __init__(self, parent):
+    def __init__(self, parent, handler):
             self.main = parent
             self.counter=0
             rospy.init_node('srvComand_node', anonymous=True)
@@ -32,6 +32,7 @@ class communication_module():
             rospy.Subscriber("/mavros/camera/image_raw",  Image, self.image_callback)
             self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
+            self.handler=handler
 
     def waypoint_reached_callback(self, msg):
         print("Waypoint reached: %s" % msg.wp_seq)
@@ -71,6 +72,9 @@ class communication_module():
         for item in range(3):
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
         self.main.tableWidget.repaint()
+        wp = (latitude,longitude)
+        self.handler.broadcast("_"+str(wp))
+        
 
     def setFlightParameters(self, conf_module):
         parameters = conf_module.getParameters()

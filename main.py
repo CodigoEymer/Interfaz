@@ -44,7 +44,7 @@ db_user_list=[]
 
 class MainWindow(QMainWindow):
 
-	def __init__(self):
+	def __init__(self, handler):
 		self.wp_retorno_aut = None
 		self.wp_tramos = None
 		self.mision = None
@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
-		self.commu_module = communication_module(self)
+		self.commu_module = communication_module(self, handler)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
@@ -454,11 +454,11 @@ def on_message_received(message):
     area = coords_dict['area']
 
 if __name__ == "__main__":
-    app = QApplication([])
-    window = MainWindow()
-    window.show()
     handler = server.WebSocketHandler()
     handler.message_received.connect(on_message_received)
     handler.server.listen(QtNetwork.QHostAddress.LocalHost, 8765)
+    app = QApplication([])
+    window = MainWindow(handler)
+    window.show()
     sys.exit(app.exec_())
 
