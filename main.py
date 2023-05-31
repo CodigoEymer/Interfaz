@@ -63,7 +63,6 @@ class MainWindow(QMainWindow):
 		self.drone_1.clicked.connect(self.disconnect_socket)
 		self.settingsBtn.clicked.connect(self.settings_page)
 		self.missionBtn.clicked.connect(self.mission_page)
-		self.pauseBtn.clicked.connect(self.pausingMission)
 		self.reportBtn.clicked.connect(self.report_page)
 		self.city_btn.clicked.connect(self.city_btn_function)
 		self.mission_name_btn.clicked.connect(self.mission_name_btn_function)
@@ -234,12 +233,10 @@ class MainWindow(QMainWindow):
 			handler.broadcast(str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
-		print("distancia_trayectoria ",distancia_trayectoria)
 		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/10)
 		self.wp_tramos = Trayectorias.get_tramos()
 
 		if len(self.wp_retorno_aut) == 0:
-			print("No es necesario generar un punto de retorno")
 			handler.broadcast("last")
 		else:	
 			handler.broadcast("last")
@@ -411,27 +408,6 @@ class MainWindow(QMainWindow):
 		self.label_55.setText(str(mision.get_fecha()))
 
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
-
-
-	def pausingMission(self):
-		pass
-
-	def armar(self):
-		self.label_29.setText("comando armar enviado")
-
-		rospy.wait_for_service('/mavros/set_mode')
-		try:
-			flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
-			isModeChanged = flightModeService(custom_mode='STABILIZE') #return true or false
-		except rospy.ServiceException as e:
-			print ("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
-
-		rospy.wait_for_service('/mavros/cmd/arming')
-		try:
-			armService = rospy.ServiceProxy('/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
-			armService(True)
-		except rospy.ServiceException as e:
-			print ("Service arm call failed: %s"%e)
 
 
 	def hide_all_frames(self):

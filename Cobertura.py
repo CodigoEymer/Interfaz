@@ -43,12 +43,9 @@ class Cobertura():
             self.StartMision()
             respuesta = "Mision reanudada"
             self.tramo_actual=self.tramo_actual+1
-            print(respuesta)
             return respuesta
         else:
-            print("No hay mas tramos")
             respuesta = "No hay mas tramos"
-            print(respuesta)
             return respuesta
 
     def retorno(self,data):
@@ -160,8 +157,7 @@ class Cobertura():
         except rospy.ServiceException as e:
             print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
-        self.progress_bar.setMaximum(len(self.lista_wp))
-        print("n_wp",len(self.lista_wp))        
+        self.progress_bar.setMaximum(len(self.lista_wp)) 
 
     def modo_rtl(self):
         try:

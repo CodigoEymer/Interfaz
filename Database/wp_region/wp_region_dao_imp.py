@@ -24,7 +24,6 @@ class wp_region_dao_imp():
         res_rows = 0
         query="INSERT INTO wp_region SET id_mision='"+id_mision+"',wp='"+wp+"'"
         cursor = self.connection.cursor()
-        print("query: ",query)
         res_rows = cursor.execute(query)
         self.connection.commit()
         cursor.close()

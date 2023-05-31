@@ -20,13 +20,10 @@ class Trayectorias():
 
         self.LX = 2*altura*math.tan((cvH*math.pi/180)/2)/1000
         self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
-        print("LX: ",self.LX)
-        print("LY: ",self.LY) 
         self.LX = 1.0/20
         self.LY = 1.0/20
         # Sobrelapamiento minimo en Y
         self.Ovx = sobrelapamiento
-        print("Ovx: ",self.Ovx)
         # Distancia entre vertices
         self.di = 0
         self.p = len(self.vertices)
@@ -151,7 +148,6 @@ class Trayectorias():
         # Calcular las coordenadas del punto rotado
         x_rotated = (x - x0) * math.cos(theta) - (y - y0) * math.sin(theta) + x0
         y_rotated = (x - x0) * math.sin(theta) + (y - y0) * math.cos(theta) + y0
-        #print("Punto: "+str(x_rotated)+", "+str(y_rotated))
         return (x_rotated, y_rotated)
 
 
@@ -168,17 +164,11 @@ class Trayectorias():
         else:
             new_vertices=self.vertices
         all_vertices = new_vertices
-        #print("longitud new_vertices: "+ str(len(new_vertices)))
-        #print("numero de anillos: "+str(self.num_rings))
         p1=()
         p2=()
         for j in range(self.num_rings):
-            #print("Entramos al loop principal")
             self.vertices = new_vertices
             new_vertices = []
-            print("P: "+str(self.p))
-            print("vertices: "+str(len(self.vertices)))
-            print("new vertices: "+str(len(new_vertices)))
             for i in range(self.p):
                 x0, y0 = self.vertices[i-1]
                 x1, y1 = self.vertices[i]
@@ -196,7 +186,6 @@ class Trayectorias():
                 if i == 0 and j == 0:
                     #see tan(x) graph for more information
                     if angleY == math.pi:
-                        print("Dibujaste un angulo de 90")
                         di = self.distancia(x1, y1, x2, y2)
                     else:
                         di = self.distancia(x1, y1, x2, y2)-(self.LX/(math.tan(angleY)))
@@ -227,27 +216,19 @@ class Trayectorias():
                 angulo = self.angle_between_vectors(1.0, 0.0, dx, dy)
                 catetox = math.cos(angulo)*dw
                 catetoy = math.sin(angulo)*dw
-                print("num_wp_line: ",str(num_wp_line))
                 for k in range(num_wp_line):
                     if k == 0:
                         h = math.sqrt((self.LX/2)**2 + (self.LY/2)**2)
-                        #print("h: "+str(h))
                         angulo_phi = math.atan(self.LX/self.LY)
-                        #print("phi: "+str(angulo_phi))
                         angulo_alpha = angulo_phi + angulo
-                        #print("angulo: "+str(angulo))
                         if i == 0 and j == 0:   
                             if dx == 0:
                                 catetoxO = 0
                                 catetoyO = dw
-                                #print("Entra a esta condicion")
                             else:  
                                 catetoxO = math.cos(angulo)*(self.LX/(math.tan(angleY)))
-                                #print("catetox0: "+str(catetoxO))
                                 catetoyO = math.sin(angulo)*(self.LX/(math.tan(angleY)))
-                                #print("catetoy0: "+str(catetoyO))
                             self.wp_dron.append(((x1+catetoxO)+h*math.cos(angulo_alpha),(y1+catetoyO)+h*math.sin(angulo_alpha)))
-                            #print(x1,y1)
                             x_0, y_0 = self.wp_dron[0]
                             x_1 = x_0 - self.LX/2
                             y_1 = y_0 + self.LY/2
@@ -292,15 +273,10 @@ class Trayectorias():
                             y_2 = y_0 + self.LY/2
                             p2 = self.findUpperPoints((x_0,y_0),x_2,y_2,angulo)
 
-            #print("cantidad wps: "+str(len(new_vertices)))
-            #print("valor vertices: "+str(new_vertices))
-
-        #print("todos los vertices: "+str(all_vertices))
         wp_dron_global=[]
         for punto in self.wp_dron:
             lat,long=self.to_geographic(punto[0],punto[1])
             wp_dron_global.append((lat,long))
-        print("wp_dron_global:______",wp_dron_global)
         return wp_dron_global
 
 
@@ -330,7 +306,6 @@ class Trayectorias():
                 distancia_actual = 0
                 wp_tramos_actual= []
                 punto_actual = punto_siguiente
-                #print("wp_tramos_actual",wp_tramos_actual)
             else:
                 distancia_actual += distancia_al_siguiente
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
@@ -338,12 +313,7 @@ class Trayectorias():
                 punto_actual = punto_siguiente
                 
         self.wp_tramos.append(wp_tramos_actual) 
-                 
-
-        print("tramos:_______",self.wp_tramos)
-        print("wp_dron:______",self.wp_dron)
- 
-        print("long_tramos:______",len(self.wp_tramos))
+    
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo
     
     def get_tramos(self):

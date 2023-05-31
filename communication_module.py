@@ -74,7 +74,6 @@ class communication_module():
 
     def setFlightParameters(self, conf_module):
         parameters = conf_module.getParameters()
-        print("parameters[1]", parameters[1])
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
@@ -181,7 +180,6 @@ class communication_module():
                     self.Dron[3] = voltage
                 if value.key == "Remaining":
                     porcentaje = value.value
-                    print("Nivel de porcentaje de la bateria:", porcentaje)
 
 
             if item.name == "mavros: System":

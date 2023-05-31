@@ -53,8 +53,7 @@ class mision_dao_imp():
         tupla = cursor.fetchall()
         n_filas = len(tupla)
         for i in range(n_filas):
-            mission = mision.mision(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8],tupla[i][9],tupla[i][10],tupla[i][11]) 
-            #print([i][1])       
+            mission = mision.mision(tupla[i][0],tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8],tupla[i][9],tupla[i][10],tupla[i][11])   
             self.missions.append(mission)
         cursor.close()
         return self.missions
