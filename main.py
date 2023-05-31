@@ -232,7 +232,7 @@ class MainWindow(QMainWindow):
 
 		for item in self.lista_wp:
 			handler.broadcast(str(item))
-			print("Broadcast:_________")
+			print("Broadcast:_________",str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		print("distancia_trayectoria ",distancia_trayectoria)

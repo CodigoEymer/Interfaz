@@ -91,24 +91,10 @@
         };
          var wpr=0;
         websocket.onmessage = function(event) {
-          if (event.data[0]=="_"){
-            var dato = Str.replace('_','');
-            var sin_comillas = dato.slice(1,-1);
-            var tupla = sin_comillas.split(",");
-            var latitud=Number(tupla[0]);
-            var longitud=Number(tupla[1]);
-            var wp= [latitud,longitud]
-            var circle1 = L.circle(wp, {
-                  radius: 2, // Radio del círculo en metros
-                  color: 'blue', // Color del borde del círculo
-                  fillColor: '#0000FF', // Color de relleno del círculo
-                  fillOpacity: 0.5 // Opacidad del relleno del círculo
-              }).addTo(map);
-          }
+          alert("onmessage");
           if (event.data == "last" || wpr >=1){
             L.polyline(linePoints, {color: 'red'}).addTo(map);
             if(wpr>=1){
-              
               var dato2 = event.data;
               var sin_comillas2 = dato2.slice(1,-1);
               var tupla2 = sin_comillas2.split(",");
