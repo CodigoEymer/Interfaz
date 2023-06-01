@@ -228,10 +228,6 @@ class MainWindow(QMainWindow):
 		Trayectorias = datos.generar_trayectoria()
 
 		self.lista_wp = Trayectorias.ciclos()
-
-		for item in self.lista_wp:
-			handler.broadcast("#"+str(item))
-			print("#"+str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/10)
@@ -240,6 +236,11 @@ class MainWindow(QMainWindow):
 		for item2 in self.wp_retorno_aut:
 			handler.broadcast("?"+str(item2))
 			print("?"+str(item2))
+
+		for item in self.lista_wp:
+			handler.broadcast("#"+str(item))
+			print("#"+str(item))
+			
 		datos.insertar_wp_dron(self.lista_wp,alt_maxima)
 
 	def reanudar_mision(self):

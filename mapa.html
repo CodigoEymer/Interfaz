@@ -118,10 +118,10 @@
             var longitud=Number(tupla[1]);
             var wp= [latitud,longitud];
             
-            var circle1 = L.circle(wp2, {
+            var circle1 = L.circle(wp, {
                 radius: 3, // Radio del círculo en metros
                 color: 'blue', // Color del borde del círculo
-                fillColor: '#FF0000', // Color de relleno del círculo
+                fillColor: '#0000FF', // Color de relleno del círculo
                 fillOpacity: 0.5 // Opacidad del relleno del círculo
             }).addTo(map);
             
@@ -137,14 +137,14 @@
             var wp2= [latitud2,longitud2];
 
             var circle1 = L.circle(wp2, {
-                radius: 1, // Radio del círculo en metros
+                radius: 0.5, // Radio del círculo en metros
                 color: 'black', // Color del borde del círculo
                 fillColor: '#0000FF', // Color de relleno del círculo
                 fillOpacity: 0.5 // Opacidad del relleno del círculo
             }).addTo(map);
           }
           else{
-            L.polyline(linePoints, {color: 'red'}).addTo(map);
+            L.polyline(linePoints, {color: 'green'}).addTo(map);
           }
         };
 
