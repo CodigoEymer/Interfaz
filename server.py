@@ -27,6 +27,5 @@ class WebSocketHandler(QObject):
     def broadcast(self, message):
         c=0
         for client in self.clients:
-            print("Cliente: ",c)
             client.sendTextMessage(message)
             c=c+1

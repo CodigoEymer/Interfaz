@@ -91,6 +91,7 @@
         };
          var wpr=0;
         websocket.onmessage = function(event) {
+          alert(event.data)
           if (event.data == "last" || wpr >=1){
             L.polyline(linePoints, {color: 'red'}).addTo(map);
             if(wpr>=1){

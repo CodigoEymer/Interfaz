@@ -6,7 +6,7 @@ import rospkg
 import resources_rc
 import json
 import datetime
-
+import prueba
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
@@ -248,10 +248,23 @@ class MainWindow(QMainWindow):
 		self.mision.reanudar_mision()
 
 	def init_trayct(self):
-		self.switchPagesStacked.setCurrentWidget(self.missionPage)
+		self.startThread()
+		#self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		altura = self.max_height_text.text()
 		self.mision = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos)
 		self.mision.StartMision()
+		
+
+	def startThread(self):
+		self.thread = prueba.Worker()
+		self.thread.dataLoaded.connect(self.setData)
+		self.thread.start()
+
+	def setData(self, Posiciones):
+		latitud = Posiciones[1]
+		longitud = Posiciones[2]
+		wp = (latitud,longitud)
+		handler.broadcast(str(wp))
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
