@@ -89,40 +89,62 @@
         websocket.onopen = function() {
         websocket.send(mensaje);
         };
-         var wpr=0;
+         
         websocket.onmessage = function(event) {
-          if (event.data == "last" || wpr >=1){
-            L.polyline(linePoints, {color: 'red'}).addTo(map);
-            if(wpr>=1){
-              
-              var dato2 = event.data;
-              var sin_comillas2 = dato2.slice(1,-1);
-              var tupla2 = sin_comillas2.split(",");
-              var latitud2=Number(tupla2[0]);
-              var longitud2=Number(tupla2[1]);
-              var wp2= [latitud2,longitud2];
+          
+          if (event.data[0] == "?"){
+            var dato2 = event.data;
+            dato2 = dato2.replace("?","")
+            var sin_comillas2 = dato2.slice(1,-1);
+            var tupla2 = sin_comillas2.split(",");
+            var latitud2=Number(tupla2[0]);
+            var longitud2=Number(tupla2[1]);
+            var wp2= [latitud2,longitud2];
 
-              var circle1 = L.circle(wp2, {
-                  radius: 5, // Radio del círculo en metros
-                  color: 'red', // Color del borde del círculo
-                  fillColor: '#FF0000', // Color de relleno del círculo
-                  fillOpacity: 0.5 // Opacidad del relleno del círculo
-              }).addTo(map);
+            var circle1 = L.circle(wp2, {
+                radius: 5, // Radio del círculo en metros
+                color: 'red', // Color del borde del círculo
+                fillColor: '#FF0000', // Color de relleno del círculo
+                fillOpacity: 0.5 // Opacidad del relleno del círculo
+            }).addTo(map);
 
-              wpr=0;
-            }
-            wpr=wpr+1;
           }
-          else {
+          if (event.data[0] == "#"){
             var dato = event.data;
+            dato = dato.replace("#","")
             var sin_comillas = dato.slice(1,-1);
             var tupla = sin_comillas.split(",");
             var latitud=Number(tupla[0]);
             var longitud=Number(tupla[1]);
             var wp= [latitud,longitud];
             
-            L.marker(wp).addTo(map);
+            var circle1 = L.circle(wp, {
+                radius: 3, // Radio del círculo en metros
+                color: 'blue', // Color del borde del círculo
+                fillColor: '#0000FF', // Color de relleno del círculo
+                fillOpacity: 0.5 // Opacidad del relleno del círculo
+            }).addTo(map);
+            
             linePoints.push(wp);           
+          }
+          if (event.data[0] == "_"){
+            var dato2 = event.data;
+            dato2 = dato2.replace("_","")
+            var sin_comillas2 = dato2.slice(1,-1);
+            var tupla2 = sin_comillas2.split(",");
+            var latitud2=Number(tupla2[0]);
+            var longitud2=Number(tupla2[1]);
+            var wp2= [latitud2,longitud2];
+
+            var circle1 = L.circle(wp2, {
+                radius: 0.5, // Radio del círculo en metros
+                color: 'black', // Color del borde del círculo
+                fillColor: '#0000FF', // Color de relleno del círculo
+                fillOpacity: 0.5 // Opacidad del relleno del círculo
+            }).addTo(map);
+          }
+          else{
+            L.polyline(linePoints, {color: 'green'}).addTo(map);
           }
         };
 

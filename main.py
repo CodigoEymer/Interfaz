@@ -6,7 +6,7 @@ import rospkg
 import resources_rc
 import json
 import datetime
-
+import prueba
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
@@ -228,30 +228,43 @@ class MainWindow(QMainWindow):
 		Trayectorias = datos.generar_trayectoria()
 
 		self.lista_wp = Trayectorias.ciclos()
-
-		for item in self.lista_wp:
-			handler.broadcast(str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/10)
 		self.wp_tramos = Trayectorias.get_tramos()
 
-		if len(self.wp_retorno_aut) == 0:
-			handler.broadcast("last")
-		else:	
-			handler.broadcast("last")
-			for item2 in self.wp_retorno_aut:
-				handler.broadcast(str(item2))
-			datos.insertar_wp_dron(self.lista_wp,alt_maxima)
+		for item2 in self.wp_retorno_aut:
+			handler.broadcast("?"+str(item2))
+			print("?"+str(item2))
+
+		for item in self.lista_wp:
+			handler.broadcast("#"+str(item))
+			print("#"+str(item))
+			
+		datos.insertar_wp_dron(self.lista_wp,alt_maxima)
 
 	def reanudar_mision(self):
 		self.mision.reanudar_mision()
 
 	def init_trayct(self):
-		self.switchPagesStacked.setCurrentWidget(self.missionPage)
+		self.startThread()
+		#self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		altura = self.max_height_text.text()
 		self.mision = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos)
 		self.mision.StartMision()
+		
+
+	def startThread(self):
+		self.thread = prueba.Worker()
+		self.thread.dataLoaded.connect(self.setData)
+		self.thread.start()
+
+	def setData(self, Posiciones):
+		latitud = Posiciones[1]
+		longitud = Posiciones[2]
+		wp = (latitud,longitud)
+		handler.broadcast("_"+str(wp))
+		print("_"+str(wp))
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
