@@ -230,19 +230,17 @@ class MainWindow(QMainWindow):
 		self.lista_wp = Trayectorias.ciclos()
 
 		for item in self.lista_wp:
-			handler.broadcast(str(item))
+			handler.broadcast("#"+str(item))
+			print("#"+str(item))
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/10)
 		self.wp_tramos = Trayectorias.get_tramos()
 
-		if len(self.wp_retorno_aut) == 0:
-			handler.broadcast("last")
-		else:	
-			handler.broadcast("last")
-			for item2 in self.wp_retorno_aut:
-				handler.broadcast(str(item2))
-			datos.insertar_wp_dron(self.lista_wp,alt_maxima)
+		for item2 in self.wp_retorno_aut:
+			handler.broadcast("?"+str(item2))
+			print("?"+str(item2))
+		datos.insertar_wp_dron(self.lista_wp,alt_maxima)
 
 	def reanudar_mision(self):
 		self.mision.reanudar_mision()
@@ -264,7 +262,8 @@ class MainWindow(QMainWindow):
 		latitud = Posiciones[1]
 		longitud = Posiciones[2]
 		wp = (latitud,longitud)
-		handler.broadcast(str(wp))
+		handler.broadcast("_"+str(wp))
+		print("_"+str(wp))
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
