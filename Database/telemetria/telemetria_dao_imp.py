@@ -12,7 +12,6 @@ class telemetria_dao_imp:
         cursor = self.connection.cursor()
         query="INSERT INTO Telemetria(id_dron, porcentaje_bateria, salud_gps, salud_controladora, salud_bateria, salud_motores, salud_imu, hora_actualizacion, latitud, longitud, altitud, cabeceo, guinada, alabeo, salud_camara) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 
-        print("query",query)
         datos = []
         for telemetria in v_telemetria:
             dato = [telemetria.get_id_dron(), telemetria.get_porcentaje_bateria(), telemetria.get_salud_gps(),telemetria.get_salud_controladora(),telemetria.get_salud_bateria(),telemetria.get_salud_motores(),telemetria.get_salud_imu(),telemetria.get_hora_actualizacion(),telemetria.get_latitud(),telemetria.get_longitud(),telemetria.get_altitud(),telemetria.get_cabeceo(),telemetria.get_guinada(),telemetria.get_alabeo(),telemetria.get_salud_camara()]

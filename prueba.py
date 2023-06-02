@@ -8,6 +8,6 @@ class Worker(QThread):
     
     def run(self):
         while(True):
-            data = communication_module.communication_module.Posiciones
+            data = communication_module.communication_module.Posicion
             self.dataLoaded.emit(data)
             time.sleep(1)

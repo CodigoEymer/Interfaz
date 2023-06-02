@@ -16,7 +16,7 @@ class Cobertura():
         self.progress_bar = progress_bar
         self.lista_wp = lista_wp
         self.wp_tramos = wp_tramos
-        self.n_tramos = len(self.wp_tramos)
+        self.n_tramos = len(self.wp_tramos)       
         self.altura = float(altura)
         self.current_altitude = None
         self.wp_retorno_aut = wp_retorno_aut
@@ -39,13 +39,15 @@ class Cobertura():
 
     def reanudar_mision(self):
         respuesta = ""
-        if self.tramo_actual <= self.n_tramos:           
+        self.tramo_actual=self.tramo_actual+1 
+        if self.tramo_actual < self.n_tramos:               
             self.StartMision()
-            respuesta = "Mision reanudada"
-            self.tramo_actual=self.tramo_actual+1
+            respuesta = "Mision reanudada" 
+            print(respuesta)       
             return respuesta
         else:
             respuesta = "No hay mas tramos"
+            print(respuesta)
             return respuesta
 
     def retorno(self,data):

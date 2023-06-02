@@ -287,6 +287,8 @@ class Trayectorias():
         wp_retorno= []
         wp_tramos_actual = []
         self.wp_tramos = []
+        lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
+        wp_tramos_actual.append((lat,long))
         
         for i in range(1, len(V)):
             punto_siguiente = V[i]
@@ -306,12 +308,17 @@ class Trayectorias():
                 distancia_actual = 0
                 wp_tramos_actual= []
                 punto_actual = punto_siguiente
+                lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
+                wp_tramos_actual.append((lat,long))
+
             else:
                 distancia_actual += distancia_al_siguiente
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 wp_tramos_actual.append((lat,long))
                 punto_actual = punto_siguiente
-                
+
+        lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
+        wp_tramos_actual.append((lat,long))                
         self.wp_tramos.append(wp_tramos_actual) 
     
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo

@@ -18,14 +18,13 @@ from sensor_msgs.msg import CameraInfo
 
 class communication_module():
 
-    Dron = ["udp","prueba","autopilot","21.5"]
-    Posiciones =["null","null","null","null","null","null","null"]
-  # Posiciones =[id,latitud,longitud,altitud, ginada,alabeo,cabeceo]
+    Posicion = ["null","null","null"]
 
-    def __init__(self, parent,telemetria):
+    def __init__(self, parent,telemetria,dron):
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
+            self.dron = dron
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
             rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -35,10 +34,10 @@ class communication_module():
             rospy.Subscriber("/mavros/camera/image_raw",  Image, self.image_callback)
             self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
-            rospy.Rate(1)
+            
 
     def waypoint_reached_callback(self, msg):
-        print("Waypoint reached: %s" % msg.wp_seq)
+        #print("Waypoint reached: %s" % msg.wp_seq)
         try:
             # Convert your ROS Image message to OpenCV2
             cv2_img = CvBridge().imgmsg_to_cv2(self.image, "bgr8")
@@ -60,54 +59,47 @@ class communication_module():
         roll = data.orientation.x
         pitch = data.orientation.y
         yaw = data.orientation.z
-        # self.Posiciones[4] = yaw
-        # self.Posiciones[5] = pitch
-        # self.Posiciones[6] = roll
         self.telemetria.set_cabeceo(pitch)
         self.telemetria.set_guinada(yaw)
         self.telemetria.set_alabeo(roll)
-        #rospy.loginfo("Roll: %f, Pitch: %f, Yaw: %f", roll, pitch, yaw)
-
 
     def globalPositionCallback(self,globalPositionCallback):
-        print("global position________")
         latitude = globalPositionCallback.latitude
         longitude = globalPositionCallback.longitude
         altitude = globalPositionCallback.altitude
-        # self.Posiciones[1] = latitude
-        # self.Posiciones[2] = longitude
-        # self.Posiciones[3] = altitude
         timestamp=d.datetime.now()
         hora_actualizacion = timestamp.strftime("%H:%M:%S")
         
+
+        self.Posicion[0] = latitude
+        self.Posicion[1] = longitude
+        self.Posicion[2] = altitude
         self.telemetria.set_latitud(latitude)
         self.telemetria.set_longitud(longitude)
         self.telemetria.set_altitud(altitude)
         self.telemetria.set_hora_actualizacion(hora_actualizacion)
         
+        self.main.tableWidget.setItem(0, 0, QTableWidgetItem(str(self.dron.get_hardware_id())))
         for item in range(3):
-            self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
-        self.main.tableWidget.repaint()
+            self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posicion[item])))
+        #self.main.tableWidget.repaint()
 
 
         if(self.main.flag_telemetria==1):
 
             self.v_telemetria.append(self.telemetria)
-            print(len(self.v_telemetria))
-
 
             if(len(self.v_telemetria)==10):
-                print("telemetria antes______")
                 self.main.config.insertar_telemetria(self.v_telemetria)
                 self.v_telemetria = []
-                print("telemetria llenada______")
 
     def setFlightParameters(self, conf_module):
         parameters = conf_module.getParameters()
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
-            'WPNAV_SPEED_DN': 300          #   10       10-500  cm/s
+            'WPNAV_SPEED_DN': 300,          #   10       10-500  cm/s
+            'RTL_ALT_FINAL': 0 # cm
         }
         for id, value in params_to_set.items():
             if not self.set_param(id, value):
@@ -125,9 +117,6 @@ class communication_module():
             print("Fallo al llamar el servicio: %s" %e)
 
     def dron_info(self):
-        self.Dron = ["null","null","null","null","null","null","null","null","null","null"]
-        # Estados   = [id,bateria,gps,motor,rc_receiver,giroscopio, magnetometro,acelerometro,presion,camara]
-        self.Estados = ["null","null","null","null","null","null","null","null","null","null"]
         dron=1
         rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
         rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -179,7 +168,6 @@ class communication_module():
 
     def camera_callback(self, data):
         height = data.height
-        self.Estados[9] = height
         if height != "null":
             self.telemetria.set_salud_camara("Ok")
             self.cameraBtn.setIcon(self.camera_green)
@@ -187,30 +175,29 @@ class communication_module():
             self.cameraBtn.setIcon(self.camera_red)
         
     def drone_data(self,data):
+        salud_gyro = ""
+        salud_acelerometro = ""
+        salud_magnetometro = ""
+        salud_presion = ""
         for item in data.status:
 
             if item.name == 'mavros: Heartbeat':
                     id = item.hardware_id
-                    self.Estados[0] = id
-                    self.Dron[0] = id
-                    self.Posiciones[0] = id
+                    self.dron.set_hardware_id(id)
 
                     for v in item.values:
                         if v.key == 'Vehicle type':
-                            tipo = v.value
-                            self.Dron[1] = tipo
+                            self.dron.set_tipo(v.value)
                             self.telemetria.set_salud_controladora("Ok")
 
                         if v.key == 'Autopilot type':
-                            controladora = v.value
-                            self.Dron[2] = controladora
+                            self.dron.set_controladora(v.value)
 
 
             if item.name == "mavros: Battery":
                 for value in item.values:
                     if value.key == "Voltage":
-                        voltage = value.value
-                        self.Dron[3] = voltage
+                        self.dron.set_voltaje_inicial(str(value.value))
                     if value.key == "Remaining":
                         porcentaje = value.value
                         self.telemetria.set_porcentaje_bateria(porcentaje)
@@ -219,46 +206,40 @@ class communication_module():
             if item.name == "mavros: System":
                 for value in item.values:
                     if value.key == "Battery":
-                        self.Estados[1] = value.value
                         if value.value == "Ok":
                             self.telemetria.set_salud_bateria(value.value)
                             self.batteryBtn.setIcon(self.battery_green)
                         else:
                             self.batteryBtn.setIcon(self.battery_red)
                     if value.key == "GPS":
-                        self.Estados[2] = value.value
                         if value.value == "Ok":
                             self.telemetria.set_salud_gps(value.value)
                             self.gpsBtn.setIcon(self.gps_green)
                         else:
                             self.gpsBtn.setIcon(self.gps_red)           
                     if value.key == "motor outputs / control":
-                        self.Estados[3] = value.value
                         if value.value == "Ok":
                             self.telemetria.set_salud_motores(value.value)
                             self.motorBtn.setIcon(self.motor_green)
                         else:
                             self.motorBtn.setIcon(self.motor_red)
                     if value.key == "rc receiver":
-                        self.Estados[4] = value.value
                         if value.value == "Ok":
                             self.autopilotBtn.setIcon(self.autopilot_green)
                         else:
                             self.autopilotBtn.setIcon(self.autopilot_red)
                     if value.key == "3D gyro":
-                        self.Estados[5] = value.value
+                        salud_gyro = value.value
                     if value.key == "3D magnetometer":
-                        magnetometro = value.value
-                        self.Estados[6] = magnetometro
+                        salud_magnetometro = value.value
                     if value.key == "3D accelerometer":
-                        acelerometro = value.value
-                        self.Estados[7] = acelerometro
+                        salud_acelerometro = value.value
                     if value.key == "absolute pressure":
-                        presion = value.value
-                        self.Estados[8] = presion
+                        salud_presion = value.value
 
-                    if self.Estados[5] == "Ok" and self.Estados[6] == "Ok" and self.Estados[7] == "Ok" and self.Estados[8] == "Ok":
+                    if salud_gyro == "Ok" and salud_magnetometro == "Ok" and salud_acelerometro == "Ok" and salud_presion == "Ok":
                         self.telemetria.set_salud_imu("Ok")
                         self.imuBtn.setIcon(self.imu_green)
                     else:
                         self.imuBtn.setIcon(self.imu_red)
+        rospy.sleep(1)
