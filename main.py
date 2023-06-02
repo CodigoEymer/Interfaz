@@ -10,6 +10,7 @@ import prueba
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
+from Database.telemetria.telemetria import telemetria
 import config_module
 from communication_module import communication_module
 from user_settings import SecondWindow
@@ -40,14 +41,16 @@ wp_recarga=[]
 area= []
 db_user_list=[]
 
-
+telemetria = telemetria(None,None,None,None,None,None,None,None,None,None,None,None,None,None,None,None)
 
 class MainWindow(QMainWindow):
 
 	def __init__(self):
+		self.flag_telemetria = 0
 		self.wp_retorno_aut = None
 		self.wp_tramos = None
 		self.mision = None
+		self.config = config_module.config_module(None) 
 
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
@@ -75,7 +78,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
-		self.commu_module = communication_module(self)
+		self.commu_module = communication_module(self,telemetria)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
@@ -210,22 +213,24 @@ class MainWindow(QMainWindow):
 		potenciaKg = 275.3
 		######
 		
-		controladora = communication_module.Dron[2]
-		voltaje_inicial = communication_module.Dron[3]
-		tipo = communication_module.Dron[1]
-		hardware_id = communication_module.Dron[0]
+		controladora = self.commu_module.Dron[2]
+		voltaje_inicial = self.commu_module.Dron[3]
+		tipo = self.commu_module.Dron[1]
+		hardware_id = self.commu_module.Dron[0]
 
-		datos= config_module.config_module(str(self.user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(voltaje_inicial),tipo,cvV,hardware_id)
+		self.config= config_module.config_module(str(self.user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, cvH, alt_maxima, vel_maxima, acc_maxima, sobrelapamiento,coords,str(area),str(wp_recarga),controladora,str(voltaje_inicial),tipo,cvV,hardware_id)
 		
-		datos.insertar_mision()
-		datos.insertar_wp_region()
-		datos.insertar_wp_recarga()
-		datos.insertar_dron()
-		self.commu_module.setFlightParameters(datos)
+		
 
-		distancia_wp_retorno = datos.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(vel_maxima))
+		self.config.insertar_mision()
+		self.config.insertar_wp_region()
+		self.config.insertar_wp_recarga()
+		self.config.insertar_dron()
+		self.commu_module.setFlightParameters(self.config)
+		telemetria.set_id_dron(self.config.id_dron)
+		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(vel_maxima))
 
-		Trayectorias = datos.generar_trayectoria()
+		Trayectorias = self.config.generar_trayectoria()
 
 		self.lista_wp = Trayectorias.ciclos()
 		
@@ -235,18 +240,17 @@ class MainWindow(QMainWindow):
 
 		for item2 in self.wp_retorno_aut:
 			handler.broadcast("?"+str(item2))
-			print("?"+str(item2))
 
 		for item in self.lista_wp:
 			handler.broadcast("#"+str(item))
-			print("#"+str(item))
 			
-		datos.insertar_wp_dron(self.lista_wp,alt_maxima)
+		self.config.insertar_wp_dron(self.lista_wp,alt_maxima)
 
 	def reanudar_mision(self):
 		self.mision.reanudar_mision()
 
 	def init_trayct(self):
+		self.flag_telemetria = 1
 		self.startThread()
 		#self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		altura = self.max_height_text.text()
@@ -264,7 +268,6 @@ class MainWindow(QMainWindow):
 		longitud = Posiciones[2]
 		wp = (latitud,longitud)
 		handler.broadcast("_"+str(wp))
-		print("_"+str(wp))
 
 	def disconnect_socket(self):
 		handler.on_disconnected()

@@ -8,6 +8,9 @@ from sensor_msgs.msg import Image
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QTableWidgetItem
 import cv2
+import datetime as d
+from Database.telemetria import telemetria
+from config_module import config_module
 
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -16,13 +19,13 @@ from sensor_msgs.msg import CameraInfo
 class communication_module():
 
     Dron = ["udp","prueba","autopilot","21.5"]
-    
     Posiciones =["null","null","null","null","null","null","null"]
   # Posiciones =[id,latitud,longitud,altitud, ginada,alabeo,cabeceo]
 
-    def __init__(self, parent):
+    def __init__(self, parent,telemetria):
             self.main = parent
-            self.counter=0
+            self.telemetria = telemetria
+            self.v_telemetria = []
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
             rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -32,10 +35,10 @@ class communication_module():
             rospy.Subscriber("/mavros/camera/image_raw",  Image, self.image_callback)
             self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
+            rospy.Rate(1)
 
     def waypoint_reached_callback(self, msg):
         print("Waypoint reached: %s" % msg.wp_seq)
-        self.counter= self.counter+1
         try:
             # Convert your ROS Image message to OpenCV2
             cv2_img = CvBridge().imgmsg_to_cv2(self.image, "bgr8")
@@ -43,9 +46,11 @@ class communication_module():
             print(e)
         else:
             # Save your OpenCV2 image as a jpeg 
-            cv2.imwrite("/home/dronespsi/Interfaz/Images/Mision/wp"+str(self.counter)+".jpeg", cv2_img)
+            cv2.imwrite("/home/dronespsi/Interfaz/Images/Mision/wp"+str(msg.wp_seq)+".jpeg", cv2_img)
 
         # TO DO: Agregar cordenadas y hora de captura
+        timestamp=d.datetime.now()
+        hora_captura = timestamp.strftime("%H:%M:%S")
 
     def image_callback(self, image):
         self.image = image
@@ -55,22 +60,47 @@ class communication_module():
         roll = data.orientation.x
         pitch = data.orientation.y
         yaw = data.orientation.z
-        self.Posiciones[4] = yaw
-        self.Posiciones[5] = pitch
-        self.Posiciones[6] = roll
+        # self.Posiciones[4] = yaw
+        # self.Posiciones[5] = pitch
+        # self.Posiciones[6] = roll
+        self.telemetria.set_cabeceo(pitch)
+        self.telemetria.set_guinada(yaw)
+        self.telemetria.set_alabeo(roll)
         #rospy.loginfo("Roll: %f, Pitch: %f, Yaw: %f", roll, pitch, yaw)
 
 
     def globalPositionCallback(self,globalPositionCallback):
+        print("global position________")
         latitude = globalPositionCallback.latitude
         longitude = globalPositionCallback.longitude
         altitude = globalPositionCallback.altitude
-        self.Posiciones[1] = latitude
-        self.Posiciones[2] = longitude
-        self.Posiciones[3] = altitude
+        # self.Posiciones[1] = latitude
+        # self.Posiciones[2] = longitude
+        # self.Posiciones[3] = altitude
+        timestamp=d.datetime.now()
+        hora_actualizacion = timestamp.strftime("%H:%M:%S")
+        
+        self.telemetria.set_latitud(latitude)
+        self.telemetria.set_longitud(longitude)
+        self.telemetria.set_altitud(altitude)
+        self.telemetria.set_hora_actualizacion(hora_actualizacion)
+        
         for item in range(3):
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posiciones[item+1])))
         self.main.tableWidget.repaint()
+
+
+        if(self.main.flag_telemetria==1):
+
+            self.v_telemetria.append(self.telemetria)
+            print(len(self.v_telemetria))
+
+
+            if(len(self.v_telemetria)==10):
+                print("telemetria antes______")
+                self.main.config.insertar_telemetria(self.v_telemetria)
+                self.v_telemetria = []
+                print("telemetria llenada______")
 
     def setFlightParameters(self, conf_module):
         parameters = conf_module.getParameters()
@@ -96,7 +126,7 @@ class communication_module():
 
     def dron_info(self):
         self.Dron = ["null","null","null","null","null","null","null","null","null","null"]
-
+        # Estados   = [id,bateria,gps,motor,rc_receiver,giroscopio, magnetometro,acelerometro,presion,camara]
         self.Estados = ["null","null","null","null","null","null","null","null","null","null"]
         dron=1
         rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
@@ -151,6 +181,7 @@ class communication_module():
         height = data.height
         self.Estados[9] = height
         if height != "null":
+            self.telemetria.set_salud_camara("Ok")
             self.cameraBtn.setIcon(self.camera_green)
         else:
             self.cameraBtn.setIcon(self.camera_red)
@@ -168,6 +199,7 @@ class communication_module():
                         if v.key == 'Vehicle type':
                             tipo = v.value
                             self.Dron[1] = tipo
+                            self.telemetria.set_salud_controladora("Ok")
 
                         if v.key == 'Autopilot type':
                             controladora = v.value
@@ -175,11 +207,13 @@ class communication_module():
 
 
             if item.name == "mavros: Battery":
-                if value.key == "Voltage":
-                    voltage = value.value
-                    self.Dron[3] = voltage
-                if value.key == "Remaining":
-                    porcentaje = value.value
+                for value in item.values:
+                    if value.key == "Voltage":
+                        voltage = value.value
+                        self.Dron[3] = voltage
+                    if value.key == "Remaining":
+                        porcentaje = value.value
+                        self.telemetria.set_porcentaje_bateria(porcentaje)
 
 
             if item.name == "mavros: System":
@@ -187,18 +221,21 @@ class communication_module():
                     if value.key == "Battery":
                         self.Estados[1] = value.value
                         if value.value == "Ok":
+                            self.telemetria.set_salud_bateria(value.value)
                             self.batteryBtn.setIcon(self.battery_green)
                         else:
                             self.batteryBtn.setIcon(self.battery_red)
                     if value.key == "GPS":
                         self.Estados[2] = value.value
                         if value.value == "Ok":
+                            self.telemetria.set_salud_gps(value.value)
                             self.gpsBtn.setIcon(self.gps_green)
                         else:
                             self.gpsBtn.setIcon(self.gps_red)           
                     if value.key == "motor outputs / control":
                         self.Estados[3] = value.value
                         if value.value == "Ok":
+                            self.telemetria.set_salud_motores(value.value)
                             self.motorBtn.setIcon(self.motor_green)
                         else:
                             self.motorBtn.setIcon(self.motor_red)
@@ -221,6 +258,7 @@ class communication_module():
                         self.Estados[8] = presion
 
                     if self.Estados[5] == "Ok" and self.Estados[6] == "Ok" and self.Estados[7] == "Ok" and self.Estados[8] == "Ok":
+                        self.telemetria.set_salud_imu("Ok")
                         self.imuBtn.setIcon(self.imu_green)
                     else:
                         self.imuBtn.setIcon(self.imu_red)
