@@ -6,32 +6,25 @@ import dbconnection
         
 class telemetria_dao_imp:
     def __init__(self, conn):
-        self.telemetrias = []
-        self.tupla = ()
         self.connection = conn
+
+    def insert_bash(self,v_telemetria):
         cursor = self.connection.cursor()
-        query="select id_telemetria, id_dron, porcentaje_bateria, hora_actualizacion,latitud,longitud,altitud,cabeceo,guinada,alabeo,salud_camara,salud_gps,salud_controladora from Telemetria"
-        cursor.execute(query)
-        tupla = cursor.fetchall()
-        n_filas = len(tupla)
-        for i in range(n_filas):
-            telemetria1 = telemetria.telemetria(tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8],tupla[i][9],tupla[i][10],tupla[i][11],tupla[i][12])
-            telemetria1.set_id_telemetria(tupla[i][0])
-            self.telemetrias.append(telemetria1)
-        cursor.close()
+        query="INSERT INTO Telemetria(id_dron, porcentaje_bateria, salud_gps, salud_controladora, salud_bateria, salud_motores, salud_imu, hora_actualizacion, latitud, longitud, altitud, cabeceo, guinada, alabeo, salud_camara) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 
-    def insert_telemetria(self,id_dron, porcentaje_bateria, hora_actualizacion,latitud,longitud,altitud,cabeceo,guinada,alabeo,salud_camara,salud_gps,salud_controladora):
-        res_rows= 0
-        query="INSERT INTO Telemetria SET id_dron='"+id_dron+"', porcentaje_bateria='"+porcentaje_bateria+"',hora_actualizacion='"+hora_actualizacion+"',latitud='"+latitud+"',longitud='"+longitud+"',altitud='"+altitud+"',cabeceo='"+cabeceo+"',guinada='"+guinada+"',alabeo='"+alabeo+"',salud_camara='"+salud_camara+"',salud_gps='"+salud_gps+"',salud_controladora='"+salud_controladora+"'"
-        cursor = self.connection.cursor()
-        res_rows = cursor.execute(query)
-        self.connection.commit()
-        clase = telemetria.telemetria(id_dron, porcentaje_bateria, hora_actualizacion,latitud,longitud,altitud,cabeceo,guinada,alabeo,salud_camara,salud_gps,salud_controladora)
-        self.telemetrias.append(clase)
-        cursor.close()
+        print("query",query)
+        datos = []
+        for telemetria in v_telemetria:
+            dato = [telemetria.get_id_dron(), telemetria.get_porcentaje_bateria(), telemetria.get_salud_gps(),telemetria.get_salud_controladora(),telemetria.get_salud_bateria(),telemetria.get_salud_motores(),telemetria.get_salud_imu(),telemetria.get_hora_actualizacion(),telemetria.get_latitud(),telemetria.get_longitud(),telemetria.get_altitud(),telemetria.get_cabeceo(),telemetria.get_guinada(),telemetria.get_alabeo(),telemetria.get_salud_camara()]
+            datos.append(dato)
 
-
-        return res_rows
+        try:
+            cursor.executemany(query, datos)          
+            self.connection.commit()
+            cursor.close()
+        except Exception as e:
+            print("error",e)
+            self.connection.rollback()
 
     def get_all_telemetria(self):
         self.telemetrias = []

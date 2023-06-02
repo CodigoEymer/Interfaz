@@ -5,8 +5,10 @@ from Database.wp_region.wp_region_dao_imp import wp_region_dao_imp, wp_region, w
 from Database.wp_recarga.wp_recarga_dao_imp import wp_recarga_dao_imp
 from Database.dron.dron_dao_imp import dron_dao_imp
 from Database.wp_dron.wp_dron_dao_imp import wp_dron_dao_imp
+from Database.telemetria.telemetria_dao_imp import telemetria_dao_imp
 import MySQLdb
 import Trayectorias
+
 DB_HOST = '127.0.0.1' 
 DB_USER = 'root' 
 DB_PASS = '1234' 
@@ -16,7 +18,7 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():  
-    def __init__(self, id_usuario, ciudad, direccion, nombre_mision, nombre_ubicacion, descripcion, cvH, alt_maxima, vel_maxima, ac_maxima, sobrelapamiento, coordenadas,dimension,wp_recarga,controladora,voltaje_inicial,tipo,cvV,hardware_id):
+    def __init__(self, id_usuario = "", ciudad = "", direccion = "", nombre_mision = "", nombre_ubicacion = "", descripcion = "", cvH = "", alt_maxima = "", vel_maxima = "", ac_maxima = "", sobrelapamiento = "", coordenadas = "",dimension = "",wp_recarga = "",controladora = "",voltaje_inicial = "",tipo = "",cvV = "",hardware_id = ""):
         self.id_mision = ""
         self.id_dron = ""
         self.id_usuario = id_usuario
@@ -78,14 +80,18 @@ class config_module():
     def insertar_dron(self):
         prueba = dron_dao_imp(conn)
         prueba.insert_dron(self.id_mision, self.ac_maxima, self.vel_maxima,self.alt_maxima, self.cvH,self.controladora,self.voltaje_inicial,self.tipo,self.cvV,self.hardware_id)
-        global id_dron
         current_dron = prueba.get_dron(self.id_mision) 
-        id_dron = str(current_dron.get_id_dron())
+        self.id_dron = str(current_dron.get_id_dron())
+
+    def insertar_telemetria(self,v_telemetria):
+        prueba = telemetria_dao_imp(conn)
+        prueba.insert_bash(v_telemetria)
+
 
     def insertar_wp_dron(self,Vwp,h):
         prueba = wp_dron_dao_imp(conn)
         for wp_dron in Vwp:
-            prueba.insert_wp_dron(id_dron,wp_dron[0],wp_dron[1],h)
+            prueba.insert_wp_dron(self.id_dron,wp_dron[0],wp_dron[1],h)
 
 
     def calcular_autonomia(self,peso,potenciaXKg,voltaje_b,capacidad_b, seguridad,factor_seguridad,velocidad):
