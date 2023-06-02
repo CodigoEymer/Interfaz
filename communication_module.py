@@ -37,7 +37,7 @@ class communication_module():
             
 
     def waypoint_reached_callback(self, msg):
-        print("Waypoint reached: %s" % msg.wp_seq)
+        #print("Waypoint reached: %s" % msg.wp_seq)
         try:
             # Convert your ROS Image message to OpenCV2
             cv2_img = CvBridge().imgmsg_to_cv2(self.image, "bgr8")
@@ -82,7 +82,7 @@ class communication_module():
         self.main.tableWidget.setItem(0, 0, QTableWidgetItem(str(self.dron.get_hardware_id())))
         for item in range(3):
             self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posicion[item])))
-        self.main.tableWidget.repaint()
+        #self.main.tableWidget.repaint()
 
 
         if(self.main.flag_telemetria==1):
@@ -98,7 +98,8 @@ class communication_module():
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
-            'WPNAV_SPEED_DN': 300          #   10       10-500  cm/s
+            'WPNAV_SPEED_DN': 300,          #   10       10-500  cm/s
+            'RTL_ALT_FINAL': 0 # cm
         }
         for id, value in params_to_set.items():
             if not self.set_param(id, value):
@@ -186,23 +187,17 @@ class communication_module():
 
                     for v in item.values:
                         if v.key == 'Vehicle type':
-                            # tipo = v.value
-                            # self.Dron[1] = tipo
                             self.dron.set_tipo(v.value)
                             self.telemetria.set_salud_controladora("Ok")
 
                         if v.key == 'Autopilot type':
-                            # controladora = v.value
-                            # self.Dron[2] = controladora
                             self.dron.set_controladora(v.value)
 
 
             if item.name == "mavros: Battery":
                 for value in item.values:
                     if value.key == "Voltage":
-                        # voltage = value.value
-                        # self.Dron[3] = voltage
-                        self.dron.set_voltaje_inicial(str(v.value))
+                        self.dron.set_voltaje_inicial(str(value.value))
                     if value.key == "Remaining":
                         porcentaje = value.value
                         self.telemetria.set_porcentaje_bateria(porcentaje)

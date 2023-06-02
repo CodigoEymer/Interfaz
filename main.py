@@ -231,7 +231,7 @@ class MainWindow(QMainWindow):
 		self.lista_wp = Trayectorias.ciclos()
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
-		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/10)
+		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/6)
 		self.wp_tramos = Trayectorias.get_tramos()
 
 		for item2 in self.wp_retorno_aut:
