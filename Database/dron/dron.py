@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 class dron:
-    def __init__(self,id_dron, id_mision,ac_max,vel_max,alt_max,cvH,cvV,controladora,voltaje_inicial,tipo,hardware_id):
+    def __init__(self,id_dron= None, id_mision= None,ac_max= None,vel_max= None,alt_max= None,cvH= None,cvV= None,controladora= None,voltaje_inicial= None,tipo= None,hardware_id = None):
         self.id_dron = id_dron
         self.id_mision = id_mision
         self.aceleracion_max = ac_max
@@ -31,6 +31,12 @@ class dron:
 
     def set_aceleracion_max(self, aceleracion_max):
         self.aceleracion_max = aceleracion_max
+
+    def get_velocidad_max(self):
+        return self.velocidad_max
+
+    def set_velocidad_max(self, velocidad_max):
+        self.velocidad_max = velocidad_max
 
     def get_altura_max(self):
         return self.altura_max

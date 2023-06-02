@@ -18,7 +18,7 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():  
-    def __init__(self, id_usuario = "", ciudad = "", direccion = "", nombre_mision = "", nombre_ubicacion = "", descripcion = "", cvH = "", alt_maxima = "", vel_maxima = "", ac_maxima = "", sobrelapamiento = "", coordenadas = "",dimension = "",wp_recarga = "",controladora = "",voltaje_inicial = "",tipo = "",cvV = "",hardware_id = ""):
+    def __init__(self, id_usuario = "", ciudad = "", direccion = "", nombre_mision = "", nombre_ubicacion = "", descripcion = "", sobrelapamiento = "", coordenadas = "",dimension = "",wp_recarga = "",dron= None):
         self.id_mision = ""
         self.id_dron = ""
         self.id_usuario = id_usuario
@@ -27,19 +27,11 @@ class config_module():
         self.nombre_mision = nombre_mision
         self.nombre_ubicacion = nombre_ubicacion
         self.descripcion = descripcion
-        self.cvH = cvH
-        self.cvV = cvV
-        self.alt_maxima = alt_maxima
-        self.vel_maxima = vel_maxima
-        self.ac_maxima = ac_maxima
         self.sobrelapamiento = sobrelapamiento
         self.coordenadas = coordenadas
         self.dimension = dimension
         self.wp_recarga = wp_recarga
-        self.controladora = controladora
-        self.voltaje_inicial = voltaje_inicial
-        self.tipo = tipo
-        self.hardware_id= hardware_id
+        self.dron = dron
 
 
     def insertar_mision(self):
@@ -79,9 +71,11 @@ class config_module():
 
     def insertar_dron(self):
         prueba = dron_dao_imp(conn)
-        prueba.insert_dron(self.id_mision, self.ac_maxima, self.vel_maxima,self.alt_maxima, self.cvH,self.controladora,self.voltaje_inicial,self.tipo,self.cvV,self.hardware_id)
+        self.dron.set_id_mision(self.id_mision)
+        prueba.insert_dron(self.dron)
         current_dron = prueba.get_dron(self.id_mision) 
         self.id_dron = str(current_dron.get_id_dron())
+        self.dron.set_id_dron(self.id_dron)
 
     def insertar_telemetria(self,v_telemetria):
         prueba = telemetria_dao_imp(conn)
@@ -102,10 +96,10 @@ class config_module():
         return dwr
 
     def generar_trayectoria(self):
-        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.alt_maxima), float(self.cvH),float(self.cvV),float(self.sobrelapamiento))
+        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.sobrelapamiento))
         return variables
 
     def getParameters(self):
-        velocidad_cm = int(self.vel_maxima)*100
-        parameters = [self.ac_maxima, velocidad_cm]
+        velocidad_cm = int(self.dron.get_velocidad_max())*100
+        parameters = [self.dron.get_aceleracion_max(), velocidad_cm]
         return parameters

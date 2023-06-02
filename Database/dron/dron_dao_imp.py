@@ -19,9 +19,11 @@ class dron_dao_imp:
             self.drones.append(user)
         cursor.close()
 
-    def insert_dron(self,id_mision, aceleracion_max, velocidad_max,altura_max, cvH,controladora,voltaje_inicial,tipo,cvV,hardware_id):
+    def insert_dron(self,dron):
         res_rows= 0
-        query="INSERT INTO Dron SET id_mision='"+id_mision+"', aceleracion_max='"+aceleracion_max+"',velocidad_max='"+velocidad_max+"',altura_max='"+altura_max+"',cvH='"+cvH+"',controladora='"+controladora+"',voltaje_inicial='"+voltaje_inicial+"',cvV='"+cvV+"',hardware_id='"+hardware_id+"', tipo='"+tipo+"'"
+        print("id get_id_mision:__",dron.get_id_mision())
+        query="INSERT INTO Dron SET id_mision='"+dron.get_id_mision()+"', aceleracion_max='"+dron.get_aceleracion_max()+"',velocidad_max='"+dron.get_velocidad_max()+"',altura_max='"+dron.get_altura_max()+"',cvH='"+dron.get_cvH()+"',controladora='"+dron.get_controladora()+"',voltaje_inicial='"+dron.get_voltaje_inicial()+"',cvV='"+dron.get_cvV()+"',hardware_id='"+dron.get_hardware_id()+"', tipo='"+dron.get_tipo()+"'"
+        print(query)
         cursor = self.connection.cursor()
         res_rows = cursor.execute(query)
         self.connection.commit()

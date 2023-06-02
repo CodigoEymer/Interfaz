@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 class telemetria:
-    def __init__(self, id_telemetria, id_dron, porcentaje_bateria, salud_gps, salud_controladora, salud_bateria, salud_motores, salud_imu, hora_actualizacion, latitud, longitud, altitud, cabeceo, guinada, alabeo, salud_camara):
+    def __init__(self, id_telemetria = None, id_dron= None, porcentaje_bateria= None, salud_gps= None, salud_controladora= None, salud_bateria= None, salud_motores= None, salud_imu= None, hora_actualizacion= None, latitud= None, longitud= None, altitud= None, cabeceo= None, guinada= None, alabeo= None, salud_camara = None):
 
         self.id_telemetria = id_telemetria
         self.id_dron = id_dron
