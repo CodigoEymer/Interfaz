@@ -11,7 +11,7 @@ import cv2
 import datetime as d
 from Database.telemetria import telemetria
 from config_module import config_module
-
+import os
 
 from diagnostic_msgs.msg import DiagnosticArray
 from sensor_msgs.msg import CameraInfo
@@ -35,9 +35,17 @@ class communication_module():
             self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
             
+    def create_folder(self, path):
+        try:
+            # If the folder does not exist, create it
+            if not os.path.exists(path):
+                os.makedirs(path)
+        except Exception as e:
+            print("An error occurred while creating folder: ", e)
 
     def waypoint_reached_callback(self, msg):
-        #print("Waypoint reached: %s" % msg.wp_seq)
+        Path = "Images/mission:"+str(self.dron.get_id_mision())
+        self.create_folder(Path)
         try:
             # Convert your ROS Image message to OpenCV2
             cv2_img = CvBridge().imgmsg_to_cv2(self.image, "bgr8")
@@ -45,7 +53,7 @@ class communication_module():
             print(e)
         else:
             # Save your OpenCV2 image as a jpeg 
-            cv2.imwrite("/home/dronespsi/Interfaz/Images/Mision/wp"+str(msg.wp_seq)+".jpeg", cv2_img)
+            cv2.imwrite(Path+"/d"+str(self.dron.get_id_dron())+"_wp"+str(msg.wp_seq)+".jpeg", cv2_img)
 
         # TO DO: Agregar cordenadas y hora de captura
         timestamp=d.datetime.now()
