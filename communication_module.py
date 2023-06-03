@@ -20,11 +20,13 @@ class communication_module():
 
     Posicion = ["null","null","null"]
 
-    def __init__(self, parent,telemetria,dron):
+    def __init__(self, parent,telemetria,dron,foto):
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
+            self.fotos=[]
             self.dron = dron
+            self.foto = foto
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
             rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -46,6 +48,8 @@ class communication_module():
     def waypoint_reached_callback(self, msg):
         Path = "Images/mission:"+str(self.dron.get_id_mision())
         self.create_folder(Path)
+        timestamp=d.datetime.now()
+        hora_captura = timestamp.strftime("%H:%M:%S")
         try:
             # Convert your ROS Image message to OpenCV2
             cv2_img = CvBridge().imgmsg_to_cv2(self.image, "bgr8")
@@ -56,8 +60,12 @@ class communication_module():
             cv2.imwrite(Path+"/d"+str(self.dron.get_id_dron())+"_wp"+str(msg.wp_seq)+".jpeg", cv2_img)
 
         # TO DO: Agregar cordenadas y hora de captura
-        timestamp=d.datetime.now()
-        hora_captura = timestamp.strftime("%H:%M:%S")
+        self.foto.set_id_dron(self.dron.get_id_dron())
+        self.foto.set_hora_captura(hora_captura)
+        self.foto.set_latitud_captura(self.telemetria.get_latitud())
+        self.foto.set_longitud_captura(self.telemetria.get_latitud())
+        self.foto.set_altitud_captura(self.telemetria.get_latitud())
+        self.fotos.append(self.foto)
 
     def image_callback(self, image):
         self.image = image
