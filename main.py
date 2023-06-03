@@ -14,6 +14,7 @@ from Database.telemetria.telemetria import telemetria
 from Database.mision.mision import mision
 from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 from Database.dron.dron import dron
+from Database.foto.foto import foto
 import config_module
 from communication_module import communication_module
 from user_settings import SecondWindow
