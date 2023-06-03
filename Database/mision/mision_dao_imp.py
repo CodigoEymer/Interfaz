@@ -71,9 +71,22 @@ class mision_dao_imp():
         cursor.close()
         return self.missions
 
-    def insert_mission(self, id_usuario, ciudad, descripcion, dimension, direccion, fecha, hora_inicio, hora_fin, nombre_mision,nombre_ubicacion,sobrelapamiento):
+    def insert_mission(self, mision):
         res_rows= 0
-        query="INSERT INTO Mision SET id_usuario='"+id_usuario+"', ciudad='"+ciudad+"', descripcion='"+descripcion+"', dimension='"+dimension+"',direccion='"+direccion+"', fecha='"+fecha+"',hora_inicio='"+hora_inicio+"', hora_fin='"+hora_fin+"', nombre_mision='"+nombre_mision+"',nombre_ubicacion='"+nombre_ubicacion+"',sobrelapamiento='"+sobrelapamiento+"'"
+        print("1",mision.get_id_usuario())
+        print("2",mision.get_ciudad())
+        print("3",mision.get_descripcion())
+        print("4",mision.get_direccion())
+        print("5",mision.get_fecha())
+        print("6",mision.get_hora_inicio())
+        print("7",mision.get_hora_fin())
+        print("8",mision.get_nombre_mision())
+        print("9",mision.get_nombre_ubicacion())
+        print("10",mision.get_sobrelapamiento())
+        print("11",mision.get_dimension())
+
+
+        query="INSERT INTO Mision SET id_usuario='"+mision.get_id_usuario()+"', ciudad='"+mision.get_ciudad()+"', descripcion='"+mision.get_descripcion()+"', dimension='"+mision.get_dimension()+"',direccion='"+mision.get_direccion()+"', fecha='"+mision.get_fecha()+"',hora_inicio='"+mision.get_hora_inicio()+"', hora_fin='"+mision.get_hora_fin()+"', nombre_mision='"+mision.get_nombre_mision()+"',nombre_ubicacion='"+mision.get_nombre_ubicacion()+"',sobrelapamiento='"+mision.get_sobrelapamiento()+"'"
         cursor = self.connection.cursor()
         res_rows = cursor.execute(query)
         self.connection.commit()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 class mision:
-    def __init__(self,id_mision, id_usuario, ciudad, descripcion, dimension, direccion, fecha, hora_inicio, hora_fin, nombre_mision, nombre_ubicacion, sobrelapamiento):
+    def __init__(self,id_mision = None, id_usuario= None, ciudad= None, descripcion= None, dimension= None, direccion= None, fecha= None, hora_inicio= None, hora_fin= None, nombre_mision= None, nombre_ubicacion= None, sobrelapamiento = None):
         self.id_mision = id_mision
         self.id_usuario = id_usuario
         self.ciudad = ciudad

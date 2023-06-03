@@ -18,20 +18,14 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():  
-    def __init__(self, id_usuario = "", ciudad = "", direccion = "", nombre_mision = "", nombre_ubicacion = "", descripcion = "", sobrelapamiento = "", coordenadas = "",dimension = "",wp_recarga = "",dron= None):
+    def __init__(self, id_usuario = "", coordenadas = "",wp_recarga = "",dron= None,mision = None):
         self.id_mision = ""
         self.id_dron = ""
         self.id_usuario = id_usuario
-        self.ciudad = ciudad
-        self.direccion = direccion
-        self.nombre_mision = nombre_mision
-        self.nombre_ubicacion = nombre_ubicacion
-        self.descripcion = descripcion
-        self.sobrelapamiento = sobrelapamiento
         self.coordenadas = coordenadas
-        self.dimension = dimension
         self.wp_recarga = wp_recarga
         self.dron = dron
+        self.mision = mision
 
 
     def insertar_mision(self):
@@ -40,21 +34,17 @@ class config_module():
         timestamp=d.datetime.now()
         hora_inicio = timestamp.strftime("%H:%M:%S")
         fecha=str(date)
-        prueba.insert_mission(
-            self.id_usuario, #id_usuario
-            self.ciudad, #ciudad
-            self.descripcion, #descripcion
-            self.dimension, #dimension
-            self.direccion, #direccion
-            fecha, #fecha date:YYYY-MM-DD
-            hora_inicio, #hora_inicio
-            str(timestamp.strftime("%H:%M:%S")), #hora_fin
-            self.nombre_mision, #nombre_mision
-            self.nombre_ubicacion, #nombre_ubicacion
-            self.sobrelapamiento) #sobrelapamiento
+
+        self.mision.set_fecha(fecha)
+        self.mision.set_hora_inicio(hora_inicio)
+        self.mision.set_hora_fin(hora_inicio)
+        self.mision.set_id_usuario(self.id_usuario)
+
+        prueba.insert_mission(self.mision)
         
         current_mission = prueba.get_mission(fecha,hora_inicio)
         self.id_mision = str(current_mission.get_id_mision())
+        self.mision.set_id_mision(self.id_mision)
 
 
     def insertar_wp_region(self):
@@ -96,7 +86,7 @@ class config_module():
         return dwr
 
     def generar_trayectoria(self):
-        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.sobrelapamiento))
+        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.mision.get_sobrelapamiento()))
         return variables
 
     def getParameters(self):
