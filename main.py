@@ -172,7 +172,7 @@ class MainWindow(QMainWindow):
 			if db_user_name == user_name:
 				self.user = user
 				self.main_window()
-				self.settings_page()
+				self.home_page()
 				self.error_label.setText("")
 				break
 			else:
@@ -434,7 +434,6 @@ class MainWindow(QMainWindow):
 		self.frame_drone2.hide()
 		self.frame_drone3.hide()
 		self.frame_drone4.hide()
-		self.frame_drone5.hide()
 
 
 def on_message_received(message):
