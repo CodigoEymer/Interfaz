@@ -18,7 +18,7 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():  
-    def __init__(self, id_usuario = "", coordenadas = "",wp_recarga = "",dron= None,mision = None):
+    def __init__(self, id_usuario = "", coordenadas = "",wp_recarga = None ,dron= None,mision = None):
         self.id_mision = ""
         self.id_dron = ""
         self.id_usuario = id_usuario
@@ -54,10 +54,9 @@ class config_module():
             prueba.insert_wp_region(self.id_mision,str(wp))
 
     def insertar_wp_recarga(self):
-        wp_recarga = self.wp_recarga
+        self.wp_recarga.set_id_mision(self.id_mision)
         prueba = wp_recarga_dao_imp(conn)
-        prueba.insert_wp_recarga(self.id_mision,wp_recarga)
-        pass
+        prueba.insert_wp_recarga(self.wp_recarga)
 
     def insertar_dron(self):
         prueba = dron_dao_imp(conn)

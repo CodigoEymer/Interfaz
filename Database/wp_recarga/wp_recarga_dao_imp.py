@@ -19,9 +19,9 @@ class wp_recarga_dao_imp:
             self.wp_recarga_list.append(wp_recarga_obj)
         cursor.close()
 
-    def insert_wp_recarga(self, id_mision,wp):
+    def insert_wp_recarga(self,wp_recarga):
         res_rows = 0
-        query="INSERT INTO wp_recarga SET id_mision='"+id_mision+"',wp='"+wp+"'"
+        query="INSERT INTO wp_recarga SET id_mision='"+wp_recarga.get_id_mision()+"',wp='"+wp_recarga.get_wp()+"'"
         cursor = self.connection.cursor()
         res_rows = cursor.execute(query)
         self.connection.commit()

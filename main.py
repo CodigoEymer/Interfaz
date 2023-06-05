@@ -12,6 +12,7 @@ from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 from Database.telemetria.telemetria import telemetria
 from Database.mision.mision import mision
+from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 from Database.dron.dron import dron
 import config_module
 from communication_module import communication_module
@@ -46,6 +47,7 @@ db_user_list=[]
 telemetria = telemetria()
 dron = dron()
 current_mision = mision()
+current_wp_recarga = wp_recarga_obj()
 
 class MainWindow(QMainWindow):
 
@@ -218,7 +220,8 @@ class MainWindow(QMainWindow):
 		potenciaKg = 275.3
 		######
 		current_mision.set_dimension(str(area))
-		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,str(wp_recarga),dron,current_mision)
+		current_wp_recarga.set_wp(str(wp_recarga))
+		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,dron,current_mision)
 		
 		self.config.insertar_mision()
 		self.config.insertar_wp_region()

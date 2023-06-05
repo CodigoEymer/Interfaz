@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 class wp_recarga:
-    def __init__(self,id_wp_recarga, id_mision, wp):        
+    def __init__(self,id_wp_recarga = None, id_mision = None, wp = None):        
         self.id_wp_recarga = id_wp_recarga
         self.id_mision = id_mision
         self.wp = wp
