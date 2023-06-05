@@ -11,6 +11,8 @@ from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuario
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.wp_dron.wp_dron import wp_dron
 from Database.telemetria.telemetria import telemetria
+from Database.mision.mision import mision
+from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 from Database.dron.dron import dron
 import config_module
 from communication_module import communication_module
@@ -44,6 +46,8 @@ db_user_list=[]
 
 telemetria = telemetria()
 dron = dron()
+current_mision = mision()
+current_wp_recarga = wp_recarga_obj()
 
 class MainWindow(QMainWindow):
 
@@ -175,10 +179,10 @@ class MainWindow(QMainWindow):
 	def gen_tray(self):
 		######
 		self.city_text.setText("Cali")
-		self.address_text.setText("2")
-		self.mission_name_text.setText("2")
-		self.roi_name_text.setText("2")
-		self.description_text.setText("2")
+		self.address_text.setText("calle 13")
+		self.mission_name_text.setText("mision 1")
+		self.roi_name_text.setText("Campus Univalle")
+		self.description_text.setText("sobrevolando canchas")
 		self.vision_field_text.setText("60")
 		self.vision_field_text_2.setText("60")
 		self.max_height_text.setText("10")
@@ -186,13 +190,13 @@ class MainWindow(QMainWindow):
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("0.005")
 		######
+		current_mision.set_ciudad(self.city_text.text())
+		current_mision.set_direccion(self.address_text.text())
+		current_mision.set_nombre_mision(self.mission_name_text.text())
+		current_mision.set_nombre_ubicacion(self.roi_name_text.text())
+		current_mision.set_descripcion(self.description_text.text())
+		current_mision.set_sobrelapamiento(self.overlap_text.text())
 
-		ciudad = self.city_text.text()
-		direccion = self.address_text.text()
-		nombre_mision = self.mission_name_text.text()
-		nombre_rdi = self.roi_name_text.text()
-		descripcion = self.description_text.text()
-		sobrelapamiento = self.overlap_text.text()
 
 		dron.set_aceleracion_max(self.max_acc_text.text())
 		dron.set_velocidad_max(self.max_speed_text.text())
@@ -215,8 +219,9 @@ class MainWindow(QMainWindow):
 		Voltaje_b = 22.8
 		potenciaKg = 275.3
 		######
-
-		self.config= config_module.config_module(str(self.user.get_id_usuario()), ciudad, direccion, nombre_mision, nombre_rdi, descripcion, sobrelapamiento,coords,str(area),str(wp_recarga),dron)
+		current_mision.set_dimension(str(area))
+		current_wp_recarga.set_wp(str(wp_recarga))
+		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,dron,current_mision)
 		
 		self.config.insertar_mision()
 		self.config.insertar_wp_region()
