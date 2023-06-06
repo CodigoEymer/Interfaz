@@ -223,7 +223,7 @@ class MainWindow(QMainWindow):
 		######
 		current_mision.set_dimension(str(area))
 		current_wp_recarga.set_wp(str(wp_recarga))
-		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,dron,current_mision)
+		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,dron,current_mision, foto)
 		
 		self.config.insertar_mision()
 		self.config.insertar_wp_region()
