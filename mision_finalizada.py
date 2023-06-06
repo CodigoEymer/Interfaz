@@ -17,11 +17,8 @@ class MisionEndWindow(QDialog):
     def upload_photos(self):
         self.close()
         dname = QFileDialog.getExistingDirectory(self, 'Open directory', './')
-        
-        # store file paths first
         jpg_files = [os.path.join(dname, filename) for filename in os.listdir(dname) if filename.endswith('.jpg')]
 
-        # create a dictionary with id and hour as keys for quicker lookup
         foto_dict = {(foto.get_id_dron(), foto.get_hora_captura()): foto for foto in self.fotos}
 
         for file_path in jpg_files:
@@ -35,7 +32,6 @@ class MisionEndWindow(QDialog):
 
             id, hora = id_y_hora
 
-            # use the dictionary for quicker lookup
             foto = foto_dict.get((id, hora))
 
             if foto:
