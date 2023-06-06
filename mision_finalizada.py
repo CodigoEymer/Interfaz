@@ -3,8 +3,8 @@ from PyQt5.uic import loadUi
 import os
 
 class MisionEndWindow(QDialog):
-    def __init__(self, fotos):
-        super(MisionEndWindow, self).__init__()
+    def __init__(self, parent, fotos):
+        super(MisionEndWindow, self).__init__(parent)
         loadUi('mision_finalizada.ui', self)
         self.setModal(True)
         self.fotos = fotos
@@ -26,10 +26,6 @@ class MisionEndWindow(QDialog):
             sin_extension = os.path.splitext(filename)[0]
             id_y_hora = sin_extension.split('_')
 
-            if len(id_y_hora) != 2:
-                print(f"File {filename} is not named in the expected format (id_hour). Skipping.")
-                continue
-
             id, hora = id_y_hora
 
             foto = foto_dict.get((id, hora))
@@ -38,7 +34,5 @@ class MisionEndWindow(QDialog):
                 with open(file_path, "rb") as file:
                     data = file.read()
                     foto.set_foto(data)
-            else:
-                print(f"No matching foto found for id {id} and hour {hora}. Skipping.")
                                 
                     

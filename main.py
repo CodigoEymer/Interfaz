@@ -260,7 +260,7 @@ class MainWindow(QMainWindow):
 		self.startThread()
 		#self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		if self.finish_mission is None:
-			self.finish_mission = MisionEndWindow(self.fotos)
+			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()
 		self.cobertura = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos,self.finish_mission)
 		self.cobertura.StartMision()
