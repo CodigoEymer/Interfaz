@@ -57,7 +57,7 @@ class MainWindow(QMainWindow):
 		self.flag_telemetria = 0
 		self.wp_retorno_aut = None
 		self.wp_tramos = None
-		self.mision = None
+		self.cobertura = None
 		self.config = config_module.config_module(None) 
 
 		super(MainWindow, self).__init__()
@@ -138,7 +138,7 @@ class MainWindow(QMainWindow):
 	def config_user_page(self):
 		if self.second_window is None:
 			self.second_window = SecondWindow(self)
-		self.second_window.exec_()
+		#self.second_window.exec_()
 	
 	def update_user_data(self):
 		self.signin_window()
@@ -250,15 +250,15 @@ class MainWindow(QMainWindow):
 		self.config.insertar_wp_dron(self.lista_wp,dron.get_altura_max())
 
 	def reanudar_mision(self):
-		self.mision.reanudar_mision()
+		self.cobertura.reanudar_mision()
 
 	def init_trayct(self):
 		self.flag_telemetria = 1
 		self.startThread()
 		#self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		altura = self.max_height_text.text()
-		self.mision = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos)
-		self.mision.StartMision()
+		self.cobertura = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos,self.second_window)
+		self.cobertura.StartMision()
 		
 
 	def startThread(self):

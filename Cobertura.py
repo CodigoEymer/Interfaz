@@ -10,9 +10,10 @@ from geometry_msgs.msg import PoseStamped
 
 class Cobertura():
 
-    def __init__(self,lista_wp, progress_bar,altura,wp_retorno_aut,wp_tramos):
-        rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.pose_callback)
+    def __init__(self,lista_wp, progress_bar,altura,wp_retorno_aut,wp_tramos, msn_end_w):
+        rospy.Subscriber("/mavros/local_position/pose", PoseStamped, self.pose_callback)
         rospy.Subscriber("mavros/mission/reached", WaypointReached, self.retorno)
+        rospy.Subscriber("/mavros/state", State, self.estado_vuelo)
         self.progress_bar = progress_bar
         self.lista_wp = lista_wp
         self.wp_tramos = wp_tramos
@@ -22,6 +23,14 @@ class Cobertura():
         self.wp_retorno_aut = wp_retorno_aut
         self.tramo_actual = 0
         self.long_tramo = len(self.lista_wp)-1
+        self.respuesta = 0
+        self.end=0
+        self.msn_end_w = msn_end_w
+
+    def estado_vuelo(self, state):
+        if not state.armed and self.respuesta==1:
+            self.msn_end_w.exec_()
+            self.respuesta=0
 
     def StartMision(self):
 
@@ -32,28 +41,26 @@ class Cobertura():
         if len(self.wp_retorno_aut)==0:
             self.set_wp(self.lista_wp)
             self.modo_automatico()
+            self.respuesta = 1
         else:
             self.set_wp(self.wp_tramos[self.tramo_actual])
             self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
             self.modo_automatico()
 
     def reanudar_mision(self):
-        respuesta = ""
+        
         self.tramo_actual=self.tramo_actual+1 
         if self.tramo_actual < self.n_tramos:               
             self.StartMision()
-            respuesta = "Mision reanudada" 
-            print(respuesta)       
-            return respuesta
+            self.respuesta = 0
         else:
-            respuesta = "No hay mas tramos"
-            print(respuesta)
-            return respuesta
+            self.respuesta = 1
 
     def retorno(self,data):
         self.progress_bar.setValue(data.wp_seq)
         if data.wp_seq==self.long_tramo:
             self.modo_rtl()
+            
 
     def pose_callback(self,data):
         self.current_altitude = data.pose.position.z  
@@ -79,8 +86,6 @@ class Cobertura():
         while not rospy.is_shutdown():
             state = rospy.wait_for_message('/mavros/state', State, timeout=5)
             if state.armed:
-                rospy.loginfo('Drone ARMED')
-                print("Dron armado")
                 break
             rate.sleep()
 
