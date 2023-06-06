@@ -14,6 +14,7 @@ from Database.telemetria.telemetria import telemetria
 from Database.mision.mision import mision
 from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 from Database.dron.dron import dron
+from Database.foto.foto import foto
 import config_module
 from communication_module import communication_module
 from user_settings import SecondWindow
@@ -48,6 +49,7 @@ telemetria = telemetria()
 dron = dron()
 current_mision = mision()
 current_wp_recarga = wp_recarga_obj()
+foto = foto()
 
 class MainWindow(QMainWindow):
 
@@ -84,7 +86,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
-		self.commu_module = communication_module(self,telemetria,dron)
+		self.commu_module = communication_module(self,telemetria,dron, foto)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
@@ -170,7 +172,7 @@ class MainWindow(QMainWindow):
 			if db_user_name == user_name:
 				self.user = user
 				self.main_window()
-				self.settings_page()
+				self.home_page()
 				self.error_label.setText("")
 				break
 			else:
@@ -432,7 +434,6 @@ class MainWindow(QMainWindow):
 		self.frame_drone2.hide()
 		self.frame_drone3.hide()
 		self.frame_drone4.hide()
-		self.frame_drone5.hide()
 
 
 def on_message_received(message):

@@ -51,10 +51,7 @@ class Cobertura():
             return respuesta
 
     def retorno(self,data):
-        rospy.loginfo(rospy.get_caller_id() + " Waypoint reached: %d", data.wp_seq)
-            
         self.progress_bar.setValue(data.wp_seq)
-
         if data.wp_seq==self.long_tramo:
             self.modo_rtl()
 

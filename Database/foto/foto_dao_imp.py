@@ -20,7 +20,7 @@ class foto_dao_imp:
             self.fotos.append(foto1)
         cursor.close()
 
-    def insert_foto(self,id_dron, photo, hora_captura,latitud_captura,longitud_captura,altitud_captura):
+    def insert_fotos(self,id_dron, photo, hora_captura,latitud_captura,longitud_captura,altitud_captura):
         res_rows= 0
         query="INSERT INTO Foto SET id_dron='"+id_dron+"', foto='"+photo+"',hora_captura='"+hora_captura+"',latitud_captura='"+latitud_captura+"',longitud_captura='"+longitud_captura+"',altitud_captura='"+altitud_captura+"'"
         cursor = self.connection.cursor()

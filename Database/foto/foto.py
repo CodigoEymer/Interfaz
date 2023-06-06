@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 class foto:
-    def __init__(self, id_dron, foto, hora_captura,latitud_captura,longitud_captura,altitud_captura):
-        #self.id_foto
+    def __init__(self, id_foto = None, id_dron = None, foto = None, hora_captura = None,latitud_captura = None,longitud_captura = None,altitud_captura = None):
+        self.id_foto = id_foto
         self.id_dron = id_dron
         self.foto =foto
         self.hora_captura =hora_captura
