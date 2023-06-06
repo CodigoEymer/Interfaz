@@ -57,7 +57,7 @@ class communication_module():
             print(e)
         else:
             # Save your OpenCV2 image as a jpeg 
-            cv2.imwrite(Path+"/d"+str(self.dron.get_id_dron())+"_wp"+str(msg.wp_seq)+".jpeg", cv2_img)
+            cv2.imwrite(Path+"/"+str(hora_captura)+".jpg", cv2_img)
 
         # TO DO: Agregar cordenadas y hora de captura
         self.foto.set_id_dron(self.dron.get_id_dron())
