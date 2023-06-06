@@ -52,7 +52,6 @@ class Cobertura():
 
     def retorno(self,data):
         self.progress_bar.setValue(data.wp_seq)
-        print
         if data.wp_seq==self.long_tramo:
             self.modo_rtl()
 
