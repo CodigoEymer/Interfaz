@@ -18,6 +18,7 @@ from Database.foto.foto import foto
 import config_module
 from communication_module import communication_module
 from user_settings import SecondWindow
+from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
@@ -63,6 +64,8 @@ class MainWindow(QMainWindow):
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
 		self.second_window = None
+		self.finish_mission = None
+		self.fotos=[]
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
 		self.crearUsuarioBtn.clicked.connect(self.signup_page)
@@ -86,7 +89,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.hide_all_frames()
-		self.commu_module = communication_module(self,telemetria,dron, foto)
+		self.commu_module = communication_module(self,telemetria,dron, foto, self.fotos)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
@@ -138,7 +141,7 @@ class MainWindow(QMainWindow):
 	def config_user_page(self):
 		if self.second_window is None:
 			self.second_window = SecondWindow(self)
-		#self.second_window.exec_()
+		self.second_window.exec_()
 	
 	def update_user_data(self):
 		self.signin_window()
@@ -256,11 +259,14 @@ class MainWindow(QMainWindow):
 		self.flag_telemetria = 1
 		self.startThread()
 		#self.switchPagesStacked.setCurrentWidget(self.missionPage)
+		if self.finish_mission is None:
+			self.finish_mission = MisionEndWindow(self.fotos)
 		altura = self.max_height_text.text()
-		self.cobertura = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos,self.second_window)
+		self.cobertura = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos,self.finish_mission)
 		self.cobertura.StartMision()
 		
 
+		
 	def startThread(self):
 		self.thread = prueba.Worker()
 		self.thread.dataLoaded.connect(self.setData)

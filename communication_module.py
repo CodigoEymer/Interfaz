@@ -20,11 +20,11 @@ class communication_module():
 
     Posicion = ["null","null","null"]
 
-    def __init__(self, parent,telemetria,dron,foto):
+    def __init__(self, parent,telemetria,dron,foto,fotos):
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
-            self.fotos=[]
+            self.fotos=fotos
             self.dron = dron
             self.foto = foto
             rospy.init_node('srvComand_node', anonymous=True)
@@ -57,7 +57,7 @@ class communication_module():
             print(e)
         else:
             # Save your OpenCV2 image as a jpeg 
-            cv2.imwrite(Path+"/"+str(hora_captura)+".jpg", cv2_img)
+            cv2.imwrite(Path+"/"+str(self.dron.get_id_dron())+"_"+str(hora_captura)+".jpg", cv2_img)
 
         # TO DO: Agregar cordenadas y hora de captura
         self.foto.set_id_dron(self.dron.get_id_dron())
