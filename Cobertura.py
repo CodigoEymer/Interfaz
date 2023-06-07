@@ -48,18 +48,16 @@ class Cobertura():
             self.modo_automatico()
 
     def reanudar_mision(self):
-        
         self.tramo_actual=self.tramo_actual+1 
         if self.tramo_actual < self.n_tramos:               
             self.StartMision()
-            self.respuesta = 0
-        else:
-            self.respuesta = 1
+            if self.tramo_actual==self.n_tramos-1:
+                self.respuesta = 1
 
     def retorno(self,data):
         self.progress_bar.setValue(data.wp_seq)
         if data.wp_seq==self.long_tramo:
-            self.modo_rtl()
+            self.modo_land()
             
 
     def pose_callback(self,data):
@@ -170,4 +168,11 @@ class Cobertura():
             isModeChanged = flightModeService(custom_mode='RTL') #return true or false
         except rospy.ServiceException as e:
             print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
-        
+
+    def modo_land(self):
+        try:
+            flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
+            #http://wiki.ros.org/mavros/CustomModes for custom modes
+            isModeChanged = flightModeService(custom_mode='LAND') #return true or false
+        except rospy.ServiceException as e:
+            print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)

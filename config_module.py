@@ -6,6 +6,7 @@ from Database.wp_recarga.wp_recarga_dao_imp import wp_recarga_dao_imp
 from Database.dron.dron_dao_imp import dron_dao_imp
 from Database.wp_dron.wp_dron_dao_imp import wp_dron_dao_imp
 from Database.telemetria.telemetria_dao_imp import telemetria_dao_imp
+from Database.foto.foto_dao_imp import foto_dao_imp
 import MySQLdb
 import Trayectorias
 
@@ -27,6 +28,9 @@ class config_module():
         self.dron = dron
         self.mision = mision
 
+    def insertar_fotos(self, fotos):
+        prueba = foto_dao_imp(conn)
+        prueba.insert_batch(fotos)
 
     def insertar_mision(self):
         prueba = mision_dao_imp(conn)

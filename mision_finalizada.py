@@ -8,6 +8,7 @@ class MisionEndWindow(QDialog):
         loadUi('mision_finalizada.ui', self)
         self.setModal(True)
         self.fotos = fotos
+        self.parent = parent
         self.omitBtn.clicked.connect(self.close_w)
         self.uploadPhotosBtn.clicked.connect(self.upload_photos)
 
@@ -17,22 +18,22 @@ class MisionEndWindow(QDialog):
     def upload_photos(self):
         self.close()
         dname = QFileDialog.getExistingDirectory(self, 'Open directory', './')
-        jpg_files = [os.path.join(dname, filename) for filename in os.listdir(dname) if filename.endswith('.jpg')]
-
-        foto_dict = {(foto.get_id_dron(), foto.get_hora_captura()): foto for foto in self.fotos}
-
-        for file_path in jpg_files:
-            filename = os.path.basename(file_path)
-            sin_extension = os.path.splitext(filename)[0]
-            id_y_hora = sin_extension.split('_')
-
-            id, hora = id_y_hora
-
-            foto = foto_dict.get((id, hora))
-
-            if foto:
-                with open(file_path, "rb") as file:
+        for filename in os.listdir(dname):
+            if filename.endswith('.jpg'):
+                with open(os.path.join(dname, filename), "rb") as file:
+                    print(filename)
                     data = file.read()
-                    foto.set_foto(data)
-                                
-                    
+                    partes = filename.split('/')
+                    ultima_parte = partes[-1]
+                    sin_extension = ultima_parte.split('.jpg')[0]
+                    id_y_hora = sin_extension.split('_')
+                    id = id_y_hora[0]
+                    hora = id_y_hora[1]
+                    for foto in self.fotos:
+                        print(foto.get_id_dron())
+                        print(foto.get_hora_captura())
+                        if foto.get_id_dron()==id and foto.get_hora_captura()==hora:
+                                foto.set_foto(data)
+        self.parent.db_fotos()
+        
+         

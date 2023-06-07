@@ -15,18 +15,18 @@ import os
 
 from diagnostic_msgs.msg import DiagnosticArray
 from sensor_msgs.msg import CameraInfo
+from Database.foto.foto import foto
 
 class communication_module():
 
     Posicion = ["null","null","null"]
 
-    def __init__(self, parent,telemetria,dron,foto,fotos):
+    def __init__(self, parent,telemetria,dron,fotos):
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
             self.fotos=fotos
             self.dron = dron
-            self.foto = foto
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
             rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -60,12 +60,15 @@ class communication_module():
             cv2.imwrite(Path+"/"+str(self.dron.get_id_dron())+"_"+str(hora_captura)+".jpg", cv2_img)
 
         # TO DO: Agregar cordenadas y hora de captura
-        self.foto.set_id_dron(self.dron.get_id_dron())
-        self.foto.set_hora_captura(hora_captura)
-        self.foto.set_latitud_captura(self.telemetria.get_latitud())
-        self.foto.set_longitud_captura(self.telemetria.get_latitud())
-        self.foto.set_altitud_captura(self.telemetria.get_latitud())
-        self.fotos.append(self.foto)
+        foto_obj = foto()
+        foto_obj.set_id_dron(self.dron.get_id_dron())
+        foto_obj.set_hora_captura(hora_captura)
+        foto_obj.set_latitud_captura(self.telemetria.get_latitud())
+        foto_obj.set_longitud_captura(self.telemetria.get_longitud())
+        foto_obj.set_altitud_captura(self.telemetria.get_altitud())
+        self.fotos.append(foto_obj)
+        print("fotos")
+        print(len(self.fotos))
 
     def image_callback(self, image):
         self.image = image

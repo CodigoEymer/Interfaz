@@ -29,9 +29,25 @@ class foto_dao_imp:
         clase = foto.foto(id_dron, photo, hora_captura,latitud_captura,longitud_captura,altitud_captura)
         self.fotos.append(clase)
         cursor.close()
-
-
         return res_rows
+
+    def insert_batch(self,fotos):
+        cursor = self.connection.cursor()
+        query="INSERT INTO Foto( id_dron, foto, hora_captura, latitud_captura, longitud_captura, altitud_captura) VALUES (%s,%s,%s,%s,%s,%s)"
+
+        datos = []
+        for foto in fotos:
+            dato = [foto.get_id_dron(), foto.get_foto(),foto.get_hora_captura(),foto.get_latitud_captura(),foto.get_longitud_captura(),foto.get_altitud_captura()]
+            datos.append(dato)
+            print(dato[0],dato[2],dato[3],dato[4],dato[5])
+
+        try:
+            cursor.executemany(query, datos)          
+            self.connection.commit()
+            cursor.close()
+        except Exception as e:
+            print("error",e)
+            self.connection.rollback()
 
     def get_all_fotos(self):
         self.fotos = []
