@@ -4,9 +4,8 @@ import ast
 class Trayectorias():
     def __init__(self,coords,altura,cvH,cvV,sobrelapamiento, wp_recarga):
         #input
-        print("wp_recarga_trayectoria___",wp_recarga)
         self.vertices_global = self.js_to_py(coords)
-        self.wp_recarga = self.js_to_py(wp_recarga)
+        self.wp_recargas = self.js_to_py(wp_recarga)
         self.vertices=[]
         self.wp_tramos= []
         self.wp_recargas=[]
@@ -291,7 +290,6 @@ class Trayectorias():
             y2 = punto[1]
             x2,y2=self.to_cartesian(x2,y2)
             dist = self.distancia(x1,y1,x2,y2)
-            print("dist:_",dist)
             if dist < menor_dist:
                 menor_dist = dist
                 indice_final = indice
@@ -330,8 +328,8 @@ class Trayectorias():
                 punto_actual = punto_siguiente
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 wp_tramos_actual.append((lat,long))
-                print("indice",indice)
-                print("self.wp_recargas[indice]",self.wp_recargas[indice])
+                indice = self.mejor_punto((lat,long))
+                wp_tramos_actual.append(self.wp_recargas[indice])
 
             else:
                 distancia_actual += distancia_al_siguiente
@@ -340,12 +338,11 @@ class Trayectorias():
                 punto_actual = punto_siguiente
 
         lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
-        wp_tramos_actual.append((lat,long))
-        indice = self.mejor_punto((lat,long))
-        wp_tramos_actual.append(self.wp_recargas[indice])                 
+        wp_tramos_actual.append((lat,long))                
         self.wp_tramos.append(wp_tramos_actual)
-        
-        print("wp_tramos:",self.wp_tramos)
+        indice = self.mejor_punto((lat,long))
+        wp_tramos_actual.append(self.wp_recargas[indice]) 
+    
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo
     
     def get_tramos(self):

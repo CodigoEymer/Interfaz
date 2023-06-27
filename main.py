@@ -473,7 +473,6 @@ def on_message_received(message):
     coords.pop()
     area = coords_dict['area']
     wp_recarga = coords_dict['wp_recarga']
-    print("wp_recarga/ "+str(wp_recarga)+" /wp_recarga")
 
 if __name__ == "__main__":
     app = QApplication([])

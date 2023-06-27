@@ -178,7 +178,6 @@ class Cobertura():
 
         print("Activando modo LAND")
         rospy.wait_for_service('/mavros/set_mode')
-
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
             #http://wiki.ros.org/mavros/CustomModes for custom modes
