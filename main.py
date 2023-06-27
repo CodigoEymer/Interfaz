@@ -197,7 +197,7 @@ class MainWindow(QMainWindow):
 		self.vision_field_text.setText("60")
 		self.vision_field_text_2.setText("50")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("3")
+		self.max_speed_text.setText("4")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("0.005")
 		######
@@ -247,7 +247,7 @@ class MainWindow(QMainWindow):
 		self.lista_wp = Trayectorias.ciclos()
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
-		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/6)
+		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/50)		# 6 
 		self.wp_tramos = Trayectorias.get_tramos()
 
 		for item2 in self.wp_retorno_aut:
@@ -472,7 +472,7 @@ def on_message_received(message):
     coords.pop()
     area = coords_dict['area']
     wp_recarga = coords_dict['wp_recarga']
-    print("wp/ "+str(coords_dict)+" /wp")
+    print("wp_recarga/ "+str(wp_recarga)+" /wp_recarga")
 
 if __name__ == "__main__":
     app = QApplication([])
