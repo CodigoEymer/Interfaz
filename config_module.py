@@ -89,7 +89,7 @@ class config_module():
         return dwr
 
     def generar_trayectoria(self):
-        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.mision.get_sobrelapamiento()))
+        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.sobrelapamiento),self.wp_recarga)
         return variables
 
     def getParameters(self):

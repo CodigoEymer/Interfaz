@@ -2,13 +2,10 @@ import math
 import ast
 
 class Trayectorias():
-    def __init__(self,coords,altura,cvH,cvV,sobrelapamiento):
+    def __init__(self,coords,altura,cvH,cvV,sobrelapamiento, wp_recarga):
         #input
-        self.coords = str(coords)
-        self.coords.replace("[","(")
-        self.coords.replace("]",")")
-        self.coords="["+self.coords[1:-1]+"]"
-        self.vertices_global = ast.literal_eval(self.coords)
+        self.vertices_global = self.js_to_py(coords)
+        self.wp_recargas = self.js_to_py(wp_recarga)
         self.vertices=[]
         self.wp_tramos= []
         for punto in self.vertices_global:
@@ -17,11 +14,8 @@ class Trayectorias():
         #output
         self.wp_dron =[] 
         # Campo de vision
-
         self.LX = 2*altura*math.tan((cvH*math.pi/180)/2)/1000
         self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
-        self.LX = 1.0/20
-        self.LY = 1.0/20
         # Sobrelapamiento minimo en Y
         self.Ovx = sobrelapamiento
         # Distancia entre vertices
@@ -41,7 +35,15 @@ class Trayectorias():
             self.Ovx=(self.num_rings*self.LX-self.dcp)/(self.num_rings-1)
             #dr recalculado
             self.dr=(self.dcp-self.LX)/(self.num_rings-1)
-         
+            
+    def js_to_py(self, dict):
+        cadena = str(dict)
+        cadena.replace("[","(")
+        cadena.replace("]",")")
+        cadena = "["+cadena[1:-1]+"]"
+        vector = ast.literal_eval(cadena)
+        return vector
+    
     def to_cartesian(self, latitude, longitude):
         # Convertir a radianes
         lat_rad = math.radians(latitude)
@@ -279,7 +281,23 @@ class Trayectorias():
             wp_dron_global.append((lat,long))
         return wp_dron_global
 
-
+    def mejor_punto(self, ult_punto):
+        menor_dist = float("inf")
+        x1 = ult_punto[0]
+        y1 = ult_punto[1]
+        x1,y1=self.to_cartesian(x1,y1)
+        indice = 0
+        for punto in self.wp_recargas:
+            x2 = punto[0]
+            y2 = punto[1]
+            x2,y2=self.to_cartesian(x2,y2)
+            dist = self.distancia(x1,y1,x2,y2)
+            if dist < menor_dist:
+                menor_dist = dist
+                indice_final = indice
+            indice = indice+1
+        return indice_final
+    
     def calcular_wp_retorno(self,distancia_objetivo):
         distancia_actual = 0
         V = self.wp_dron
@@ -310,6 +328,8 @@ class Trayectorias():
                 punto_actual = punto_siguiente
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 wp_tramos_actual.append((lat,long))
+                indice = self.mejor_punto((lat,long))
+                wp_tramos_actual.append(self.wp_recargas[indice])
 
             else:
                 distancia_actual += distancia_al_siguiente
@@ -319,7 +339,9 @@ class Trayectorias():
 
         lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
         wp_tramos_actual.append((lat,long))                
-        self.wp_tramos.append(wp_tramos_actual) 
+        self.wp_tramos.append(wp_tramos_actual)
+        indice = self.mejor_punto((lat,long))
+        wp_tramos_actual.append(self.wp_recargas[indice]) 
     
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo
     

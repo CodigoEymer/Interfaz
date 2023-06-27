@@ -64,7 +64,7 @@
       
       var linePoints = [];
 
-      var datos = {"wp_region":{},"area":{},"wp_recarga":{}}
+      var datos = {wp_region:[],area:{},wp_recarga:[]}
 
       map.on(L.Draw.Event.CREATED, function (event) {
         var layer = event.layer,coords;
@@ -77,7 +77,7 @@
           datos.area= area
         }
         if (tipo == "Point"){
-          datos.wp_recarga = jsonLayer.geometry.coordinates;
+          datos.wp_recarga.push(jsonLayer.geometry.coordinates);
         }
         var coords = JSON.stringify(datos);
         enviarinfo(coords);

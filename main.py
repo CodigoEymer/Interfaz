@@ -195,7 +195,7 @@ class MainWindow(QMainWindow):
 		self.roi_name_text.setText("Campus Univalle")
 		self.description_text.setText("sobrevolando canchas")
 		self.vision_field_text.setText("60")
-		self.vision_field_text_2.setText("60")
+		self.vision_field_text_2.setText("50")
 		self.max_height_text.setText("10")
 		self.max_speed_text.setText("3")
 		self.max_acc_text.setText("100")
@@ -470,8 +470,9 @@ def on_message_received(message):
     global area
     coords = coords_dict['wp_region'][0]
     coords.pop()
-    wp_recarga = coords_dict['wp_recarga']
     area = coords_dict['area']
+    wp_recarga = coords_dict['wp_recarga']
+    print("wp/ "+str(coords_dict)+" /wp")
 
 if __name__ == "__main__":
     app = QApplication([])
