@@ -30,11 +30,11 @@ class communication_module():
             self.foto = foto
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-            rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
-            rospy.Subscriber("/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
-            rospy.Subscriber("/mavros/imu/data", Imu, self.imu_callback)
-            rospy.Subscriber("/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
-            rospy.Subscriber("/mavros/camera/image_raw",  Image, self.image_callback)
+            rospy.Subscriber("/drone1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+            rospy.Subscriber("/drone1/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
+            rospy.Subscriber("/drone1/mavros/imu/data", Imu, self.imu_callback)
+            rospy.Subscriber("/drone1/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
+            rospy.Subscriber("/drone1/mavros/camera/image_raw",  Image, self.image_callback)
             self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
             
@@ -123,9 +123,9 @@ class communication_module():
                 print("Falla al poner el parametro %s" %id)
         
     def set_param(self, id, value):
-        rospy.wait_for_service('/mavros/param/set')
+        rospy.wait_for_service('/drone1/mavros/param/set')
         try:
-            set_param_srv = rospy.ServiceProxy('/mavros/param/set',ParamSet)
+            set_param_srv = rospy.ServiceProxy('/drone1/mavros/param/set',ParamSet)
             param_value = ParamValue()
             param_value.integer = int(value)
             resp = set_param_srv(id, param_value)
@@ -136,7 +136,7 @@ class communication_module():
     def dron_info(self):
         dron=1
         rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-        rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+        rospy.Subscriber("/drone1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         
         conectado_status = "conectado_status" + str(dron)
         conectado = getattr(self.main,conectado_status)
