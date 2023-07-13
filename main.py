@@ -160,6 +160,7 @@ class MainWindow(QMainWindow):
 		
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
+		self.stackedWidget_4.setCurrentWidget(self.page)
 
 		
 		
@@ -294,7 +295,9 @@ class MainWindow(QMainWindow):
 		icon = QIcon('./icons/IconoMisionGris.svg')
 		self.missionBtn.setIcon(icon)
 		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
-		self.switchPagesStacked.setCurrentWidget(self.missionPage)
+		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
+		self.stackedWidget_4.setCurrentWidget(self.page_2)
+
 
 	def report_page(self):
 		self.set_default_icons()
