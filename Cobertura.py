@@ -56,6 +56,8 @@ class Cobertura():
                 self.respuesta = 1
 
     def retorno(self,data):
+        text = "Waypoint reached: "+ str(data.wp_seq)
+        self.main.print_console(text)
         self.progress_bar.setValue(data.wp_seq)
         if data.wp_seq==self.long_tramo:
             self.modo_land()
