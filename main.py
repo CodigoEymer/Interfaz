@@ -92,7 +92,6 @@ class MainWindow(QMainWindow):
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
 			self.webView.setHtml(self.html)
-			self.webView_2.setHtml(self.html)
 
 	def set_default_icons(self):
 		default = "background-color: rgb(203, 218, 216);"
@@ -161,6 +160,7 @@ class MainWindow(QMainWindow):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.stackedWidget_4.setCurrentWidget(self.page)
+		self.stackedWidget_5.setCurrentWidget(self.page_4)
 
 		
 		
@@ -297,6 +297,7 @@ class MainWindow(QMainWindow):
 		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
+		self.stackedWidget_5.setCurrentWidget(self.page_3)
 
 
 	def report_page(self):
