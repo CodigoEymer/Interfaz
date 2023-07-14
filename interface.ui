@@ -2227,11 +2227,15 @@ color: rgb(238, 238, 236);</string>
                                </size>
                               </property>
                               <property name="styleSheet">
-                               <string notr="true">background-color: rgb(136, 138, 133);</string>
+                               <string notr="true">background-color: rgb(46, 52, 54);</string>
                               </property>
                               <layout class="QVBoxLayout" name="verticalLayout_40">
                                <item>
-                                <widget class="QTextEdit" name="console"/>
+                                <widget class="QTextEdit" name="console">
+                                 <property name="styleSheet">
+                                  <string notr="true">color: rgb(238, 238, 236);</string>
+                                 </property>
+                                </widget>
                                </item>
                               </layout>
                              </widget>

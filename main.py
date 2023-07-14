@@ -264,9 +264,9 @@ class MainWindow(QMainWindow):
 		self.config.insertar_fotos(self.fotos)
 
 	def init_trayct(self):
+		self.mission_page()
 		self.flag_telemetria = 1
 		self.startThread()
-		self.mission_page()
 		if self.finish_mission is None:
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()

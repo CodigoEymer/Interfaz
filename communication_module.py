@@ -67,8 +67,6 @@ class communication_module():
         foto_obj.set_longitud_captura(self.telemetria.get_longitud())
         foto_obj.set_altitud_captura(self.telemetria.get_altitud())
         self.fotos.append(foto_obj)
-        print("fotos")
-        print(len(self.fotos))
 
     def image_callback(self, image):
         self.image = image

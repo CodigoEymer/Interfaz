@@ -56,10 +56,11 @@ class Cobertura():
                 self.respuesta = 1
 
     def retorno(self,data):
-        text = "Waypoint reached: "+ str(data.wp_seq)
+        text = "Waypoint alcanzado #"+ str(data.wp_seq)
         self.main.print_console(text)
         self.progress_bar.setValue(data.wp_seq)
         if data.wp_seq==self.long_tramo:
+            self.main.print_console("Aterrizando")
             self.modo_land()
             
 
@@ -67,7 +68,7 @@ class Cobertura():
         self.current_altitude = data.pose.position.z  
 
     def modo_estable(self):
-        self.main.print_console("Activando modo Estable")
+        #self.main.print_console("Activando modo ESTABLE")
         rospy.wait_for_service('/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
@@ -80,7 +81,7 @@ class Cobertura():
         rospy.wait_for_service('/mavros/cmd/arming')
         arm_service = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
         arm_service(True)
-        self.main.print_console("armando dron")
+        self.main.print_console("Armando motores")
 
         # Esperar a que el drone este armado
         rate = rospy.Rate(10) # 10 Hz
@@ -92,7 +93,7 @@ class Cobertura():
 
     def modo_guiado(self):
 
-        self.main.print_console("Activando modo GUIADO")
+        #self.main.print_console("Activando modo GUIADO")
         rospy.wait_for_service('/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
@@ -102,7 +103,7 @@ class Cobertura():
             self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
     def despegar(self):
-        self.main.print_console("despegando dron")
+        self.main.print_console("Despegando")
         rospy.wait_for_service('/mavros/cmd/takeoff')
 
         try:
@@ -148,12 +149,12 @@ class Cobertura():
             wp_list = WaypointList()
             wp_list.waypoints = waypoints
             wp_pub.publish(wp_list)
-            rospy.loginfo("Waypoints published successfully")
+            self.main.print_console("Waypoints cargados exitosamente")
         except rospy.ServiceException as e:
             rospy.logerr("Service call failed: %s"%e)
 
     def modo_automatico(self):
-        self.main.print_console("Activando modo AUTO")
+        #self.main.print_console("Activando modo AUTO")
         rospy.wait_for_service('/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
