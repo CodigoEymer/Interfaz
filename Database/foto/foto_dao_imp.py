@@ -30,6 +30,22 @@ class foto_dao_imp:
         self.fotos.append(clase)
         cursor.close()
         return res_rows
+    
+    def insert_bash(self,fotos):
+        cursor = self.connection.cursor()
+        query="INSERT INTO Telemetria(id_foto, id_dron, foto, hora_captura, latitud_captura, longitud_captura, altitud_captura) VALUES (%s,%s,%s,%s,%s,%s,%s)"
+
+        datos = []
+        for foto in fotos:
+            dato = [foto.get_id_foto(), foto.get_id_dron(), foto.get_foto(),foto.get_hora_captura(),foto.get_latitud_captura(),foto.get_longitud_captura(),foto.get_altitud_captura()]
+
+        try:
+            cursor.executemany(query, datos)          
+            self.connection.commit()
+            cursor.close()
+        except Exception as e:
+            print("error",e)
+            self.connection.rollback()
 
     def insert_batch(self,fotos):
         cursor = self.connection.cursor()
