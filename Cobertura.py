@@ -10,9 +10,9 @@ from geometry_msgs.msg import PoseStamped
 
 class Cobertura():
 
-    def __init__(self,lista_wp, progress_bar,altura,wp_retorno_aut,wp_tramos):
+    def __init__(self,lista_wp, progress_bar,altura,wp_retorno_aut,wp_tramos, msn_end_w):
         rospy.Subscriber('/dron1/mavros/local_position/pose', PoseStamped, self.pose_callback)
-        rospy.Subscriber("dron1/mavros/mission/reached", WaypointReached, self.retorno)
+        rospy.Subscriber("/dron1/mavros/mission/reached", WaypointReached, self.retorno)
         self.progress_bar = progress_bar
         self.lista_wp = lista_wp
         self.wp_tramos = wp_tramos
