@@ -50,6 +50,7 @@ telemetria = telemetria()
 dron = dron()
 current_mision = mision()
 current_wp_recarga = wp_recarga_obj()
+foto = foto()
 
 class MainWindow(QMainWindow):
 
@@ -94,7 +95,7 @@ class MainWindow(QMainWindow):
 		self.timer.timeout.connect(self.flush_buffer)
 		self.timer.start(1000)  # Flush the buffer every 1 second
 		self.hide_all_frames()
-		self.commu_module = communication_module(self,telemetria,dron, self.fotos)
+		self.commu_module = communication_module(self,telemetria,dron, foto)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
@@ -472,7 +473,6 @@ def on_message_received(message):
     coords.pop()
     area = coords_dict['area']
     wp_recarga = coords_dict['wp_recarga']
-    print("wp_recarga/ "+str(wp_recarga)+" /wp_recarga")
 
 if __name__ == "__main__":
     app = QApplication([])
