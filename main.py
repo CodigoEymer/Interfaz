@@ -21,11 +21,11 @@ from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QWidget, QTextEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QTimer
 
 from mavros_msgs.srv import *
 import time
@@ -86,13 +86,18 @@ class MainWindow(QMainWindow):
 		self.updateBtn.clicked.connect(self.main_window)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
+		
+		self.console.setReadOnly(True)
+		self.buffer = []
+		self.timer = QTimer()
+		self.timer.timeout.connect(self.flush_buffer)
+		self.timer.start(1000)  # Flush the buffer every 1 second
 		self.hide_all_frames()
 		self.commu_module = communication_module(self,telemetria,dron, self.fotos)
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
 			self.webView.setHtml(self.html)
-			self.webView_2.setHtml(self.html)
 
 	def set_default_icons(self):
 		default = "background-color: rgb(203, 218, 216);"
@@ -160,6 +165,8 @@ class MainWindow(QMainWindow):
 		
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
+		self.stackedWidget_4.setCurrentWidget(self.page)
+		self.stackedWidget_5.setCurrentWidget(self.page_4)
 
 		
 		
@@ -257,13 +264,13 @@ class MainWindow(QMainWindow):
 		self.config.insertar_fotos(self.fotos)
 
 	def init_trayct(self):
+		self.mission_page()
 		self.flag_telemetria = 1
 		self.startThread()
-		#self.switchPagesStacked.setCurrentWidget(self.missionPage)
 		if self.finish_mission is None:
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()
-		self.cobertura = Cobertura.Cobertura(self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos,self.finish_mission)
+		self.cobertura = Cobertura.Cobertura(self,self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.wp_tramos,self.finish_mission)
 		self.cobertura.StartMision()
 		
 
@@ -294,8 +301,19 @@ class MainWindow(QMainWindow):
 		icon = QIcon('./icons/IconoMisionGris.svg')
 		self.missionBtn.setIcon(icon)
 		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
-		self.switchPagesStacked.setCurrentWidget(self.missionPage)
+		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
+		self.stackedWidget_4.setCurrentWidget(self.page_2)
+		self.stackedWidget_5.setCurrentWidget(self.page_3)
+		
+	def print_console(self,text):	
+		self.buffer.append(text)
+			
 
+	def flush_buffer(self):
+		if self.buffer:
+			self.console.append('\n'.join(self.buffer))
+			self.buffer = []
+	    
 	def report_page(self):
 		self.set_default_icons()
 		icon = QIcon('./icons/IconoReporteGris.svg')

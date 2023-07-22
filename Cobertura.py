@@ -10,10 +10,11 @@ from geometry_msgs.msg import PoseStamped
 
 class Cobertura():
 
-    def __init__(self,lista_wp, progress_bar,altura,wp_retorno_aut,wp_tramos, msn_end_w):
+    def __init__(self, parent, lista_wp, progress_bar,altura,wp_retorno_aut,wp_tramos, msn_end_w):
         rospy.Subscriber("/mavros/local_position/pose", PoseStamped, self.pose_callback)
         rospy.Subscriber("mavros/mission/reached", WaypointReached, self.retorno)
         rospy.Subscriber("/mavros/state", State, self.estado_vuelo)
+        self.main = parent
         self.progress_bar = progress_bar
         self.lista_wp = lista_wp
         self.wp_tramos = wp_tramos
@@ -55,8 +56,11 @@ class Cobertura():
                 self.respuesta = 1
 
     def retorno(self,data):
+        text = "Waypoint alcanzado #"+ str(data.wp_seq)
+        self.main.print_console(text)
         self.progress_bar.setValue(data.wp_seq)
         if data.wp_seq==self.long_tramo:
+            self.main.print_console("Aterrizando")
             self.modo_land()
             
 
@@ -64,20 +68,20 @@ class Cobertura():
         self.current_altitude = data.pose.position.z  
 
     def modo_estable(self):
-        print("Activando modo Estable")
+        #self.main.print_console("Activando modo ESTABLE")
         rospy.wait_for_service('/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             flightModeService(custom_mode='STABILIZE') #return true or false
         except rospy.ServiceException as e:
-            print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
     def armar_dron(self):
         rospy.wait_for_service('/mavros/cmd/arming')
         arm_service = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
         arm_service(True)
-        print("armando dron")
+        self.main.print_console("Armando motores")
 
         # Esperar a que el drone este armado
         rate = rospy.Rate(10) # 10 Hz
@@ -89,24 +93,24 @@ class Cobertura():
 
     def modo_guiado(self):
 
-        print("Activando modo GUIADO")
+        #self.main.print_console("Activando modo GUIADO")
         rospy.wait_for_service('/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             isModeChanged = flightModeService(custom_mode='GUIDED') #return true or false
         except rospy.ServiceException as e:
-            print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
     def despegar(self):
-        print("despegando dron")
+        self.main.print_console("Despegando")
         rospy.wait_for_service('/mavros/cmd/takeoff')
 
         try:
             takeoffService = rospy.ServiceProxy('/mavros/cmd/takeoff', mavros_msgs.srv.CommandTOL) 
             takeoff_response = takeoffService(altitude = self.altura, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
         except rospy.ServiceException as e:
-            print ("Service takeoff call failed: %s"%e)
+            self.main.print_console ("Service takeoff call failed: %s"%e)
 
         # Esperar a que el drone alcance la altitud deseada
 
@@ -145,19 +149,19 @@ class Cobertura():
             wp_list = WaypointList()
             wp_list.waypoints = waypoints
             wp_pub.publish(wp_list)
-            rospy.loginfo("Waypoints published successfully")
+            self.main.print_console("Waypoints cargados exitosamente")
         except rospy.ServiceException as e:
             rospy.logerr("Service call failed: %s"%e)
 
     def modo_automatico(self):
-        print("Activando modo AUTO")
+        #self.main.print_console("Activando modo AUTO")
         rospy.wait_for_service('/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             flightModeService(custom_mode='AUTO') #return true or false
         except rospy.ServiceException as e:
-            print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
         self.progress_bar.setMaximum(len(self.lista_wp)) 
 
@@ -167,7 +171,7 @@ class Cobertura():
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             isModeChanged = flightModeService(custom_mode='RTL') #return true or false
         except rospy.ServiceException as e:
-            print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
     def modo_land(self):
         try:
@@ -175,4 +179,4 @@ class Cobertura():
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             isModeChanged = flightModeService(custom_mode='LAND') #return true or false
         except rospy.ServiceException as e:
-            print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
