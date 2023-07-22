@@ -66,7 +66,7 @@ class Cobertura():
         self.current_altitude = data.pose.position.z  
 
     def modo_estable(self):
-        print("Activando modo Estable")
+        self.main.print_console("Activando modo Estable")
         rospy.wait_for_service('/dron1/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/dron1/mavros/set_mode', mavros_msgs.srv.SetMode)
@@ -90,7 +90,7 @@ class Cobertura():
 
     def modo_guiado(self):
 
-        print("Activando modo GUIADO")
+        self.main.print_console("Activando modo GUIADO")
         rospy.wait_for_service('/dron1/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/dron1/mavros/set_mode', mavros_msgs.srv.SetMode)
@@ -99,7 +99,7 @@ class Cobertura():
             self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
     def despegar(self):
-        print("despegando dron")
+        self.main.print_console("despegando dron")
         rospy.wait_for_service('/dron1/mavros/cmd/takeoff')
 
         try:
@@ -150,7 +150,7 @@ class Cobertura():
             rospy.logerr("Service call failed: %s"%e)
 
     def modo_automatico(self):
-        print("Activando modo AUTO")
+        self.main.print_console("Activando modo AUTO")
         rospy.wait_for_service('/dron1/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/dron1/mavros/set_mode', mavros_msgs.srv.SetMode)
@@ -170,7 +170,7 @@ class Cobertura():
 
     def modo_land(self):
 
-        print("Activando modo LAND")
+        self.main.print_console("Activando modo LAND")
         rospy.wait_for_service('/dron1/mavros/set_mode')
         try:
             flightModeService = rospy.ServiceProxy('/dron1/mavros/set_mode', mavros_msgs.srv.SetMode)
