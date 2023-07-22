@@ -75,7 +75,7 @@ class Cobertura():
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             flightModeService(custom_mode='STABILIZE') #return true or false
         except rospy.ServiceException as e:
-            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+            self.main.print_console("service set_mode call failed: %s. STABLE Mode could not be set. Check that GPS is enabled"%e)
 
     def armar_dron(self):
         rospy.wait_for_service('/mavros/cmd/arming')
@@ -161,7 +161,7 @@ class Cobertura():
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             flightModeService(custom_mode='AUTO') #return true or false
         except rospy.ServiceException as e:
-            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+            self.main.print_console("service set_mode call failed: %s. AUTO Mode could not be set. Check that GPS is enabled"%e)
 
         self.progress_bar.setMaximum(len(self.lista_wp)) 
 
@@ -171,12 +171,18 @@ class Cobertura():
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             isModeChanged = flightModeService(custom_mode='RTL') #return true or false
         except rospy.ServiceException as e:
-            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+
+            self.main.print_console("service set_mode call failed: %s. RTL Mode could not be set. Check that GPS is enabled"%e)
 
     def modo_land(self):
+
+        print("Activando modo LAND")
+        rospy.wait_for_service('/mavros/set_mode')
+
         try:
             flightModeService = rospy.ServiceProxy('/mavros/set_mode', mavros_msgs.srv.SetMode)
             #http://wiki.ros.org/mavros/CustomModes for custom modes
             isModeChanged = flightModeService(custom_mode='LAND') #return true or false
         except rospy.ServiceException as e:
-            self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+
+            self.main.print_console("service set_mode call failed: %s. LAND Mode could not be set. Check that GPS is enabled"%e)

@@ -27,6 +27,7 @@ class communication_module():
             self.v_telemetria = []
             self.fotos=fotos
             self.dron = dron
+            self.foto = foto
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
             rospy.Subscriber("/mavros/camera/camera_info", CameraInfo, self.camera_callback)

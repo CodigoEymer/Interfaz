@@ -14,6 +14,7 @@ from Database.telemetria.telemetria import telemetria
 from Database.mision.mision import mision
 from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 from Database.dron.dron import dron
+from Database.foto.foto import foto
 import config_module
 from communication_module import communication_module
 from user_settings import SecondWindow
@@ -194,9 +195,9 @@ class MainWindow(QMainWindow):
 		self.roi_name_text.setText("Campus Univalle")
 		self.description_text.setText("sobrevolando canchas")
 		self.vision_field_text.setText("60")
-		self.vision_field_text_2.setText("60")
+		self.vision_field_text_2.setText("50")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("3")
+		self.max_speed_text.setText("4")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("0.005")
 		######
@@ -246,7 +247,7 @@ class MainWindow(QMainWindow):
 		self.lista_wp = Trayectorias.ciclos()
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
-		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/6)
+		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/50)		# 6 
 		self.wp_tramos = Trayectorias.get_tramos()
 
 		for item2 in self.wp_retorno_aut:
@@ -469,8 +470,9 @@ def on_message_received(message):
     global area
     coords = coords_dict['wp_region'][0]
     coords.pop()
-    wp_recarga = coords_dict['wp_recarga']
     area = coords_dict['area']
+    wp_recarga = coords_dict['wp_recarga']
+    print("wp_recarga/ "+str(wp_recarga)+" /wp_recarga")
 
 if __name__ == "__main__":
     app = QApplication([])
