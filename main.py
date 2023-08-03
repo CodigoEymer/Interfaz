@@ -233,13 +233,13 @@ class MainWindow(QMainWindow):
 		######
 		current_mision.set_dimension(str(area))
 		current_wp_recarga.set_wp(str(wp_recarga))
-		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,dron,current_mision, foto)
+		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,dron,current_mision)
 		
 		self.config.insertar_mision()
 		self.config.insertar_wp_region()
 		self.config.insertar_wp_recarga()
 		self.config.insertar_dron()
-		self.commu_module.setFlightParameters(self.config)
+		#self.commu_module.setFlightParameters(self.config)
 		telemetria.set_id_dron(self.config.id_dron)
 		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dron.get_velocidad_max()))
 
