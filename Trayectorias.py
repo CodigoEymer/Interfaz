@@ -4,7 +4,6 @@ import ast
 class Trayectorias():
     def __init__(self,coords,altura,cvH,cvV,sobrelapamiento, wp_recarga):
         #input
-        print("wp_recarga_trayectoria___",wp_recarga)
         self.vertices_global = self.js_to_py(coords)
         self.wp_recarga = self.js_to_py(wp_recarga)
         self.vertices=[]
@@ -41,11 +40,13 @@ class Trayectorias():
             self.dr=(self.dcp-self.LX)/(self.num_rings-1)
             
     def js_to_py(self, dict):
+        print(dict)
         cadena = str(dict)
         cadena.replace("[","(")
         cadena.replace("]",")")
         cadena = "["+cadena[1:-1]+"]"
         vector = ast.literal_eval(cadena)
+        print(vector)
         return vector
     
     def to_cartesian(self, latitude, longitude):
@@ -291,7 +292,6 @@ class Trayectorias():
             y2 = punto[1]
             x2,y2=self.to_cartesian(x2,y2)
             dist = self.distancia(x1,y1,x2,y2)
-            print("dist:_",dist)
             if dist < menor_dist:
                 menor_dist = dist
                 indice_final = indice
