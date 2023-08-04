@@ -7,11 +7,15 @@ import resources_rc
 import json
 import datetime
 import prueba
-from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios,usuarios_dao
-from Database.mision.mision_dao_imp import mision_dao_imp
+from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios
+from Database.usuarios.usuarios import usuarios
+
 from Database.wp_dron.wp_dron import wp_dron
 from Database.telemetria.telemetria import telemetria
+
+from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.mision.mision import mision
+
 from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 from Database.dron.dron import dron
 from Database.foto.foto import foto
@@ -31,7 +35,7 @@ from PyQt5.QtCore import pyqtSlot, QTimer
 from mavros_msgs.srv import *
 import time
 import MySQLdb
-from Database.usuarios import usuarios
+
 
 DB_HOST = '127.0.0.1' 
 DB_USER = 'root' 
@@ -48,6 +52,7 @@ db_user_list=[]
 
 telemetria = telemetria()
 dron = dron()
+current_usuario = usuarios()
 current_mision = mision()
 current_wp_recarga = wp_recarga_obj()
 foto = foto()
@@ -85,7 +90,7 @@ class MainWindow(QMainWindow):
 		self.generate_report.clicked.connect(self.report_function)
 		self.playBtn.clicked.connect(self.reanudar_mision)		
 		self.userBtn_2.clicked.connect(self.config_user_page)
-		self.updateBtn.clicked.connect(self.main_window)
+		self.updateBtn.clicked.connect(self.update_user_data_up)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		
@@ -112,10 +117,32 @@ class MainWindow(QMainWindow):
 		self.reportBtn.setIcon(QIcon('./icons/IconoReporteAzul.svg'))
 		self.reportBtn.setStyleSheet(default)
 
+	def update_user_data_up(self):
+		id_user_actual = int(self.user.get_id_usuario())
+		nombre = self.textEdit_7.toPlainText()
+		nombre_usuario = self.textEdit_6.toPlainText()
+		celular = self.textEdit_8.toPlainText()
+		correo = self.textEdit_9.toPlainText()
+		connection = usuarios_dao_imp(conn)
+		try:
+			connection.update_user(id_user_actual, str(nombre), str(nombre_usuario), str(correo), str(celular))
+			#self.error_label.setText("Usuario Actualizado")
+			self.user.set_nombre(str(nombre))
+			self.user.set_nombre_usuario(str(nombre_usuario))
+			self.user.set_celular(str(celular))
+			self.user.set_correo(str(correo))
+
+		except MySQLdb._exceptions.IntegrityError as e:
+			#print(e)
+			self.user_feedback.setStyleSheet("color: red;")
+			#self.user_feedback.setText("error al actualizar usuario, intente de nuevo")
+		
+		#self.stackedWidget.setCurrentWidget(self.mainWindowWidget)
+		self.main_window()
 
 	def main_window(self):
 			self.stackedWidget.setCurrentWidget(self.mainWindowWidget)
-
+			
 	def signin_window(self):
 			self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 
@@ -125,11 +152,13 @@ class MainWindow(QMainWindow):
 		celular = self.phone_text.toPlainText()
 		correo = self.email_text.toPlainText()
 		connection = usuarios_dao_imp(conn)
+		
 		try:
-			connection.insert_user(nombre, nombre_usuario, correo, celular)
+			connection.insert_user(nombre, nombre_usuario, correo, celular)			
 			self.login_page()
 			self.error_label.setStyleSheet("color: green;")
 			self.error_label.setText("Registro exitoso")
+
 		except MySQLdb._exceptions.IntegrityError as e:
 			self.user_feedback.setStyleSheet("color: red;")
 			self.user_feedback.setText("Nombre de usuario ya existe")

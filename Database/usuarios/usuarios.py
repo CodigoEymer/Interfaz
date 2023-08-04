@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 class usuarios:
-    def __init__(self,id_usuario, nombre, nombre_usuario, correo, celular):
+    def __init__(self,id_usuario = None, nombre= None, nombre_usuario= None, correo= None, celular= None):
         self.id_usuario = id_usuario
         self.celular = celular   
         self.nombre = nombre
