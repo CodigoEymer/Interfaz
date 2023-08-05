@@ -57,10 +57,15 @@ class usuarios_dao_imp:
         cursor.close()
         return self.users
 
-    def update_user(self, user):
+    def update_user(self, id_user,nombre, nombre_usuario, correo, celular):
         cursor = self.connection.cursor()
-        query="update Usuario set nombre='"+user.get_nombre()+"', nombre_usuario='"+user.get_nombre_usuario()+"', correo='"+user.get_correo()+"',celular='"+user.get_celular()+"' where id_usuario = 6"
-        cursor.execute(query)
+        query = """
+        UPDATE Usuario
+        SET nombre = %s, nombre_usuario = %s, correo = %s, celular = %s
+        WHERE id_usuario = %s
+        """
+        values = (nombre, nombre_usuario, correo, celular, id_user)
+        cursor.execute(query, values)
         self.connection.commit()
 
     def delete_user(self, user):
@@ -68,3 +73,16 @@ class usuarios_dao_imp:
         query="delete from Usuario where nombre_usuario = '"+user.get_nombre_usuario()+"'"
         cursor.execute(query)
         self.connection.commit()
+
+    def get_usuario(self,nombre_usuario):
+        res_mission= None
+        query="select id_usuario,nombre, nombre_usuario, correo, celular from Usuario where nombre_usuario= '" + str(nombre_usuario)+"'"
+        try:
+            cursor = self.connection.cursor()
+            result = cursor.execute(query)
+            tupla = cursor.fetchone()
+            user = usuarios.usuarios(tupla[0],tupla[1],tupla[2],tupla[3], tupla[4])
+        except Exception as e: print(e)
+        cursor.close()
+        
+        return user
