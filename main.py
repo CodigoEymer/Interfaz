@@ -181,6 +181,10 @@ class MainWindow(QMainWindow):
 		self.signin_window()
 		self.stackedWidget_3.setCurrentWidget(self.userConfiPage)
 		self.second_window.close()
+		self.textEdit_6.setText(self.user.get_nombre_usuario())
+		self.textEdit_7.setText(self.user.get_nombre())
+		self.textEdit_8.setText(self.user.get_celular())
+		self.textEdit_9.setText(self.user.get_correo())
 
 	def logout(self):
 		self.signin_window()
