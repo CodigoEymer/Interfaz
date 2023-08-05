@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 class dron:
-    def __init__(self,id_dron= None, id_mision= None,ac_max= None,vel_max= None,alt_max= None,cvH= None,cvV= None,controladora= None,voltaje_inicial= None,tipo= None,hardware_id = None):
+    def __init__(self,id_dron= None, id_mision= None,ac_max= None,vel_max= None,alt_max= None,cvH= None,cvV= None,controladora= "None",voltaje_inicial= "2.5",tipo= "None",hardware_id ="2.4"):
         self.id_dron = id_dron
         self.id_mision = id_mision
         self.aceleracion_max = ac_max
