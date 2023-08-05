@@ -40,13 +40,11 @@ class Trayectorias():
             self.dr=(self.dcp-self.LX)/(self.num_rings-1)
             
     def js_to_py(self, dict):
-        print(dict)
         cadena = str(dict)
         cadena.replace("[","(")
         cadena.replace("]",")")
         cadena = "["+cadena[1:-1]+"]"
         vector = ast.literal_eval(cadena)
-        print(vector)
         return vector
     
     def to_cartesian(self, latitude, longitude):
