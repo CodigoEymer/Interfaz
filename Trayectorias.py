@@ -345,7 +345,6 @@ class Trayectorias():
         wp_tramos_actual.append(self.wp_recargas[indice])                 
         self.wp_tramos.append(wp_tramos_actual)
         
-        print("wp_tramos:",self.wp_tramos)
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo
     
     def get_tramos(self):
