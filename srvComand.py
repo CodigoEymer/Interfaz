@@ -13,62 +13,58 @@ longitude=0.0
 
 
 def setGuidedMode():
-    rospy.wait_for_service('/drone1/mavros/set_mode')
+    rospy.wait_for_service('/dron1/mavros/set_mode')
     try:
-        flightModeService = rospy.ServiceProxy('/drone1/mavros/set_mode', mavros_msgs.srv.SetMode)
-        #http://wiki.ros.org/drone1/mavros/CustomModes for custom modes
+        flightModeService = rospy.ServiceProxy('/dron1/mavros/set_mode', mavros_msgs.srv.SetMode)
         isModeChanged = flightModeService(custom_mode='GUIDED') #return true or false
     except rospy.ServiceException as e:
         print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
         
 def setStabilizeMode():
-    rospy.wait_for_service('/drone1/mavros/set_mode')
+    rospy.wait_for_service('/dron1/mavros/set_mode')
     try:
-        flightModeService = rospy.ServiceProxy('/drone1/mavros/set_mode', mavros_msgs.srv.SetMode)
-        #http://wiki.ros.org/drone1/mavros/CustomModes for custom modes
+        flightModeService = rospy.ServiceProxy('/dron1/mavros/set_mode', mavros_msgs.srv.SetMode)
         isModeChanged = flightModeService(custom_mode='STABILIZE') #return true or false
     except rospy.ServiceException as e:
         print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
 def setLandMode():
-    rospy.wait_for_service('/drone1/mavros/cmd/land')
+    rospy.wait_for_service('/dron1/mavros/cmd/land')
     try:
-        landService = rospy.ServiceProxy('/drone1/mavros/cmd/land', mavros_msgs.srv.CommandTOL)
-        #http://wiki.ros.org/drone1/mavros/CustomModes for custom modes
+        landService = rospy.ServiceProxy('/dron1/mavros/cmd/land', mavros_msgs.srv.CommandTOL)
         isLanding = landService(altitude = 0, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
     except rospy.ServiceException as e:
         print("service land call failed: %s. The vehicle cannot land "%e)
           
 def setArm():
-    rospy.wait_for_service('/drone1/mavros/cmd/arming')
+    rospy.wait_for_service('/dron1/mavros/cmd/arming')
     try:
-        armService = rospy.ServiceProxy('/drone1/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
+        armService = rospy.ServiceProxy('/dron1/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
         armService(True)
     except rospy.ServiceExceptiona as e:
         print("Service arm call failed: %s"%e)
         
 def setDisarm():
-    rospy.wait_for_service('/drone1/mavros/cmd/arming')
+    rospy.wait_for_service('/dron1/mavros/cmd/arming')
     try:
-        armService = rospy.ServiceProxy('/drone1/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
+        armService = rospy.ServiceProxy('/dron1/mavros/cmd/arming', mavros_msgs.srv.CommandBool)
         armService(False)
     except rospy.ServiceException as e:
         print("Service arm call failed: %s"%e)
 
 
 def setTakeoffMode():
-    rospy.wait_for_service('/drone1/mavros/set_mode')
+    rospy.wait_for_service('/dron1/mavros/set_mode')
     try:
-        flightModeService = rospy.ServiceProxy('/drone1/mavros/set_mode', mavros_msgs.srv.SetMode)
-        #http://wiki.ros.org/drone1/mavros/CustomModes for custom modes
+        flightModeService = rospy.ServiceProxy('/dron1/mavros/set_mode', mavros_msgs.srv.SetMode)
         isModeChanged = flightModeService(custom_mode='GUIDED') #return true or false
     except rospy.ServiceException as e:
         print("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
 
-    rospy.wait_for_service('/drone1/mavros/cmd/takeoff')
+    rospy.wait_for_service('/dron1/mavros/cmd/takeoff')
     try:
-        takeoffService = rospy.ServiceProxy('/drone1/mavros/cmd/takeoff', mavros_msgs.srv.CommandTOL) 
+        takeoffService = rospy.ServiceProxy('/dron1/mavros/cmd/takeoff', mavros_msgs.srv.CommandTOL) 
         takeoffService(altitude = 1, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
     except rospy.ServiceException as e:
         print("Service takeoff call failed: %s"%e)
@@ -130,8 +126,8 @@ def loadWp():
     waypoints.waypoints = [wp1, wp2,wp3]
 
     # Enviar los waypoints al drone utilizando el servicio WaypointPush
-    rospy.wait_for_service('/drone1/mavros/mission/push')
-    waypoint_push = rospy.ServiceProxy('/drone1/mavros/mission/push', WaypointPush)
+    rospy.wait_for_service('/dron1/mavros/mission/push')
+    waypoint_push = rospy.ServiceProxy('/dron1/mavros/mission/push', WaypointPush)
     response = waypoint_push(start_index=0, waypoints=waypoints.waypoints) 
 
     # Esperar a que se complete la carga de la mision
@@ -139,10 +135,10 @@ def loadWp():
 
 def validarWp():
     # Esperar a que se inicie la conexin con el drone
-    rospy.wait_for_message('/drone1/mavros/mission/waypoints', WaypointList)
+    rospy.wait_for_message('/dron1/mavros/mission/waypoints', WaypointList)
 
     # Obtener los waypoints actuales del drone
-    waypoints = rospy.wait_for_message('/drone1/mavros/mission/waypoints', WaypointList)
+    waypoints = rospy.wait_for_message('/dron1/mavros/mission/waypoints', WaypointList)
 
     # Mostrar los waypoints en la consola
     print(waypoints.waypoints)
@@ -150,8 +146,8 @@ def validarWp():
 
 def startMission():
     # Activar la mision
-    rospy.wait_for_service('/drone1/mavros/cmd/mission/start')
-    mission_start = rospy.ServiceProxy('/drone1/mavros/cmd/mission/start',CommandLong)
+    rospy.wait_for_service('/dron1/mavros/cmd/mission/start')
+    mission_start = rospy.ServiceProxy('/dron1/mavros/cmd/mission/start',CommandLong)
     mission_start_response = mission_start(command=300)
 
 def menu():
@@ -200,13 +196,3 @@ def myLoop():
             print("Exit")
         
         
-    
-
-#if __name__ == '__main__':
-    #rospy.init_node('srvComand_node', anonymous=True)
-    #rospy.Subscriber("/drone1/mavros/global_position/raw/fix", NavSatFix, globalPositionCallback)
-    # spin() simply keeps python from exiting until this node is stopped
-    
-    #listener()
-    #myLoop()
-    #rospy.spin()
