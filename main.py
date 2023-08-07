@@ -283,7 +283,7 @@ class MainWindow(QMainWindow):
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
 		self.dist_label.setText(str(round(distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
-		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno/50)		# 6 
+		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno)		# 6 
 		self.wp_tramos = Trayectorias.get_tramos()
 
 		for item2 in self.wp_retorno_aut:

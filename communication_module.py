@@ -30,11 +30,11 @@ class communication_module():
             self.foto = foto
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-            rospy.Subscriber("/drone1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
-            rospy.Subscriber("/drone1/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
-            rospy.Subscriber("/drone1/mavros/imu/data", Imu, self.imu_callback)
-            rospy.Subscriber("/drone1/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
-            rospy.Subscriber("/drone1/mavros/camera/image_raw",  Image, self.image_callback)
+            rospy.Subscriber("/dron1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+            rospy.Subscriber("/dron1/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
+            rospy.Subscriber("/dron1/mavros/imu/data", Imu, self.imu_callback)
+            rospy.Subscriber("/dron1/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
+            rospy.Subscriber("/dron1/mavros/camera/image_raw",  Image, self.image_callback)
             self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
             
@@ -123,9 +123,9 @@ class communication_module():
                 print("Falla al poner el parametro %s" %id)
         
     def set_param(self, id, value):
-        rospy.wait_for_service('/drone1/mavros/param/set')
+        rospy.wait_for_service('/dron1/mavros/param/set')
         try:
-            set_param_srv = rospy.ServiceProxy('/drone1/mavros/param/set',ParamSet)
+            set_param_srv = rospy.ServiceProxy('/dron1/mavros/param/set',ParamSet)
             param_value = ParamValue()
             param_value.integer = int(value)
             resp = set_param_srv(id, param_value)
@@ -136,7 +136,7 @@ class communication_module():
     def dron_info(self):
         dron=1
         rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-        rospy.Subscriber("/drone1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+        rospy.Subscriber("/dron1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         
         conectado_status = "conectado_status" + str(dron)
         conectado = getattr(self.main,conectado_status)
@@ -198,7 +198,7 @@ class communication_module():
         salud_presion = ""
         for item in data.status:
 
-            if item.name == 'mavros: Heartbeat':
+            if item.name == 'dron1/mavros: Heartbeat':
                     id = item.hardware_id
                     self.dron.set_hardware_id(id)
 
@@ -211,7 +211,7 @@ class communication_module():
                             self.dron.set_controladora(v.value)
 
 
-            if item.name == "mavros: Battery":
+            if item.name == "dron1/mavros: Battery":
                 for value in item.values:
                     if value.key == "Voltage":
                         self.dron.set_voltaje_inicial(str(value.value))
@@ -220,7 +220,7 @@ class communication_module():
                         self.telemetria.set_porcentaje_bateria(porcentaje)
 
 
-            if item.name == "mavros: System":
+            if item.name == "dron1/mavros: System":
                 for value in item.values:
                     if value.key == "Battery":
                         if value.value == "Ok":

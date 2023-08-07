@@ -15,7 +15,7 @@ class dron_info():
         self.main = parent
         dron=1
         rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-        rospy.Subscriber("/drone1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+        rospy.Subscriber("/dron1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         
         conectado_status = "conectado_status" + str(dron)
         conectado = getattr(self.main,conectado_status)
