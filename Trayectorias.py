@@ -19,6 +19,7 @@ class Trayectorias():
         # Campo de vision
         self.LX = 2*altura*math.tan((cvH*math.pi/180)/2)/1000
         self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
+        print(altura, cvH, cvV, sobrelapamiento, self.LX, self.LY)
         # Sobrelapamiento minimo en Y
         self.Ovx = sobrelapamiento
         # Distancia entre vertices
