@@ -21,13 +21,14 @@ class Trayectorias():
         self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
         print(altura, cvH, cvV, sobrelapamiento, self.LX, self.LY)
         # Sobrelapamiento minimo en Y
-        self.Ovx = sobrelapamiento
+        self.Ovy = sobrelapamiento/1000
         # Distancia entre vertices
         self.di = 0
         self.p = len(self.vertices)
         #Encuentra la apotema minima a partir del centroide
         self.apotema()
        # Distancia entre anillos
+        self.Ovx = 0.0
         self.dr = self.LX-self.Ovx
         # Numero de anillos
         self.nr = (self.dcp-self.Ovx)/self.dr
@@ -37,6 +38,7 @@ class Trayectorias():
         else:
             #Ovx recalculado
             self.Ovx=(self.num_rings*self.LX-self.dcp)/(self.num_rings-1)
+            print("Ovx recalculado: ", self.Ovx)
             #dr recalculado
             self.dr=(self.dcp-self.LX)/(self.num_rings-1)
             
@@ -194,20 +196,21 @@ class Trayectorias():
                     di = self.distancia(x1, y1, x2, y2)
 
                 # Sobrelapamiento minimo en Y [m]
-                Ovy = 0.1/20
+                #Ovy = 0.1/20
 
                 # Distancia entre weypoints [m]
-                dw = self.LY-Ovy
+                dw = self.LY-self.Ovy
 
                 # Numero de waypoints
-                nw = (di-Ovy)/dw
+                nw = (di-self.Ovy)/dw
                 num_wp_line = int(math.ceil(nw))
 
                 if num_wp_line==1:
-                    Ovy = 0.0
+                    self.Ovy = 0.0
                 else:
                     # Ovy recalculado  
-                    Ovy = (num_wp_line*self.LY-di)/(num_wp_line-1)
+                    self.Ovy = (num_wp_line*self.LY-di)/(num_wp_line-1)
+                    print("Ovy recalculado: ", self.Ovy)
                     # dw recalculado
                     dw = (di-self.LY)/(num_wp_line-1)
 
