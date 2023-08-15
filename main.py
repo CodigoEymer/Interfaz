@@ -233,7 +233,7 @@ class MainWindow(QMainWindow):
 		self.max_height_text.setText("10")
 		self.max_speed_text.setText("1")
 		self.max_acc_text.setText("100")
-		self.overlap_text.setText("11.658")
+		self.overlap_text.setText("1")
 		######
 		current_mision.set_ciudad(self.city_text.text())
 		current_mision.set_direccion(self.address_text.text())

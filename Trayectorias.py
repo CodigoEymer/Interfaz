@@ -4,8 +4,12 @@ import ast
 class Trayectorias():
     def __init__(self,coords,altura,cvH,cvV,sobrelapamiento, wp_recarga):
         #input
+        if wp_recarga == "[]":  
+            self.wp_recarga = [[-76.533004,3.371387]]
+        else:
+            self.wp_recarga = self.js_to_py(wp_recarga)
+        print(self.wp_recarga)
         self.vertices_global = self.js_to_py(coords)
-        self.wp_recarga = self.js_to_py(wp_recarga)
         self.vertices=[]
         self.wp_tramos= []
         self.wp_recargas=[]
@@ -210,10 +214,12 @@ class Trayectorias():
                 else:
                     # Ovy recalculado  
                     self.Ovy = (num_wp_line*self.LY-di)/(num_wp_line-1)
-                    print("Ovy recalculado: ", self.Ovy)
                     # dw recalculado
                     dw = (di-self.LY)/(num_wp_line-1)
-
+                print("Distancia de vertice a vertice: ", di)
+                print("Distancia entre wp recalculado: ", num_wp_line, dw)
+                print("Numero de wp", nw)
+                print("Ovy recalculado: ", self.Ovy)
                 dx = float(x2 - x1)
                 dy = float(y2 - y1)
                 
