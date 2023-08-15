@@ -523,7 +523,7 @@ border-radius: 10px;</string>
                         </size>
                        </property>
                        <property name="currentIndex">
-                        <number>1</number>
+                        <number>0</number>
                        </property>
                        <widget class="QWidget" name="page">
                         <property name="maximumSize">
@@ -581,8 +581,8 @@ border-radius: 10px;</string>
                                <property name="geometry">
                                 <rect>
                                  <x>0</x>
-                                 <y>0</y>
-                                 <width>100</width>
+                                 <y>-139</y>
+                                 <width>298</width>
                                  <height>675</height>
                                 </rect>
                                </property>
@@ -1433,7 +1433,7 @@ color: rgb(238, 238, 236);</string>
                                                <string notr="true">color: rgb(0, 0, 0);</string>
                                               </property>
                                               <property name="text">
-                                               <string>cm/s</string>
+                                               <string>m/s</string>
                                               </property>
                                              </widget>
                                             </item>
@@ -1547,7 +1547,7 @@ color: rgb(238, 238, 236);</string>
                                                <string notr="true">color: rgb(0, 0, 0);</string>
                                               </property>
                                               <property name="text">
-                                               <string>cm/s2</string>
+                                               <string>m/s2</string>
                                               </property>
                                              </widget>
                                             </item>
@@ -2599,7 +2599,7 @@ border-radius: 10px;</string>
                               </size>
                              </property>
                              <property name="currentIndex">
-                              <number>0</number>
+                              <number>1</number>
                              </property>
                              <widget class="QWidget" name="page_3">
                               <property name="maximumSize">
