@@ -141,7 +141,7 @@ class communication_module():
             print("Fallo al llamar el servicio: %s" %e)
 
     def dron_info(self):
-        dron=1
+        dron=self.ns[-1]
         rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         
         conectado_status = "conectado_status" + str(dron)
