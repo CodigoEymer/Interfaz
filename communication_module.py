@@ -21,20 +21,25 @@ class communication_module():
 
     Posicion = ["null","null","null"]
 
-    def __init__(self, parent,telemetria,dron,foto):
+    def __init__(self, parent,telemetria,dron,foto,ns):
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
             self.fotos=[]
             self.dron = dron
             self.foto = foto
-            rospy.init_node('srvComand_node', anonymous=True)
+            self.ns = ns
+            #rospy.init_node('srvComand_node', anonymous=True)
+            topiccamera ="/"+self.ns+"/mavros/camera/camera_info"
+            print("topiccamera: ",topiccamera)
+
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-            rospy.Subscriber("/dron1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
-            rospy.Subscriber("/dron1/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
-            rospy.Subscriber("/dron1/mavros/imu/data", Imu, self.imu_callback)
-            rospy.Subscriber("/dron1/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
-            rospy.Subscriber("/dron1/mavros/camera/image_raw",  Image, self.image_callback)
+           
+            rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+            rospy.Subscriber("/"+self.ns+"/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
+            rospy.Subscriber("/"+self.ns+"/mavros/imu/data", Imu, self.imu_callback)
+            rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
+            rospy.Subscriber("/"+self.ns+"/mavros/camera/image_raw",  Image, self.image_callback)
             self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
             
@@ -86,6 +91,8 @@ class communication_module():
         altitude = globalPositionCallback.altitude
         timestamp=d.datetime.now()
         hora_actualizacion = timestamp.strftime("%H:%M:%S")
+
+        print(self.ns+":latitude: "+str(altitude))
         
 
         self.Posicion[0] = latitude
@@ -123,9 +130,9 @@ class communication_module():
                 print("Falla al poner el parametro %s" %id)
         
     def set_param(self, id, value):
-        rospy.wait_for_service('/dron1/mavros/param/set')
+        rospy.wait_for_service("/"+self.ns+"/mavros/param/set")
         try:
-            set_param_srv = rospy.ServiceProxy('/dron1/mavros/param/set',ParamSet)
+            set_param_srv = rospy.ServiceProxy("/"+self.ns+"/mavros/param/set",ParamSet)
             param_value = ParamValue()
             param_value.integer = int(value)
             resp = set_param_srv(id, param_value)
@@ -135,8 +142,7 @@ class communication_module():
 
     def dron_info(self):
         dron=1
-        rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-        rospy.Subscriber("/dron1/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+        rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         
         conectado_status = "conectado_status" + str(dron)
         conectado = getattr(self.main,conectado_status)
@@ -198,7 +204,7 @@ class communication_module():
         salud_presion = ""
         for item in data.status:
 
-            if item.name == 'dron1/mavros: Heartbeat':
+            if item.name == self.ns+'/mavros: Heartbeat':
                     id = item.hardware_id
                     self.dron.set_hardware_id(id)
 
@@ -211,16 +217,17 @@ class communication_module():
                             self.dron.set_controladora(v.value)
 
 
-            if item.name == "dron1/mavros: Battery":
+            if item.name == self.ns+"/mavros: Battery":
                 for value in item.values:
                     if value.key == "Voltage":
                         self.dron.set_voltaje_inicial(str(value.value))
+                        print(self.ns+": voltage:"+str(value.value))
                     if value.key == "Remaining":
                         porcentaje = value.value
                         self.telemetria.set_porcentaje_bateria(porcentaje)
 
 
-            if item.name == "dron1/mavros: System":
+            if item.name == self.ns+"/mavros: System":
                 for value in item.values:
                     if value.key == "Battery":
                         if value.value == "Ok":
