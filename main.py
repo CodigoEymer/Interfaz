@@ -21,6 +21,7 @@ from Database.dron.dron import dron
 from Database.foto.foto import foto
 import config_module
 from communication_module import communication_module
+from protocolo import protocolo
 from user_settings import SecondWindow
 from mision_finalizada import MisionEndWindow
 import server
@@ -52,6 +53,11 @@ db_user_list=[]
 
 telemetria = telemetria()
 dron = dron()
+
+telemetriaV = []
+dronV = []
+fotoV = []
+
 current_usuario = usuarios()
 current_mision = mision()
 current_wp_recarga = wp_recarga_obj()
@@ -100,7 +106,11 @@ class MainWindow(QMainWindow):
 		self.timer.timeout.connect(self.flush_buffer)
 		self.timer.start(1000)  # Flush the buffer every 1 second
 		self.hide_all_frames()
-		self.commu_module = communication_module(self,telemetria,dron, foto)
+		#self.commu_module = communication_module(self,telemetria,dron, foto)
+		self.protocolo = protocolo(self,telemetriaV,dronV, fotoV)
+
+
+		
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
 			self.html = str(self.file.readAll())
@@ -272,7 +282,7 @@ class MainWindow(QMainWindow):
 		self.config.insertar_wp_region()
 		self.config.insertar_wp_recarga()
 		self.config.insertar_dron()
-		self.commu_module.setFlightParameters(self.config)
+		#self.commu_module.setFlightParameters(self.config)
 		telemetria.set_id_dron(self.config.id_dron)
 		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dron.get_velocidad_max()))
 
