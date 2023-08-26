@@ -6,7 +6,7 @@ from mavros_msgs.srv import ParamSet
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 import datetime as d
-from config_module import config_module
+from config_module import config_module, Insert_telemetria
 import os
 
 from diagnostic_msgs.msg import DiagnosticArray
@@ -41,10 +41,9 @@ class protocolo():
             self.telemetriaV.append(telemetriaN)
             self.dronV.append(dronN)
             self.fotoV.append(fotoN)
-
-            self.commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns)
-            self.ns_unicos.append(ns) 
-            print("ns:",ns)
+            config = Insert_telemetria()
+            self.commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns,config)
+            self.ns_unicos.append(ns)
             self.n_drones = len(self.ns_unicos)    
         rospy.sleep(1)
         

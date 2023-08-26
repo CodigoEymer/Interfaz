@@ -19,13 +19,11 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():  
-    def __init__(self, id_usuario = "", coordenadas = "",wp_recarga = None ,dron= None,mision = None):
+    def __init__(self, id_usuario = "", coordenadas = "",wp_recarga = None,mision = None):
         self.id_mision = ""
-        self.id_dron = ""
         self.id_usuario = id_usuario
         self.coordenadas = coordenadas
         self.wp_recarga = wp_recarga
-        self.dron = dron
         self.mision = mision
 
     def insertar_mision(self):
@@ -46,7 +44,6 @@ class config_module():
         self.id_mision = str(current_mission.get_id_mision())
         self.mision.set_id_mision(self.id_mision)
 
-
     def insertar_wp_region(self):
         prueba = wp_region_dao_imp(conn)
         wp_list = self.coordenadas
@@ -65,10 +62,6 @@ class config_module():
 
         return dwr
 
-    def generar_trayectoria(self):
-        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.mision.get_sobrelapamiento()),self.wp_recarga.get_wp())
-        return variables
-
     def getParameters(self):
         velocidad_cm = int(self.dron.get_velocidad_max())*100
         parameters = [self.dron.get_aceleracion_max(), velocidad_cm]
@@ -82,20 +75,23 @@ class multi_config_module():
         prueba = foto_dao_imp(conn)
         prueba.insert_batch(fotos)
 
-    def insertar_dron(self):
+    def insertar_dron(self,dron,id_mision):
+        self.id_dron = ""
         prueba = dron_dao_imp(conn)
-        self.dron.set_id_mision(self.id_mision)
-        prueba.insert_dron(self.dron)
-        current_dron = prueba.get_dron(self.id_mision) 
+        dron.set_id_mision(id_mision)
+        prueba.insert_dron(dron)
+        current_dron = prueba.get_dron(id_mision, dron.get_hardware_id()) 
         self.id_dron = str(current_dron.get_id_dron())
-        self.dron.set_id_dron(self.id_dron)
-
-    def insertar_telemetria(self,v_telemetria):
-        prueba = telemetria_dao_imp(conn)
-        prueba.insert_bash(v_telemetria)
+        dron.set_id_dron(self.id_dron)
 
 
     def insertar_wp_dron(self,Vwp,h):
         prueba = wp_dron_dao_imp(conn)
         for wp_dron in Vwp:
             prueba.insert_wp_dron(self.id_dron,wp_dron[0],wp_dron[1],h)
+
+
+class Insert_telemetria():
+    def insertar_telemetria(self,v_telemetria):
+        prueba = telemetria_dao_imp(conn)
+        prueba.insert_bash(v_telemetria)

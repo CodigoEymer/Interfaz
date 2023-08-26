@@ -21,7 +21,8 @@ class communication_module():
 
     Posicion = ["null","null","null"]
 
-    def __init__(self, parent,telemetria,dron,foto,ns):
+    def __init__(self, parent,telemetria,dron,foto,ns,config):
+            self.config= config
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
@@ -30,9 +31,6 @@ class communication_module():
             self.foto = foto
             self.ns = ns
             #rospy.init_node('srvComand_node', anonymous=True)
-            topiccamera ="/"+self.ns+"/mavros/camera/camera_info"
-            print("topiccamera: ",topiccamera)
-
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
            
             rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -111,8 +109,8 @@ class communication_module():
 
             self.v_telemetria.append(self.telemetria)
 
-            if(len(self.v_telemetria)==10):
-                self.main.config.insertar_telemetria(self.v_telemetria)
+            if(len(self.v_telemetria)==50):
+                self.config.insertar_telemetria(self.v_telemetria)
                 self.v_telemetria = []
 
     def setFlightParameters(self, conf_module):

@@ -330,15 +330,18 @@ class Trayectorias():
             
         return matriz_wp_drones
 
-    def calcular_wp_distancia(self,distancia_objetivo):
+    def calcular_wp_distancia(self,V,distancia_objetivo):
         distancia_actual = 0
-        V = self.wp_dron
         punto_actual = V[0]
         wp_retorno= []
+        self.wp_retorno_cartesian= []
         wp_tramos_actual = []
+        wp_tramos_actual_cartesian =[]
         self.wp_tramos = []
+        self.tramos_cartesian = []
         lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
         wp_tramos_actual.append((lat,long))
+        wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
         
         for i in range(1, len(V)):
             punto_siguiente = V[i]
@@ -347,38 +350,52 @@ class Trayectorias():
             if distancia_actual + distancia_al_siguiente == distancia_objetivo:
                 lat,long=self.to_geographic(punto_siguiente[0],punto_siguiente[1])
                 wp_retorno.append((lat,long))
+                self.wp_retorno_cartesian.append((punto_siguiente[0],punto_siguiente[1]))
                 #return wp_retorno
             elif distancia_actual + distancia_al_siguiente > distancia_objetivo:
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 
                 wp_retorno.append((lat,long))
-                
+                self.wp_retorno_cartesian.append((punto_siguiente[0],punto_siguiente[1]))
                 wp_tramos_actual.append((lat,long))
+                wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
                 indice = self.mejor_punto((lat,long))
                 wp_tramos_actual.append(self.wp_recargas[indice])
                 self.wp_tramos.append(wp_tramos_actual) 
+                self.tramos_cartesian.append(wp_tramos_actual_cartesian)
                 distancia_actual = 0
                 wp_tramos_actual= []
+                wp_tramos_actual_cartesian = []
                 punto_actual = punto_siguiente
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 wp_tramos_actual.append((lat,long))
+                wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
 
             else:
                 distancia_actual += distancia_al_siguiente
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 wp_tramos_actual.append((lat,long))
+                wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
                 punto_actual = punto_siguiente
 
         lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
         wp_tramos_actual.append((lat,long))
+        wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
         indice = self.mejor_punto((lat,long))
         wp_tramos_actual.append(self.wp_recargas[indice])                 
         self.wp_tramos.append(wp_tramos_actual)
+        self.tramos_cartesian.append(wp_tramos_actual_cartesian)
         
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo
     
     def get_tramos(self):
         return self.wp_tramos
+    
+    def get_wp_dron(self):
+        return self.wp_dron
+    
+    def get_wp_retorno_cartesian(self):
+        return self.wp_retorno_cartesian
     
     def calcular_distancia_total(self):
         V = self.wp_dron
