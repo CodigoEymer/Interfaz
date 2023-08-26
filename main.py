@@ -11,14 +11,14 @@ from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios
 from Database.usuarios.usuarios import usuarios
 
 from Database.wp_dron.wp_dron import wp_dron
-from Database.telemetria.telemetria import telemetria
+#from Database.telemetria.telemetria import telemetria
 
 from Database.mision.mision_dao_imp import mision_dao_imp
 from Database.mision.mision import mision
 
 from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
-from Database.dron.dron import dron
-from Database.foto.foto import foto
+#from Database.dron.dron import dron
+#from Database.foto.foto import foto
 import config_module
 from communication_module import communication_module
 from protocolo import protocolo
@@ -51,8 +51,8 @@ wp_recarga=[]
 area= []
 db_user_list=[]
 
-telemetria = telemetria()
-dron = dron()
+#telemetria = telemetria()
+#dron = dron()
 
 telemetriaV = []
 dronV = []
@@ -61,7 +61,7 @@ fotoV = []
 current_usuario = usuarios()
 current_mision = mision()
 current_wp_recarga = wp_recarga_obj()
-foto = foto()
+#foto = foto()
 
 class MainWindow(QMainWindow):
 
@@ -253,11 +253,11 @@ class MainWindow(QMainWindow):
 		current_mision.set_sobrelapamiento(self.overlap_text.text())
 
 
-		dron.set_aceleracion_max(self.max_acc_text.text())
-		dron.set_velocidad_max(self.max_speed_text.text())
-		dron.set_altura_max(self.max_height_text.text())
-		dron.set_cvH(self.vision_field_text.text())
-		dron.set_cvV(self.vision_field_text_2.text())
+		dronV[1].set_aceleracion_max(self.max_acc_text.text())
+		dronV[1].set_velocidad_max(self.max_speed_text.text())
+		dronV[1].set_altura_max(self.max_height_text.text())
+		dronV[1].set_cvH(self.vision_field_text.text())
+		dronV[1].set_cvV(self.vision_field_text_2.text())
 
 		# peso = self.peso_text.text()
 		# factor_seguridad = self.factor_seguridad_text.text()
@@ -276,24 +276,33 @@ class MainWindow(QMainWindow):
 		######
 		current_mision.set_dimension(str(area))
 		current_wp_recarga.set_wp(str(wp_recarga))
-		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,dron,current_mision)
+		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,dronV[1],current_mision)
 		
 		self.config.insertar_mision()
 		self.config.insertar_wp_region()
 		self.config.insertar_wp_recarga()
 		self.config.insertar_dron()
 		#self.commu_module.setFlightParameters(self.config)
-		telemetria.set_id_dron(self.config.id_dron)
-		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dron.get_velocidad_max()))
+		telemetriaV[1].set_id_dron(self.config.id_dron)
+		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[1].get_velocidad_max()))
 
 		Trayectorias = self.config.generar_trayectoria()
 
 		self.lista_wp = Trayectorias.ciclos()
 		
 		distancia_trayectoria = Trayectorias.calcular_distancia_total()
+		print("distancia_trayectoria",distancia_trayectoria)
+		dist_por_dron = distancia_trayectoria / self.protocolo.n_drones
+		print("dist_por_dron",dist_por_dron)
+		self.list_wp_limites = Trayectorias.calcular_wp_distancia(dist_por_dron)
+		print("self.list_wp_limites",self.list_wp_limites)
+
+		self.matriz_wp_drones = Trayectorias.dividir_listas(self.list_wp_limites, self.lista_wp)
+		print("self.matriz_wp_drones",self.matriz_wp_drones)
+
 		self.dist_label.setText(str(round(distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
-		self.wp_retorno_aut = Trayectorias.calcular_wp_retorno(distancia_wp_retorno)		# 6 
+		self.wp_retorno_aut = Trayectorias.calcular_wp_distancia(distancia_wp_retorno)		# 6 
 		self.wp_tramos = Trayectorias.get_tramos()
 
 		for item2 in self.wp_retorno_aut:
@@ -302,7 +311,7 @@ class MainWindow(QMainWindow):
 		for item in self.lista_wp:
 			handler.broadcast("#"+str(item))
 			
-		self.config.insertar_wp_dron(self.lista_wp,dron.get_altura_max())
+		self.config.insertar_wp_dron(self.lista_wp,dronV[1].get_altura_max())
 
 	def reanudar_mision(self):
 		self.cobertura.reanudar_mision()

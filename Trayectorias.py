@@ -314,7 +314,23 @@ class Trayectorias():
             indice = indice+1
         return indice_final
     
-    def calcular_wp_retorno(self,distancia_objetivo):
+    def dividir_listas(self, lista, lista_total):
+        matriz_wp_drones=[]
+        lista_wp = []
+        j=0
+        for item in lista_total:
+            lista_wp.append(item)
+            if j < len(lista):    
+                if lista[j]==item:
+                    j= j+1                   
+                    matriz_wp_drones.append(lista_wp)
+                    lista_wp = []
+            elif item == lista_total[-1]:
+                matriz_wp_drones.append(lista_wp)
+            
+        return matriz_wp_drones
+
+    def calcular_wp_distancia(self,distancia_objetivo):
         distancia_actual = 0
         V = self.wp_dron
         punto_actual = V[0]

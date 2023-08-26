@@ -24,9 +24,9 @@ class protocolo():
             self.dronV = dronV
             self.fotoV = fotoV
             self.ns_unicos = []
+            self.n_drones = 0
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-            #rospy.spin()
                  
     def drone_data(self,data):
 
@@ -44,8 +44,7 @@ class protocolo():
 
             self.commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns)
             self.ns_unicos.append(ns) 
-            print("ns:",ns)    
+            print("ns:",ns)
+            self.n_drones = len(self.ns_unicos)    
         rospy.sleep(1)
-
-# if __name__ == "__main__":
-#     protocolo(1,2)
+        

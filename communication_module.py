@@ -91,8 +91,6 @@ class communication_module():
         altitude = globalPositionCallback.altitude
         timestamp=d.datetime.now()
         hora_actualizacion = timestamp.strftime("%H:%M:%S")
-
-        print(self.ns+":latitude: "+str(altitude))
         
 
         self.Posicion[0] = latitude
@@ -221,7 +219,6 @@ class communication_module():
                 for value in item.values:
                     if value.key == "Voltage":
                         self.dron.set_voltaje_inicial(str(value.value))
-                        print(self.ns+": voltage:"+str(value.value))
                     if value.key == "Remaining":
                         porcentaje = value.value
                         self.telemetria.set_porcentaje_bateria(porcentaje)
