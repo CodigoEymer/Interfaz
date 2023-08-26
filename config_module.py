@@ -28,10 +28,6 @@ class config_module():
         self.dron = dron
         self.mision = mision
 
-    def insertar_fotos(self, fotos):
-        prueba = foto_dao_imp(conn)
-        prueba.insert_batch(fotos)
-
     def insertar_mision(self):
         prueba = mision_dao_imp(conn)
         date=d.date.today()
@@ -62,6 +58,30 @@ class config_module():
         prueba = wp_recarga_dao_imp(conn)
         prueba.insert_wp_recarga(self.wp_recarga)
 
+    def calcular_autonomia(self,peso,potenciaXKg,voltaje_b,capacidad_b, seguridad,factor_seguridad,velocidad):
+        corriente_empuje = 1000*(peso*potenciaXKg)/voltaje_b
+        autonomia_vuelo = capacidad_b*seguridad*60/(corriente_empuje*factor_seguridad)
+        dwr = autonomia_vuelo*60*velocidad/1000
+
+        return dwr
+
+    def generar_trayectoria(self):
+        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.mision.get_sobrelapamiento()),self.wp_recarga.get_wp())
+        return variables
+
+    def getParameters(self):
+        velocidad_cm = int(self.dron.get_velocidad_max())*100
+        parameters = [self.dron.get_aceleracion_max(), velocidad_cm]
+        return parameters
+    
+class multi_config_module():
+    def __init__(self,dron= None):
+        self.dron = dron
+
+    def insertar_fotos(self, fotos):
+        prueba = foto_dao_imp(conn)
+        prueba.insert_batch(fotos)
+
     def insertar_dron(self):
         prueba = dron_dao_imp(conn)
         self.dron.set_id_mision(self.id_mision)
@@ -79,20 +99,3 @@ class config_module():
         prueba = wp_dron_dao_imp(conn)
         for wp_dron in Vwp:
             prueba.insert_wp_dron(self.id_dron,wp_dron[0],wp_dron[1],h)
-
-
-    def calcular_autonomia(self,peso,potenciaXKg,voltaje_b,capacidad_b, seguridad,factor_seguridad,velocidad):
-        corriente_empuje = 1000*(peso*potenciaXKg)/voltaje_b
-        autonomia_vuelo = capacidad_b*seguridad*60/(corriente_empuje*factor_seguridad)
-        dwr = autonomia_vuelo*60*velocidad/1000
-
-        return dwr
-
-    def generar_trayectoria(self):
-        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.mision.get_sobrelapamiento()),self.wp_recarga.get_wp())
-        return variables
-
-    def getParameters(self):
-        velocidad_cm = int(self.dron.get_velocidad_max())*100
-        parameters = [self.dron.get_aceleracion_max(), velocidad_cm]
-        return parameters
