@@ -109,8 +109,8 @@ class communication_module():
 
             self.v_telemetria.append(self.telemetria)
 
-            if(len(self.v_telemetria)==50):
-                self.config.insertar_telemetria(self.v_telemetria)
+            if(len(self.v_telemetria)==1):
+                #self.config.insertar_telemetria(self.v_telemetria)
                 self.v_telemetria = []
 
     def setFlightParameters(self, conf_module):

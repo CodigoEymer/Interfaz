@@ -27,8 +27,10 @@ class Gestion():
 
     def wp_retorno_home(self,matriz_wp_drones, distancia_wp_retorno, trayectorias):
         self.matriz_general = []
+        self.wp_retorno_aut = []
         for wps in matriz_wp_drones:
-            self.wp_retorno_aut = trayectorias.calcular_wp_distancia(wps,distancia_wp_retorno)
+            aux = trayectorias.calcular_wp_distancia(wps,distancia_wp_retorno)
+            self.wp_retorno_aut.append(aux)
             self.wp_tramos = trayectorias.get_tramos() 
             self.matriz_general.append(self.wp_tramos)
         return self.matriz_general
@@ -37,9 +39,9 @@ class Gestion():
         for wp_dron in self.matriz_general:
             self.multi.insertar_wp_dron(wp_dron,max_height)
 
-    def coberturas(self,parent,lista_wp,progressBar_4,altura, wp_retorno_aut,finish_mission, ns):
+    def coberturas(self,parent,lista_wp,progressBar_4,altura,finish_mission, ns):
         for i in range(len(ns)):
-            cobertura = Cobertura(parent,lista_wp,progressBar_4,altura, wp_retorno_aut,self.matriz_general[i],finish_mission,ns[i])
+            cobertura = Cobertura(parent,lista_wp,progressBar_4,altura, self.wp_retorno_aut[i],self.matriz_general[i],finish_mission,ns[i])
             cobertura.StartMision()
 
 

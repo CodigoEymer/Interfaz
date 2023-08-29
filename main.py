@@ -69,7 +69,6 @@ class MainWindow(QMainWindow):
 
 	def __init__(self):
 		self.flag_telemetria = 0
-		self.wp_retorno_aut = None
 		self.wp_tramos = None
 		self.cobertura = None
 		self.config = config_module.config_module(None) 
@@ -304,18 +303,15 @@ class MainWindow(QMainWindow):
 		
 
 		self.matriz_wp_drones = trayectorias.dividir_listas(self.list_wp_limites, lista_wp_cartesian)
-		print("self.matriz_wp_drones: ",self.matriz_wp_drones)
 
 		self.dist_label.setText(str(round(distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
 
 		matriz_general = self.gestion.wp_retorno_home(self.matriz_wp_drones, distancia_wp_retorno, trayectorias)		# 6 
-		print("matriz_general: ",matriz_general)
 
 		for item2 in matriz_general:
 			for i in item2:
-				print("i: "+str(i[-1]))
-				handler.broadcast("?"+str(i[-1]))
+				handler.broadcast("?"+str(i[-2]))
 				
 
 		for item in self.lista_wp:
@@ -337,7 +333,7 @@ class MainWindow(QMainWindow):
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()
 		
-		self.gestion.coberturas(self,self.lista_wp,self.progressBar_4,altura, self.wp_retorno_aut,self.finish_mission,self.protocolo.ns_unicos)
+		self.gestion.coberturas(self,self.lista_wp,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
 		
 
 		

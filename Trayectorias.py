@@ -336,12 +336,10 @@ class Trayectorias():
         wp_retorno= []
         self.wp_retorno_cartesian= []
         wp_tramos_actual = []
-        wp_tramos_actual_cartesian =[]
         self.wp_tramos = []
         self.tramos_cartesian = []
         lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
         wp_tramos_actual.append((lat,long))
-        wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
         
         for i in range(1, len(V)):
             punto_siguiente = V[i]
@@ -358,33 +356,26 @@ class Trayectorias():
                 wp_retorno.append((lat,long))
                 self.wp_retorno_cartesian.append((punto_siguiente[0],punto_siguiente[1]))
                 wp_tramos_actual.append((lat,long))
-                wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
                 indice = self.mejor_punto((lat,long))
                 wp_tramos_actual.append(self.wp_recargas[indice])
                 self.wp_tramos.append(wp_tramos_actual) 
-                self.tramos_cartesian.append(wp_tramos_actual_cartesian)
                 distancia_actual = 0
                 wp_tramos_actual= []
-                wp_tramos_actual_cartesian = []
                 punto_actual = punto_siguiente
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 wp_tramos_actual.append((lat,long))
-                wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
 
             else:
                 distancia_actual += distancia_al_siguiente
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 wp_tramos_actual.append((lat,long))
-                wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
                 punto_actual = punto_siguiente
 
         lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
         wp_tramos_actual.append((lat,long))
-        wp_tramos_actual_cartesian.append((punto_actual[0],punto_actual[1]))
         indice = self.mejor_punto((lat,long))
         wp_tramos_actual.append(self.wp_recargas[indice])                 
         self.wp_tramos.append(wp_tramos_actual)
-        self.tramos_cartesian.append(wp_tramos_actual_cartesian)
         
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo
     
