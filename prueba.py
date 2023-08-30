@@ -5,9 +5,15 @@ import communication_module
 
 class Worker(QThread):
     dataLoaded = pyqtSignal(list)
-    
+    def __init__(self, commu_module):
+        super(Worker, self).__init__()
+        self.commu_module = commu_module
+
     def run(self):
         while(True):
-            data = communication_module.communication_module.Posicion
-            self.dataLoaded.emit(data)
+            
+            for comm in self.commu_module:
+                print(comm.ns)
+                data = comm.Posicion
+                self.dataLoaded.emit(data)
             time.sleep(1)

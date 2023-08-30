@@ -57,11 +57,11 @@ class Cobertura():
                 self.respuesta = 1
 
     def retorno(self,data):
-        text = "Waypoint alcanzado #"+ str(data.wp_seq)
+        text = "Waypoint alcanzado #"+ str(data.wp_seq) +" "+ self.ns
         self.main.print_console(text)
         self.progress_bar.setValue(data.wp_seq)
         if data.wp_seq==self.long_tramo:
-            self.main.print_console("Aterrizando")
+            self.main.print_console("Aterrizando "+ self.ns)
             self.modo_land()
             
 
@@ -69,7 +69,7 @@ class Cobertura():
         self.current_altitude = data.pose.position.z  
 
     def modo_estable(self):
-        self.main.print_console("Activando modo Estable")
+        self.main.print_console("Activando modo Estable "+ self.ns)
         rospy.wait_for_service("/"+self.ns+"/mavros/set_mode")
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
@@ -81,7 +81,7 @@ class Cobertura():
         rospy.wait_for_service("/"+self.ns+"/mavros/cmd/arming")
         arm_service = rospy.ServiceProxy("/"+self.ns+"/mavros/cmd/arming", CommandBool)
         arm_service(True)
-        self.main.print_console("Armando motores")
+        self.main.print_console("Armando motores "+ self.ns)
 
         # Esperar a que el drone este armado
         rate = rospy.Rate(10) # 10 Hz

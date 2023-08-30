@@ -308,19 +308,22 @@ class MainWindow(QMainWindow):
 		self.area_label.setText(str(round(area,2)))
 
 		matriz_general = self.gestion.wp_retorno_home(self.matriz_wp_drones, distancia_wp_retorno, trayectorias)		# 6 
-
-		for item2 in matriz_general:
-			for i in item2:
-				handler.broadcast("?"+str(i[-2]))
-				
-
-		for item in self.lista_wp:
-			handler.broadcast("#"+str(item))
+		
+		counter = 0
+		for dron in matriz_general:
+			for tramo in dron:
+				for wp in tramo:
+					if wp != tramo[-1]:
+						handler.broadcast("#"+str(counter)+str(wp))
+				handler.broadcast("?"+str(tramo[-2]))
+			handler.broadcast("&")
+			counter=counter+1
 
 		self.gestion.insertar_wp_drones(max_height)
 
 	def reanudar_mision(self):
-		self.cobertura.reanudar_mision()
+		self.gestion.reanudar_misiones()
+		
 
 	def db_fotos(self):
 		self.config.insertar_fotos(self.fotos)
@@ -338,7 +341,7 @@ class MainWindow(QMainWindow):
 
 		
 	def startThread(self):
-		self.thread = prueba.Worker()
+		self.thread = prueba.Worker(self.protocolo.commu_module)
 		self.thread.dataLoaded.connect(self.setData)
 		self.thread.start()
 
