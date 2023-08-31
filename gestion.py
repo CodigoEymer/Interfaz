@@ -41,7 +41,7 @@ class Gestion():
 
     def coberturas(self,parent,lista_wp,progressBar_4,altura,finish_mission, ns):
         for i in range(len(ns)):
-            self.cobertura = Cobertura(parent,lista_wp,progressBar_4,altura, self.wp_retorno_aut[i],self.matriz_general[i],finish_mission,ns[i])
+            self.cobertura = Cobertura(parent,lista_wp[i],progressBar_4,altura, self.wp_retorno_aut[i],self.matriz_general[i],finish_mission,ns[i])
             self.cobertura.StartMision()
 
     def reanudar_misiones(self):

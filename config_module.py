@@ -61,11 +61,6 @@ class config_module():
         dwr = autonomia_vuelo*60*velocidad/1000
 
         return dwr
-
-    def getParameters(self):
-        velocidad_cm = int(self.dron.get_velocidad_max())*100
-        parameters = [self.dron.get_aceleracion_max(), velocidad_cm]
-        return parameters
     
 class multi_config_module():
     def __init__(self,dron= None):

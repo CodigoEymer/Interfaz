@@ -243,7 +243,7 @@ class MainWindow(QMainWindow):
 		self.vision_field_text.setText("114.492")
 		self.vision_field_text_2.setText("98.7566")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("1")
+		self.max_speed_text.setText("4")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("1")
 		######
@@ -285,8 +285,13 @@ class MainWindow(QMainWindow):
 		self.config.insertar_mision()
 		self.config.insertar_wp_region()
 		self.config.insertar_wp_recarga()
+
 		self.gestion.insertar_drones(current_mision.get_id_mision())
-		#self.commu_module.setFlightParameters(self.config)
+
+		parameters =[max_acce, int(max_speed)*100]
+		for commu in self.protocolo.commu_module:
+			commu.setFlightParameters(parameters)
+
 		self.gestion.completar_telemetrias(telemetriaV)
 
 		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[1].get_velocidad_max()))
@@ -303,11 +308,18 @@ class MainWindow(QMainWindow):
 		
 
 		self.matriz_wp_drones = trayectorias.dividir_listas(self.list_wp_limites, lista_wp_cartesian)
+		self.list = []
+		for i in range(len(self.matriz_wp_drones)):
+			columns = []
+			for j in range(len(self.matriz_wp_drones[i])):
+				x,y = trayectorias.to_geographic(self.matriz_wp_drones[i][j][0], self.matriz_wp_drones[i][j][1])
+				columns.append((x,y))
+			self.list.append(columns)
 
 		self.dist_label.setText(str(round(distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
 
-		matriz_general = self.gestion.wp_retorno_home(self.matriz_wp_drones, distancia_wp_retorno, trayectorias)		# 6 
+		matriz_general = self.gestion.wp_retorno_home(self.matriz_wp_drones, distancia_wp_retorno, trayectorias)
 		
 		counter = 0
 		for dron in matriz_general:
@@ -336,7 +348,7 @@ class MainWindow(QMainWindow):
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()
 		
-		self.gestion.coberturas(self,self.lista_wp,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
+		self.gestion.coberturas(self,self.list,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
 		
 
 		

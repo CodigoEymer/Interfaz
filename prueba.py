@@ -13,7 +13,6 @@ class Worker(QThread):
         while(True):
             
             for comm in self.commu_module:
-                print(comm.ns)
                 data = comm.Posicion
                 self.dataLoaded.emit(data)
             time.sleep(1)

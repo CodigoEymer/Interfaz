@@ -113,8 +113,7 @@ class communication_module():
                 #self.config.insertar_telemetria(self.v_telemetria)
                 self.v_telemetria = []
 
-    def setFlightParameters(self, conf_module):
-        parameters = conf_module.getParameters()
+    def setFlightParameters(self, parameters):
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
