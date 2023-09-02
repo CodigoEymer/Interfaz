@@ -19,7 +19,6 @@ from Database.foto.foto import foto
 
 class communication_module():
 
-    Posicion = ["null","null","null"]
 
     def __init__(self, parent,telemetria,dron,foto,ns,config):
             self.config= config
@@ -30,6 +29,8 @@ class communication_module():
             self.dron = dron
             self.foto = foto
             self.ns = ns
+            self.Posicion = ["null","null","null"]
+
             #rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
            
