@@ -40,11 +40,13 @@ class Gestion():
             self.multi.insertar_wp_dron(wp_dron,max_height)
 
     def coberturas(self,parent,lista_wp,progressBar_4,altura,finish_mission, ns):
+        self.coberturas=[]
         for i in range(len(ns)):
             self.cobertura = Cobertura(parent,lista_wp[i],progressBar_4,altura, self.wp_retorno_aut[i],self.matriz_general[i],finish_mission,ns[i])
             self.cobertura.StartMision()
+            self.coberturas.append(self.cobertura)
 
     def reanudar_misiones(self):
-        for i in self.matriz_general:
-            self.cobertura.reanudar_mision()
+        for cobertura in self.coberturas:
+            cobertura.reanudar_mision()
     
