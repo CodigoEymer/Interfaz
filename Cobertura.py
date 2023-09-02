@@ -52,7 +52,6 @@ class Cobertura():
         if self.start_mision == 1:
 
             if(self.f_estable ==1):
-                print(self.ns, 1)
                 self.modo_estable() 
                 self.f_estable = 0
                 self.armar_dron()
@@ -106,7 +105,6 @@ class Cobertura():
             flightModeService(custom_mode="STABILIZE")
         except rospy.ServiceException as e:
             self.main.print_console("service set_mode call failed: %s. STABLE Mode could not be set. Check that GPS is enabled"%e)
-        print(self.ns,"modo estable")
 
     def armar_dron(self):
         rospy.wait_for_service("/"+self.ns+"/mavros/cmd/arming")
