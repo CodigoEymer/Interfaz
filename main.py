@@ -243,7 +243,7 @@ class MainWindow(QMainWindow):
 		self.vision_field_text.setText("114.492")
 		self.vision_field_text_2.setText("98.7566")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("4")
+		self.max_speed_text.setText("5")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("1")
 		######

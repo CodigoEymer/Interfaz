@@ -4,7 +4,7 @@ import rospy
 from std_msgs.msg import String
 from sensor_msgs.msg import NavSatFix
 from mavros_msgs.srv import *
-from mavros_msgs.msg import WaypointList, Waypoint, State, WaypointReached
+from mavros_msgs.msg import WaypointList, Waypoint, State, WaypointReached, StatusText
 from geometry_msgs.msg import PoseStamped
 
 
@@ -25,34 +25,63 @@ class Cobertura():
         self.end=0
         self.msn_end_w = msn_end_w
         self.ns = ns
-        print("/"+self.ns+"/mavros/mission/reached")
-        rospy.Subscriber("/"+self.ns+"/mavros/local_position/pose", PoseStamped, self.pose_callback)
-        rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.retorno)
+        self.start_mision = 0
+        
 
-    def estado_vuelo(self, state):
-        if not state.armed and self.respuesta==1:
-            self.msn_end_w.exec_()
-            self.respuesta=0
+    def status_callback(self, status):
+        self.status = status
+        # if not state.armed and self.respuesta==1:
+        #     self.msn_end_w.exec_()
+        #     self.respuesta=0
 
     def StartMision(self):
+        self.start_mision = 1
+        self.f_estable =1
+        self.f_armar = 0
+        self.f_guided =0
+        self.f_despegar = 0
+        rospy.Subscriber("/"+self.ns+"/mavros/local_position/pose", PoseStamped, self.pose_callback)
+        rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.retorno)
+        rospy.Subscriber("/"+self.ns+"/mavros/state", State,self.estado_vuelo)
+        rospy.Subscriber("/"+self.ns+"/mavros/statustext/recv", StatusText,self.status_callback)
+        
 
-        self.modo_estable()
-        self.armar_dron()
-        self.modo_guiado()
-        self.despegar()
-        if len(self.wp_retorno_aut)==0:
-            self.set_wp(self.lista_wp)
-            self.modo_automatico()
-            self.respuesta = 1
-        else:
-            self.set_wp(self.wp_tramos[self.tramo_actual])
-            self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
-            self.modo_automatico()
+
+    def estado_vuelo(self,state):
+        self.estado = state
+        if self.start_mision == 1:
+
+            if(self.f_estable ==1):
+                print(self.ns, 1)
+                self.modo_estable() 
+                self.f_estable = 0
+                self.armar_dron()
+                self.f_armar = 1
+            if(self.estado.armed and self.f_armar == 1):
+
+                self.modo_guiado()
+                self.f_armar = 0
+                self.f_guided =1
+            if(self.estado.guided and self.f_guided == 1):
+                self.despegar()
+                self.f_guided = 0
+                self.f_despegar = 1
+            if( self.f_despegar == 1 and "EKF3 IMU" in self.status.text and "yaw alignment complete" in self.status.text):
+                if len(self.wp_retorno_aut)==0:
+                    self.set_wp(self.lista_wp)
+                    self.modo_automatico()
+                    self.respuesta = 1
+                else:
+                    self.set_wp(self.wp_tramos[self.tramo_actual])
+                    self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
+                    self.modo_automatico()
+                self.f_despegar = 0
 
     def reanudar_mision(self):
         self.tramo_actual=self.tramo_actual+1 
         if self.tramo_actual < self.n_tramos:               
-            self.StartMision()
+            self.start_mision = 1
+            self.f_estable =1
             if self.tramo_actual==self.n_tramos-1:
                 self.respuesta = 1
 
@@ -63,6 +92,7 @@ class Cobertura():
         if data.wp_seq==self.long_tramo:
             self.main.print_console("Aterrizando "+ self.ns)
             self.modo_land()
+            self.start_mision = 0
             
 
     def pose_callback(self,data):
@@ -76,20 +106,13 @@ class Cobertura():
             flightModeService(custom_mode="STABILIZE")
         except rospy.ServiceException as e:
             self.main.print_console("service set_mode call failed: %s. STABLE Mode could not be set. Check that GPS is enabled"%e)
+        print(self.ns,"modo estable")
 
     def armar_dron(self):
         rospy.wait_for_service("/"+self.ns+"/mavros/cmd/arming")
         arm_service = rospy.ServiceProxy("/"+self.ns+"/mavros/cmd/arming", CommandBool)
         arm_service(True)
         self.main.print_console("Armando motores "+ self.ns)
-
-        # Esperar a que el drone este armado
-        rate = rospy.Rate(10) # 10 Hz
-        while not rospy.is_shutdown():
-            state = rospy.wait_for_message("/"+self.ns+"/mavros/state", State, timeout=5)
-            if state.armed:
-                break
-            rate.sleep()
 
     def modo_guiado(self):
 
@@ -102,7 +125,7 @@ class Cobertura():
             self.main.print_console("service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
     def despegar(self):
-        self.main.print_console("despegando dron")
+        self.main.print_console(self.ns+": despegando")
         rospy.wait_for_service("/"+self.ns+"/mavros/cmd/takeoff")
 
         try:
