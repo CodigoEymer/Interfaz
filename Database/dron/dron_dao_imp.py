@@ -28,23 +28,23 @@ class dron_dao_imp:
         cursor.close()
         return res_rows
 
-    def get_all_drones(self):
+    def get_all_drones_mision(self, Id_mision):
         self.drones = []
         cursor = self.connection.cursor()
-        query="select id_dron, id_mision, aceleracion_max, velocidad_max,altura_max, cvH,controladora,voltaje_inicial,tipo,cvV,hardware_id from Dron"
+        query="select id_dron, id_mision, aceleracion_max, velocidad_max,altura_max, cvH,controladora,voltaje_inicial,tipo,cvV,hardware_id from Dron where id_mision= '" + str(Id_mision)+"'"
         cursor.execute(query)
         tupla = cursor.fetchall()
         n_filas = len(tupla)
         for i in range(n_filas):
-            user = dron.dron(tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8]),tupla[i][9]
+            user = dron.dron(tupla[i][1],tupla[i][2],tupla[i][3],tupla[i][4],tupla[i][5],tupla[i][6],tupla[i][7],tupla[i][8],tupla[9],tupla[10])
             self.drones.append(user)
         cursor.close()
         return self.drones
 
-    def get_dron(self,Id_mision):
+    def get_dron(self,Id_mision,hardware_id):
         res_dron= None
         cursor = self.connection.cursor()
-        query="select id_dron, id_mision, aceleracion_max, velocidad_max,altura_max, cvH,controladora,voltaje_inicial,tipo,cvV,hardware_id from Dron where id_mision= '" + str(Id_mision)+"'"
+        query="select id_dron, id_mision, aceleracion_max, velocidad_max,altura_max, cvH,controladora,voltaje_inicial,tipo,cvV,hardware_id from Dron where id_mision= '" + str(Id_mision)+"' and hardware_id = '"+str(hardware_id)+"'"
         cursor.execute(query)
         tupla = cursor.fetchone()
         res_dron = dron.dron(tupla[0],tupla[1],tupla[2],tupla[3],tupla[4],tupla[5],tupla[6],tupla[7],tupla[8],tupla[9],tupla[10])

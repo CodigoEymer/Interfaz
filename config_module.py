@@ -19,18 +19,12 @@ datos = [DB_HOST, DB_USER, DB_PASS, DB_NAME]
 conn = MySQLdb.connect(*datos)
 
 class config_module():  
-    def __init__(self, id_usuario = "", coordenadas = "",wp_recarga = None ,dron= None,mision = None):
+    def __init__(self, id_usuario = "", coordenadas = "",wp_recarga = None,mision = None):
         self.id_mision = ""
-        self.id_dron = ""
         self.id_usuario = id_usuario
         self.coordenadas = coordenadas
         self.wp_recarga = wp_recarga
-        self.dron = dron
         self.mision = mision
-
-    def insertar_fotos(self, fotos):
-        prueba = foto_dao_imp(conn)
-        prueba.insert_batch(fotos)
 
     def insertar_mision(self):
         prueba = mision_dao_imp(conn)
@@ -50,7 +44,6 @@ class config_module():
         self.id_mision = str(current_mission.get_id_mision())
         self.mision.set_id_mision(self.id_mision)
 
-
     def insertar_wp_region(self):
         prueba = wp_region_dao_imp(conn)
         wp_list = self.coordenadas
@@ -62,17 +55,29 @@ class config_module():
         prueba = wp_recarga_dao_imp(conn)
         prueba.insert_wp_recarga(self.wp_recarga)
 
-    def insertar_dron(self):
-        prueba = dron_dao_imp(conn)
-        self.dron.set_id_mision(self.id_mision)
-        prueba.insert_dron(self.dron)
-        current_dron = prueba.get_dron(self.id_mision) 
-        self.id_dron = str(current_dron.get_id_dron())
-        self.dron.set_id_dron(self.id_dron)
+    def calcular_autonomia(self,peso,potenciaXKg,voltaje_b,capacidad_b, seguridad,factor_seguridad,velocidad):
+        corriente_empuje = 1000*(peso*potenciaXKg)/voltaje_b
+        autonomia_vuelo = capacidad_b*seguridad*60/(corriente_empuje*factor_seguridad)
+        dwr = autonomia_vuelo*60*velocidad/(1000*10)
 
-    def insertar_telemetria(self,v_telemetria):
-        prueba = telemetria_dao_imp(conn)
-        prueba.insert_bash(v_telemetria)
+        return dwr
+    
+class multi_config_module():
+    def __init__(self,dron= None):
+        self.dron = dron
+
+    def insertar_fotos(self, fotos):
+        prueba = foto_dao_imp(conn)
+        prueba.insert_batch(fotos)
+
+    def insertar_dron(self,dron,id_mision):
+        self.id_dron = ""
+        prueba = dron_dao_imp(conn)
+        dron.set_id_mision(id_mision)
+        prueba.insert_dron(dron)
+        current_dron = prueba.get_dron(id_mision, dron.get_hardware_id()) 
+        self.id_dron = str(current_dron.get_id_dron())
+        dron.set_id_dron(self.id_dron)
 
 
     def insertar_wp_dron(self,Vwp,h):
@@ -81,18 +86,7 @@ class config_module():
             prueba.insert_wp_dron(self.id_dron,wp_dron[0],wp_dron[1],h)
 
 
-    def calcular_autonomia(self,peso,potenciaXKg,voltaje_b,capacidad_b, seguridad,factor_seguridad,velocidad):
-        corriente_empuje = 1000*(peso*potenciaXKg)/voltaje_b
-        autonomia_vuelo = capacidad_b*seguridad*60/(corriente_empuje*factor_seguridad)
-        dwr = autonomia_vuelo*60*velocidad/1000
-
-        return dwr
-
-    def generar_trayectoria(self):
-        variables = Trayectorias.Trayectorias(self.coordenadas,float(self.dron.get_altura_max()), float(self.dron.get_cvH()),float(self.dron.get_cvV()),float(self.mision.get_sobrelapamiento()),self.wp_recarga.get_wp())
-        return variables
-
-    def getParameters(self):
-        velocidad_cm = int(self.dron.get_velocidad_max())*100
-        parameters = [self.dron.get_aceleracion_max(), velocidad_cm]
-        return parameters
+class Insert_telemetria():
+    def insertar_telemetria(self,v_telemetria):
+        prueba = telemetria_dao_imp(conn)
+        prueba.insert_bash(v_telemetria)

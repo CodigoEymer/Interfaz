@@ -40,7 +40,7 @@
               timeout: 1000
             },
             shapeOptions: {
-              color: '#00FF00'
+              color: '#3772FF '
             }
           },
           marker: {
@@ -89,7 +89,14 @@
         websocket.onopen = function() {
         websocket.send(mensaje);
         };
-         
+        colors=[
+          "#8A00AD",
+          "#06AD00",
+          "#0000FF",
+          "#FF00FF",
+          "#FFFF00",
+          "#00FFFF"
+        ]
         websocket.onmessage = function(event) {
           
           if (event.data[0] == "?"){
@@ -103,16 +110,17 @@
 
             var circle1 = L.circle(wp2, {
                 radius: 5, // Radio del círculo en metros
-                color: 'red', // Color del borde del círculo
+                color: '#FF0000', // Color del borde del círculo
                 fillColor: '#FF0000', // Color de relleno del círculo
-                fillOpacity: 0.5 // Opacidad del relleno del círculo
             }).addTo(map);
 
           }
-          if (event.data[0] == "#"){
+          else if (event.data[0] == "#"){
             var dato = event.data;
-            dato = dato.replace("#","")
-            var sin_comillas = dato.slice(1,-1);
+            let counter = parseInt(event.data[1])
+            let dato2 = dato.slice(0,1)+dato.slice(2)
+            dato2 = dato2.replace("#","")
+            var sin_comillas = dato2.slice(1,-1);
             var tupla = sin_comillas.split(",");
             var latitud=Number(tupla[0]);
             var longitud=Number(tupla[1]);
@@ -120,14 +128,14 @@
             
             var circle1 = L.circle(wp, {
                 radius: 3, // Radio del círculo en metros
-                color: 'blue', // Color del borde del círculo
-                fillColor: '#0000FF', // Color de relleno del círculo
-                fillOpacity: 0.5 // Opacidad del relleno del círculo
+                color: colors[counter], // Color del borde del círculo
+                fillColor: colors[counter], // Color de relleno del círculo
+                fillOpacity: 1
             }).addTo(map);
             
             linePoints.push(wp);           
           }
-          if (event.data[0] == "_"){
+          else if (event.data[0] == "_"){
             var dato2 = event.data;
             dato2 = dato2.replace("_","")
             var sin_comillas2 = dato2.slice(1,-1);
@@ -138,13 +146,13 @@
 
             var circle1 = L.circle(wp2, {
                 radius: 0.5, // Radio del círculo en metros
-                color: 'black', // Color del borde del círculo
-                fillColor: '#0000FF', // Color de relleno del círculo
-                fillOpacity: 0.5 // Opacidad del relleno del círculo
+                color: '#000000', // Color del borde del círculo
+                fillColor: '#000000', // Color de relleno del círculo
+                fillOpacity: 1 // Opacidad del relleno del círculo
             }).addTo(map);
           }
-          else{
-            L.polyline(linePoints, {color: 'green'}).addTo(map);
+          else if (event.data[0] == "&"){
+            L.polyline(linePoints, {color: '#3772FF'}).addTo(map);
           }
         };
 

@@ -314,13 +314,30 @@ class Trayectorias():
             indice = indice+1
         return indice_final
     
-    def calcular_wp_retorno(self,distancia_objetivo):
+    def dividir_listas(self, lista, lista_total):
+        matriz_wp_drones=[]
+        lista_wp = []
+        j=0
+        for item in lista_total:
+            lista_wp.append(item)
+            if j < len(lista):    
+                if lista[j]==item:
+                    j= j+1                   
+                    matriz_wp_drones.append(lista_wp)
+                    lista_wp = []
+            elif item == lista_total[-1]:
+                matriz_wp_drones.append(lista_wp)
+            
+        return matriz_wp_drones
+
+    def calcular_wp_distancia(self,V,distancia_objetivo):
         distancia_actual = 0
-        V = self.wp_dron
         punto_actual = V[0]
         wp_retorno= []
+        self.wp_retorno_cartesian= []
         wp_tramos_actual = []
         self.wp_tramos = []
+        self.tramos_cartesian = []
         lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
         wp_tramos_actual.append((lat,long))
         
@@ -331,12 +348,13 @@ class Trayectorias():
             if distancia_actual + distancia_al_siguiente == distancia_objetivo:
                 lat,long=self.to_geographic(punto_siguiente[0],punto_siguiente[1])
                 wp_retorno.append((lat,long))
+                self.wp_retorno_cartesian.append((punto_siguiente[0],punto_siguiente[1]))
                 #return wp_retorno
             elif distancia_actual + distancia_al_siguiente > distancia_objetivo:
                 lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
                 
                 wp_retorno.append((lat,long))
-                
+                self.wp_retorno_cartesian.append((punto_siguiente[0],punto_siguiente[1]))
                 wp_tramos_actual.append((lat,long))
                 indice = self.mejor_punto((lat,long))
                 wp_tramos_actual.append(self.wp_recargas[indice])
@@ -363,6 +381,12 @@ class Trayectorias():
     
     def get_tramos(self):
         return self.wp_tramos
+    
+    def get_wp_dron(self):
+        return self.wp_dron
+    
+    def get_wp_retorno_cartesian(self):
+        return self.wp_retorno_cartesian
     
     def calcular_distancia_total(self):
         V = self.wp_dron

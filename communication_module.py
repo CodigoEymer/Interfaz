@@ -19,9 +19,9 @@ from Database.foto.foto import foto
 
 class communication_module():
 
-    Posicion = ["null","null","null"]
 
-    def __init__(self, parent,telemetria,dron,foto,ns):
+    def __init__(self, parent,telemetria,dron,foto,ns,config):
+            self.config= config
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
@@ -29,10 +29,9 @@ class communication_module():
             self.dron = dron
             self.foto = foto
             self.ns = ns
-            #rospy.init_node('srvComand_node', anonymous=True)
-            topiccamera ="/"+self.ns+"/mavros/camera/camera_info"
-            print("topiccamera: ",topiccamera)
+            self.Posicion = ["null","null","null"]
 
+            #rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
            
             rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -91,8 +90,6 @@ class communication_module():
         altitude = globalPositionCallback.altitude
         timestamp=d.datetime.now()
         hora_actualizacion = timestamp.strftime("%H:%M:%S")
-
-        print(self.ns+":latitude: "+str(altitude))
         
 
         self.Posicion[0] = latitude
@@ -113,12 +110,11 @@ class communication_module():
 
             self.v_telemetria.append(self.telemetria)
 
-            if(len(self.v_telemetria)==10):
-                self.main.config.insertar_telemetria(self.v_telemetria)
+            if(len(self.v_telemetria)==1):
+                #self.config.insertar_telemetria(self.v_telemetria)
                 self.v_telemetria = []
 
-    def setFlightParameters(self, conf_module):
-        parameters = conf_module.getParameters()
+    def setFlightParameters(self, parameters):
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
@@ -221,7 +217,6 @@ class communication_module():
                 for value in item.values:
                     if value.key == "Voltage":
                         self.dron.set_voltaje_inicial(str(value.value))
-                        print(self.ns+": voltage:"+str(value.value))
                     if value.key == "Remaining":
                         porcentaje = value.value
                         self.telemetria.set_porcentaje_bateria(porcentaje)
