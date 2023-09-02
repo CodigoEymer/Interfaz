@@ -4,7 +4,7 @@ import ast
 class Trayectorias():
     def __init__(self,coords,altura,cvH,cvV,sobrelapamiento, wp_recarga):
         #input
-        if wp_recarga == "[]":  
+        if wp_recarga == []:  
             self.wp_recarga = [[-76.533004,3.371387]]
         else:
             self.wp_recarga = self.js_to_py(wp_recarga)
@@ -22,12 +22,9 @@ class Trayectorias():
         # Campo de vision
         self.LX = 2*altura*math.tan((cvH*math.pi/180)/2)/1000
         self.LY = 2*altura*math.tan((cvV*math.pi/180)/2)/1000
-        print("Lx: ", self.LX*1000, "m")
-        print("Ly: ", self.LY*1000, "m")
         # Sobrelapamiento minimo en Y
         self.overlap=sobrelapamiento/1000
         self.Ovy = sobrelapamiento/1000
-        print("Ovy: ", self.Ovy*1000, "m")
         # Distancia entre vertices
         self.di = 0
         self.p = len(self.vertices)
@@ -35,22 +32,17 @@ class Trayectorias():
         self.apotema()
        # Distancia entre anillos
         self.Ovx = 0.0
-        print("Ovx: ", self.Ovx*1000, "m")
         self.dr = self.LX-self.Ovx
-        print("dr: ", self.dr*1000, "m")
         # Numero de anillos
         self.nr = (self.dcp-self.Ovx)/self.dr
         self.num_rings = int(math.ceil(self.nr))
-        print("nr: ", self.nr, self.num_rings)
         if self.num_rings==1:
             self.Ovx = 0.0
         else:
             #Ovx recalculado
             self.Ovx=(self.num_rings*self.LX-self.dcp)/(self.num_rings-1)
-            print("O^vx: ", self.Ovx*1000, "m")
             #dr recalculado
             self.dr=(self.dcp-self.LX)/(self.num_rings-1)
-            print("d^r: ", self.dr*1000, "m")
             
     def js_to_py(self, dict):
         cadena = str(dict)
@@ -113,7 +105,6 @@ class Trayectorias():
             distance = abs(dx * (centroid_y - y1) - dy * (centroid_x - x1)) / math.sqrt(dx**2 + dy**2)
             if distance < self.dcp:
                 self.dcp = distance
-        print("dcp: ", self.dcp*1000, "m")
 
     def intersection_point(self, p1, p2, p3, p4):
         x1 = float(p1[0]) 
@@ -205,27 +196,22 @@ class Trayectorias():
                         di = self.distancia(x1, y1, x2, y2)-(self.LX/(math.tan(angleY)))
                 else:
                     di = self.distancia(x1, y1, x2, y2)
-                print("d: ", di*1000, "m")
                 # Sobrelapamiento minimo en Y [m]
                 self.Ovy = self.overlap
 
                 # Distancia entre weypoints [m]
                 dw = self.LY-self.Ovy
-                print("dw: ", dw*1000, " m")
                 
                 # Numero de waypoints
                 nw = (di-self.Ovy)/dw
                 num_wp_line = int(math.ceil(nw))
-                print("nw", nw, num_wp_line)
                 # Ovy recalculado
                 if num_wp_line==1:
                     self.Ovy = 0.0
                 else:
                     self.Ovy = (num_wp_line*self.LY-di)/(num_wp_line-1)
-                    print("O^vy': ", self.Ovy*1000, "m")
                     # dw recalculado
                     dw = (di-self.LY)/(num_wp_line-1)
-                    print("d^w: ", dw*1000, "m")
                 
                 
                 dx = float(x2 - x1)
