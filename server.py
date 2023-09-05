@@ -25,7 +25,4 @@ class WebSocketHandler(QObject):
         socket.deleteLater()
 
     def broadcast(self, message):
-        c=0
-        for client in self.clients:
-            client.sendTextMessage(message)
-            c=c+1
+        self.clients[0].sendTextMessage(message)

@@ -15,4 +15,4 @@ class Worker(QThread):
             for comm in self.commu_module:
                 data = comm.Posicion
                 self.dataLoaded.emit(data)
-                time.sleep(2)
+                time.sleep(1)
