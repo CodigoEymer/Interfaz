@@ -24,25 +24,16 @@ class Gestion():
         for telemetria in telemetriaV:
             telemetria.set_id_dron(self.dronV[idron].get_id_dron())
             idron = idron+1
-
-    def wp_retorno_home(self,matriz_wp_drones, distancia_wp_retorno, trayectorias):
-        self.matriz_general = []
-        self.wp_retorno_aut = []
-        for wps in matriz_wp_drones:
-            aux = trayectorias.calcular_wp_distancia(wps,distancia_wp_retorno)
-            self.wp_retorno_aut.append(aux)
-            self.wp_tramos = trayectorias.get_tramos() 
-            self.matriz_general.append(self.wp_tramos)
-        return self.matriz_general
     
-    def insertar_wp_drones(self,max_height):
+    def insertar_wp_drones(self,max_height,matriz_general):
+        self.matriz_general = matriz_general
         for wp_dron in self.matriz_general:
             self.multi.insertar_wp_dron(wp_dron,max_height)
 
-    def coberturas(self,parent,lista_wp,progressBar_4,altura,finish_mission, ns):
+    def coberturas(self,parent,wp_retorno_aut,progressBar_4,altura,finish_mission, ns):
         self.coberturas=[]
         for i in range(len(ns)):
-            self.cobertura = Cobertura(parent,lista_wp[i],progressBar_4,altura, self.wp_retorno_aut[i],self.matriz_general[i],finish_mission,ns[i])
+            self.cobertura = Cobertura(parent,progressBar_4,altura, wp_retorno_aut[i],self.matriz_general[i],finish_mission,ns[i])
             self.cobertura.StartMision()
             self.coberturas.append(self.cobertura)
 

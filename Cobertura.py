@@ -10,29 +10,29 @@ from geometry_msgs.msg import PoseStamped
 
 class Cobertura():
 
-    def __init__(self, parent, lista_wp, progress_bar,altura,wp_retorno_aut,wp_tramos, msn_end_w, ns):
+    def __init__(self, parent, progress_bar,altura,wp_retorno_aut,wp_tramos, msn_end_w, ns):
         self.main = parent
         self.progress_bar = progress_bar
-        self.lista_wp = lista_wp
         self.wp_tramos = wp_tramos
         self.n_tramos = len(self.wp_tramos)       
         self.altura = float(altura)
         self.current_altitude = None
         self.wp_retorno_aut = wp_retorno_aut
         self.tramo_actual = 0
-        self.long_tramo = len(self.lista_wp)-1
         self.respuesta = 0
+        self.long_tramo = 0
         self.end=0
         self.msn_end_w = msn_end_w
         self.ns = ns
         self.start_mision = 0
+        print(self.ns,self.wp_tramos[0])
         
 
     def status_callback(self, status):
         self.status = status
-        # if not state.armed and self.respuesta==1:
-        #     self.msn_end_w.exec_()
-        #     self.respuesta=0
+        if not self.estado.armed and self.respuesta==1:
+            self.msn_end_w.exec_()
+            self.respuesta=0
 
     def StartMision(self):
         self.start_mision = 1
@@ -66,14 +66,12 @@ class Cobertura():
                 self.f_guided = 0
                 self.f_despegar = 1
             if( self.f_despegar == 1 and "EKF3 IMU" in self.status.text and "yaw alignment complete" in self.status.text):
-                if len(self.wp_retorno_aut)==0:
-                    self.set_wp(self.lista_wp)
-                    self.modo_automatico()
+               
+                self.set_wp(self.wp_tramos[self.tramo_actual])
+                self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
+                self.modo_automatico()
+                if self.tramo_actual==self.n_tramos-1:
                     self.respuesta = 1
-                else:
-                    self.set_wp(self.wp_tramos[self.tramo_actual])
-                    self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
-                    self.modo_automatico()
                 self.f_despegar = 0
 
     def reanudar_mision(self):
@@ -81,8 +79,7 @@ class Cobertura():
         if self.tramo_actual < self.n_tramos:               
             self.start_mision = 1
             self.f_estable =1
-            if self.tramo_actual==self.n_tramos-1:
-                self.respuesta = 1
+            
 
     def retorno(self,data):
         text = self.ns+": Waypoint alcanzado #"+ str(data.wp_seq) 
@@ -182,7 +179,7 @@ class Cobertura():
         except rospy.ServiceException as e:
             self.main.print_console(self.ns+": Service set_mode call failed: %s. AUTO Mode could not be set. Check that GPS is enabled"%e)
 
-        self.progress_bar.setMaximum(len(self.lista_wp)) 
+        #self.progress_bar.setMaximum(len(self.lista_wp)) 
 
     def modo_rtl(self):
         try:

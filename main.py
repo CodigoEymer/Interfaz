@@ -296,42 +296,24 @@ class MainWindow(QMainWindow):
 
 		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[1].get_velocidad_max()))
 
-		trayectorias = Trayectorias(coords,float(max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
+		self.trayect = Trayectorias(coords,float(max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
+		matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno)
 
-		self.lista_wp = trayectorias.ciclos()
-		
-		distancia_trayectoria = trayectorias.calcular_distancia_total()
-		dist_por_dron = distancia_trayectoria / self.n_drones
-		lista_wp_cartesian = trayectorias.wp_dron
-		trayectorias.calcular_wp_distancia(lista_wp_cartesian, dist_por_dron)
-		self.list_wp_limites = trayectorias.get_wp_retorno_cartesian()
-		
-
-		self.matriz_wp_drones = trayectorias.dividir_listas(self.list_wp_limites, lista_wp_cartesian)
-		self.list = []
-		for i in range(len(self.matriz_wp_drones)):
-			columns = []
-			for j in range(len(self.matriz_wp_drones[i])):
-				x,y = trayectorias.to_geographic(self.matriz_wp_drones[i][j][0], self.matriz_wp_drones[i][j][1])
-				columns.append((x,y))
-			self.list.append(columns)
-
-		self.dist_label.setText(str(round(distancia_trayectoria*1000,2)))
+		self.dist_label.setText(str(round(self.trayect.distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
-
-		matriz_general = self.gestion.wp_retorno_home(self.matriz_wp_drones, distancia_wp_retorno, trayectorias)
-		
+		print(matriz_general)
 		counter = 0
 		for dron in matriz_general:
 			for tramo in dron:
 				for wp in tramo:
 					if wp != tramo[-1]:
 						handler.broadcast("#"+str(counter)+str(wp))
+
 				handler.broadcast("?"+str(tramo[-2]))
 			handler.broadcast("&")
 			counter=counter+1
 
-		self.gestion.insertar_wp_drones(max_height)
+		self.gestion.insertar_wp_drones(max_height,matriz_general)
 
 	def reanudar_mision(self):
 		self.gestion.reanudar_misiones()
@@ -348,7 +330,7 @@ class MainWindow(QMainWindow):
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()
 		
-		self.gestion.coberturas(self,self.list,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
+		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
 		
 
 		

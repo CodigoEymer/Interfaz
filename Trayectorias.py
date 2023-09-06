@@ -43,7 +43,25 @@ class Trayectorias():
             self.Ovx=(self.num_rings*self.LX-self.dcp)/(self.num_rings-1)
             #dr recalculado
             self.dr=(self.dcp-self.LX)/(self.num_rings-1)
-            
+
+    def generar_matriz(self,ns,distancia_wp_retorno):
+        self.ciclos()
+        self.distancia_trayectoria = self.calcular_distancia_total()
+        dist_por_dron = self.distancia_trayectoria / ns
+        wp_spiral = self.wp_dron       # Vector con wps en cordenadas cartesianas
+        self.calcular_wp_distancia(wp_spiral,dist_por_dron)
+        list_wp_limites = self.get_wp_retorno_cartesian()
+        self.matriz_wp_drones = self.dividir_listas(list_wp_limites, wp_spiral)
+
+        self.matriz_general = []
+        self.wp_retorno_aut = []
+        for wpsxdron in self.matriz_wp_drones:
+            aux = self.calcular_wp_distancia(wpsxdron,distancia_wp_retorno)
+            self.wp_retorno_aut.append(aux)
+            wp_tramosxdron = self.get_tramos() 
+            self.matriz_general.append(wp_tramosxdron)
+        return self.matriz_general
+
     def js_to_py(self, dict):
         cadena = str(dict)
         cadena.replace("[","(")
@@ -324,12 +342,11 @@ class Trayectorias():
         wp_tramos_actual = []
         self.wp_tramos = []
         self.tramos_cartesian = []
-        lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
-        wp_tramos_actual.append((lat,long))
+        #lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
+        #wp_tramos_actual.append((lat,long))
         
         for i in range(1, len(V)):
             punto_siguiente = V[i]
-    
             distancia_al_siguiente = math.sqrt((punto_siguiente[0] - punto_actual[0])**2 + (punto_siguiente[1] - punto_actual[1])**2)
             if distancia_actual + distancia_al_siguiente == distancia_objetivo:
                 lat,long=self.to_geographic(punto_siguiente[0],punto_siguiente[1])
