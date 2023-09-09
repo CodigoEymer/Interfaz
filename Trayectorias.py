@@ -100,13 +100,14 @@ class Trayectorias():
         return r
 
     def angle_between_vectors(self, x1, y1, x2, y2):
+        
         dot_product = x1 * x2 + y1 * y2
         mag_product = math.sqrt(x1**2 + y1**2) * math.sqrt(x2**2 + y2**2)
         if y2<0:
-            tetha= -(math.acos(dot_product/mag_product))
+            theta= -(math.acos(dot_product/mag_product))
         else:
-            tetha= (math.acos(dot_product/mag_product))
-        return tetha
+            theta= (math.acos(dot_product/mag_product))
+        return theta
 
     def apotema(self):
         sum_x = sum([v[0] for v in self.vertices])
@@ -177,7 +178,7 @@ class Trayectorias():
     def ciclos(self):
         all_vertices = []
         new_vertices = []
-        
+        #Este if es la actual solucion para resolver el problema con el inicio de la figura
         if self.vertices[0][1] <= self.vertices[1][1]:
             for index in range(self.p):
                 if index > 0:
@@ -193,33 +194,37 @@ class Trayectorias():
             self.vertices = new_vertices
             new_vertices = []
             for i in range(self.p):
-                x0, y0 = self.vertices[i-1]
-                x1, y1 = self.vertices[i]
-                if i == self.p-1:
-                    x2, y2 = new_vertices[0]
-                else:
-                    x2, y2 = self.vertices[i+1]
-
-                vector1x = float(x0 - x1)
-                vector1y = float(y0 - y1)
-                vector2x = float(x2 - x1)
-                vector2y = float(y2 - y1)
-                angleY = self.angle_between_vectors(vector1x, vector1y, vector2x, vector2y)
+                v_previous = self.vertices[i-1]
+                v_current = self.vertices[i]
+                v_next = self.vertices[(i+1)%self.p]
                 
+                x1 = float(v_previous[0] - v_current[0])
+                y1 = float(v_previous[1] - v_current[1])
+                x2 = float(v_next[0] - v_current[0])
+                y2 = float(v_next[1] - v_current[1])
+                
+                angleY = self.angle_between_vectors(x1, y1, x2, y2)
+                
+                if angleY <= (math.pi/2):
+                    #Aqui se debe solucionar el problema de 2 wp juntos
+                    #Se debe actualizar el punto x1,y1 para iniciar desde ahi
+                    #Modificar x1, y1 de acuerdo a esta ecuacion
+                    # p3 = self.findUpperPoints((x_0,y_0),x_1,y_1,angulo)
+                    # p4 = self.findUpperPoints((x_0,y_0),x_1,y_1,angulo)
+                    # x1,y1 = self.intersection_point(self.vertices[-1], self.vertices[0], p3, p4)
+                    pass
+                    
+                    
+                di = self.distancia(x1, y1, x2, y2)
                 if i == 0 and j == 0:
                     #see tan(x) graph for more information
-                    if angleY == math.pi:
-                        di = self.distancia(x1, y1, x2, y2)
-                    else:
-                        di = self.distancia(x1, y1, x2, y2)-(self.LX/(math.tan(angleY)))
-                else:
-                    di = self.distancia(x1, y1, x2, y2)
+                    if angleY != math.pi:
+                        di = di-(self.LX/(math.tan(angleY)))
+                
                 # Sobrelapamiento minimo en Y [m]
                 self.Ovy = self.overlap
-
-                # Distancia entre weypoints [m]
+                # Distancia entre waypoints [m]
                 dw = self.LY-self.Ovy
-                
                 # Numero de waypoints
                 nw = (di-self.Ovy)/dw
                 num_wp_line = int(math.ceil(nw))
@@ -230,7 +235,6 @@ class Trayectorias():
                     self.Ovy = (num_wp_line*self.LY-di)/(num_wp_line-1)
                     # dw recalculado
                     dw = (di-self.LY)/(num_wp_line-1)
-                
                 
                 dx = float(x2 - x1)
                 dy = float(y2 - y1)
