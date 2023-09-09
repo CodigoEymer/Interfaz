@@ -58,7 +58,7 @@ class Trayectorias():
         for wpsxdron in self.matriz_wp_drones:
             aux = self.calcular_wp_distancia(wpsxdron,distancia_wp_retorno)
             self.wp_retorno_aut.append(aux)
-            wp_tramosxdron = self.get_tramos() 
+            wp_tramosxdron = self.wp_tramos
             self.matriz_general.append(wp_tramosxdron)
         return self.matriz_general
 
@@ -365,8 +365,6 @@ class Trayectorias():
                 distancia_actual = 0
                 wp_tramos_actual= []
                 punto_actual = punto_siguiente
-                lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
-                wp_tramos_actual.append((lat,long))
 
             else:
                 distancia_actual += distancia_al_siguiente
@@ -381,9 +379,6 @@ class Trayectorias():
         self.wp_tramos.append(wp_tramos_actual)
         
         return (wp_retorno)  # No se puede alcanzar la distancia objetivo
-    
-    def get_tramos(self):
-        return self.wp_tramos
     
     def get_wp_dron(self):
         return self.wp_dron

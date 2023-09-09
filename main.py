@@ -301,7 +301,6 @@ class MainWindow(QMainWindow):
 
 		self.dist_label.setText(str(round(self.trayect.distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
-		print(matriz_general)
 		counter = 0
 		for dron in matriz_general:
 			for tramo in dron:

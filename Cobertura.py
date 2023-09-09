@@ -25,7 +25,6 @@ class Cobertura():
         self.msn_end_w = msn_end_w
         self.ns = ns
         self.start_mision = 0
-        print(self.ns,self.wp_tramos[0])
         
 
     def status_callback(self, status):
@@ -40,6 +39,7 @@ class Cobertura():
         self.f_armar = 0
         self.f_guided =0
         self.f_despegar = 0
+        self.f_land = 0
         rospy.Subscriber("/"+self.ns+"/mavros/local_position/pose", PoseStamped, self.pose_callback)
         rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.retorno)
         rospy.Subscriber("/"+self.ns+"/mavros/state", State,self.estado_vuelo)
@@ -49,9 +49,12 @@ class Cobertura():
 
     def estado_vuelo(self,state):
         self.estado = state
-        if self.start_mision == 1:
+        if self.estado.armed==False and self.f_land==1:
+            self.main.print_console(self.ns+": Desarmado")
+            self.f_land = 0
 
-            if(self.f_estable ==1):
+        if (self.start_mision == 1 ):
+            if(self.f_estable ==1 and self.estado.armed==False):
                 self.modo_estable() 
                 self.f_estable = 0
                 self.armar_dron()
@@ -67,7 +70,7 @@ class Cobertura():
                 self.f_despegar = 1
             if( self.f_despegar == 1 and "EKF3 IMU" in self.status.text and "yaw alignment complete" in self.status.text):
                
-                self.set_wp(self.wp_tramos[self.tramo_actual])
+                self.formato_wp(self.wp_tramos[self.tramo_actual])
                 self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
                 self.modo_automatico()
                 if self.tramo_actual==self.n_tramos-1:
@@ -85,10 +88,11 @@ class Cobertura():
         text = self.ns+": Waypoint alcanzado #"+ str(data.wp_seq) 
         self.main.print_console(text)
         self.progress_bar.setValue(data.wp_seq)
-        if data.wp_seq==self.long_tramo:
+        if data.wp_seq==self.long_tramo+1:
             self.main.print_console(self.ns+": Aterrizando.")
             self.modo_land()
             self.start_mision = 0
+            self.f_land = 1
             
 
     def pose_callback(self,data):
@@ -134,39 +138,44 @@ class Cobertura():
         while self.current_altitude is None or self.current_altitude < self.altura:
             rospy.sleep(0.1)
 
-    def set_wp(self,lista_wp):
+    def wp_a_waypoint(self, i, latitud, longitud):
+        wp = Waypoint()
+        wp.frame = 3 # MAV_FRAME_GLOBAL_RELATIVE_ALT
+        wp.command = 16 # MAV_CMD_NAV_WAYPOINT
+        if i == 0: wp.is_current = True
+        else: wp.is_current = False
+        wp.autocontinue = True
+        #wp.param1 = 1 # Hover in sec
+        wp.x_lat = latitud # Latitud en grados
+        wp.y_long = longitud # Longitud en grados
+        wp.z_alt = self.altura # Altitud en metros
+        
+        return wp
+
+    def formato_wp(self,lista_wp):
         waypoints = []
-
-        for wp in lista_wp:
-            latitud = wp[0]
-            longitud = wp[1]
-
-            wp = Waypoint()
-            wp.frame = 3 # MAV_FRAME_GLOBAL_RELATIVE_ALT
-            wp.command = 16 # MAV_CMD_NAV_WAYPOINT
-            wp.is_current = False
-            wp.autocontinue = True
-            wp.x_lat = latitud # Latitud en grados
-            wp.y_long = longitud # Longitud en grados
-            wp.z_alt = self.altura # Altitud en metros
+        wp = self.wp_a_waypoint(0,3.371387,-76.533004)
+        waypoints.append(wp)     
+        for i in range(len(lista_wp)): 
+            latitud = lista_wp[i][0]
+            longitud = lista_wp[i][1]
+            wp = self.wp_a_waypoint(i+1,latitud,longitud)
             waypoints.append(wp)
+        self.set_waypoint(waypoints)
 
-        # Publish waypoints to /"+self.ns+"/mavros/mission/push
-        wp_pub = rospy.Publisher("/"+self.ns+"/mavros/mission/push", WaypointList, queue_size=10)
+    def set_waypoint(self, waypoints):
 
         # Wait for the service to become available
         rospy.wait_for_service("/"+self.ns+"/mavros/mission/push")
-
         try:
             push_wp = rospy.ServiceProxy("/"+self.ns+"/mavros/mission/push", WaypointPush)
-
             # Push the waypoints to Ardupilot
-            push_wp(start_index=0, waypoints=waypoints)
-            # Publish the waypoints to the topic
-            wp_list = WaypointList()
-            wp_list.waypoints = waypoints
-            wp_pub.publish(wp_list)
-            self.main.print_console(self.ns+": Waypoints cargados exitosamente.")
+            respuesta=push_wp(start_index=0, waypoints=waypoints)
+            flag=respuesta.success
+            if flag:
+                self.main.print_console(self.ns+": Waypoint cargado")
+            else:
+                self.main.print_console(self.ns+": Waypoint no cargados")
         except rospy.ServiceException as e:
             rospy.logerr("Service call failed: %s"%e)
 
