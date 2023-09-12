@@ -25,6 +25,7 @@ class Cobertura():
         self.msn_end_w = msn_end_w
         self.ns = ns
         self.start_mision = 0
+        self.fcolorposse = "/"
         
 
     def status_callback(self, status):
@@ -93,6 +94,10 @@ class Cobertura():
             self.modo_land()
             self.start_mision = 0
             self.f_land = 1
+        if data.wp_seq == 1:
+            self.fcolorposse = "_"
+        if data.wp_seq == self.long_tramo:
+            self.fcolorposse = "/"
             
 
     def pose_callback(self,data):
