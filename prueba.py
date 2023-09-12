@@ -16,4 +16,4 @@ class Worker(QThread):
                 data = comm.Posicion
                 lista.append(data)
             self.dataLoaded.emit(lista)
-            time.sleep(1)    
+            time.sleep(2)    

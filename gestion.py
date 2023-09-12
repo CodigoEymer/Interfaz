@@ -42,7 +42,7 @@ class Gestion():
             cobertura.reanudar_mision()
     
     def definir_color(self):
-        color=[]
+        colores=[]
         for cobertura in self.coberturas:
-            color.append(cobertura.color)
-        return color
+            colores.append(cobertura.fcolorposse)
+        return colores

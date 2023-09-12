@@ -339,7 +339,7 @@ class MainWindow(QMainWindow):
 
 	def setData(self, Posicion):
 		colores = self.gestion.definir_color()
-		for i in self.n_drones:
+		for i in range(self.n_drones):
 			color = colores[i]
 			latitud = Posicion[i][0]
 			longitud = Posicion[i][1]
