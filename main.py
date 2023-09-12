@@ -307,7 +307,6 @@ class MainWindow(QMainWindow):
 				for wp in tramo:
 					if wp != tramo[-1]:
 						handler.broadcast("#"+str(counter)+str(wp))
-
 				handler.broadcast("?"+str(tramo[-2]))
 			handler.broadcast("&")
 			counter=counter+1
@@ -339,10 +338,13 @@ class MainWindow(QMainWindow):
 		self.thread.start()
 
 	def setData(self, Posicion):
-		latitud = Posicion[0]
-		longitud = Posicion[1]
-		wp = (latitud,longitud)
-		handler.broadcast("_"+str(wp))
+		colores = self.gestion.definir_color()
+		for i in range(self.n_drones):
+			color = colores[i]
+			latitud = Posicion[i][0]
+			longitud = Posicion[i][1]
+			wp = (latitud,longitud)
+			handler.broadcast(color+str(wp))
 
 	def disconnect_socket(self):
 		handler.on_disconnected()

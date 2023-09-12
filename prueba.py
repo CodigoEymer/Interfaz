@@ -11,8 +11,9 @@ class Worker(QThread):
 
     def run(self):
         while(True):
-            
+            lista = []
             for comm in self.commu_module:
                 data = comm.Posicion
-                self.dataLoaded.emit(data)
-                time.sleep(1)
+                lista.append(data)
+            self.dataLoaded.emit(lista)
+            time.sleep(2)    
