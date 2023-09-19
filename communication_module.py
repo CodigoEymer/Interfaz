@@ -20,7 +20,7 @@ from Database.foto.foto import foto
 class communication_module():
 
 
-    def __init__(self, parent,telemetria,dron,foto,ns,config):
+    def __init__(self, parent,telemetria,dron,foto,ns,config,flag_insertTelemetria_c, flag_insertTelemetria):
             self.config= config
             self.main = parent
             self.telemetria = telemetria
@@ -30,6 +30,10 @@ class communication_module():
             self.foto = foto
             self.ns = ns
             self.Posicion = ["null","null","null"]
+            self.flag_insertTelemetria_c = flag_insertTelemetria_c
+            self.flag_insertTelemetria = flag_insertTelemetria
+            
+            self.n_canales = ns[3]
 
             #rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
@@ -110,9 +114,14 @@ class communication_module():
 
             self.v_telemetria.append(self.telemetria)
 
-            if(len(self.v_telemetria)==1):
-                #self.config.insertar_telemetria(self.v_telemetria)
+            if(len(self.v_telemetria)==10 and self.flag_insertTelemetria == self.flag_insertTelemetria_c):
+                self.config.insertar_telemetria(self.v_telemetria)
                 self.v_telemetria = []
+                
+                if(self.n_canales ==self.flag_insertTelemetria):
+                    self.flag_insertTelemetria = 0
+                else:
+                    self.flag_insertTelemetria= self.flag_insertTelemetria+1
 
     def setFlightParameters(self, parameters):
         params_to_set = {                  # Increment  Range    Units
