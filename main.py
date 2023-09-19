@@ -29,7 +29,7 @@ from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QWidget, QTextEdit
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QProgressBar, QHBoxLayout, QVBoxLayout, QFrame
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
@@ -96,7 +96,8 @@ class MainWindow(QMainWindow):
 		self.user_name_btn.clicked.connect(self.user_name_btn_function)
 		self.date_btn.clicked.connect(self.date_btn_function)
 		self.generate_report.clicked.connect(self.report_function)
-		self.playBtn.clicked.connect(self.reanudar_mision)		
+		self.playBtn.clicked.connect(self.reanudar_mision)
+		self.stopBtn.clicked.connect(self.nuevo_item)		
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.update_user_data_up)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
@@ -352,6 +353,8 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
 
 	def mission_page(self):
+		self.layout = QVBoxLayout()
+		self.scrollAreaWidgetContents.setLayout(self.layout)
 		self.set_default_icons()
 		icon = QIcon('./icons/IconoMisionGris.svg')
 		self.missionBtn.setIcon(icon)
@@ -359,7 +362,35 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
+	
+	def componente_estados(self,layout):
+		# Creamos el frame y su layout
+		frame = QFrame()
+		frame_layout = QHBoxLayout()
+		# Creamos los botones
+		button1 = QPushButton('Dron 5')
+		button2 = QPushButton('Conectado')
+		button3 = QPushButton()
+		button3.setIcon(QIcon('./icons/batteryVerde.svg'))	
+		# Creamos la barra de progreso
+		progress_bar = QProgressBar()
+		# Anadimos los widgets al layout del frame
+		frame_layout.addWidget(button1)
+		frame_layout.addWidget(button2)
+		frame_layout.addWidget(button3)
+		frame_layout.addWidget(progress_bar)
+		# Asignamos el layout al frame
+		frame.setLayout(frame_layout)
+		# Anadimos el frame al layout principal
+		layout.addWidget(frame)
+
 		
+
+	def nuevo_item(self):
+		
+		self.componente_estados(self.layout)
+		
+
 	def print_console(self,text):	
 		self.buffer.append(text)
 			
