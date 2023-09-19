@@ -33,7 +33,8 @@ class communication_module():
             self.flag_insertTelemetria_c = flag_insertTelemetria_c
             self.flag_insertTelemetria = flag_insertTelemetria
             
-            self.n_canales = ns[3]
+            self.n_canales = 2
+            print("self.n_canales",self.n_canales)
 
             #rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
@@ -113,10 +114,13 @@ class communication_module():
         if(self.main.flag_telemetria==1):
 
             self.v_telemetria.append(self.telemetria)
+            print("self.flag_insertTelemetria_c", self.flag_insertTelemetria_c)
+            print("self.flag_insertTelemetria", self.flag_insertTelemetria)
 
             if(len(self.v_telemetria)==10 and self.flag_insertTelemetria == self.flag_insertTelemetria_c):
                 self.config.insertar_telemetria(self.v_telemetria)
                 self.v_telemetria = []
+                
                 
                 if(self.n_canales ==self.flag_insertTelemetria):
                     self.flag_insertTelemetria = 0

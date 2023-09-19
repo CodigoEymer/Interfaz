@@ -50,6 +50,7 @@ class protocolo():
             self.ns_unicos.append(ns)
             self.n_drones = len(self.ns_unicos)
             self.flag_insertTelemetria_c= self.flag_insertTelemetria_c+1
+            print("constructor, elf.flag_insertTelemetria_c", self.flag_insertTelemetria_c)
         
         rospy.sleep(1)
         
