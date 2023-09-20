@@ -27,7 +27,7 @@ class protocolo():
             self.commu_module= []
             self.n_drones = 0
             self.flag_insertTelemetria_c = 1
-            self.flag_insertTelemetria = 1
+            self.flag_insertTelemetria = {'valor': 1}
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
                  
@@ -45,12 +45,14 @@ class protocolo():
             self.dronV.append(dronN)
             self.fotoV.append(fotoN)
             config = Insert_telemetria()
-            commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns,config,self.flag_insertTelemetria_c,self.flag_insertTelemetria )
+            commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns,config,self.flag_insertTelemetria )
             self.commu_module.append(commu_module)
             self.ns_unicos.append(ns)
             self.n_drones = len(self.ns_unicos)
-            self.flag_insertTelemetria_c= self.flag_insertTelemetria_c+1
-            print("constructor, elf.flag_insertTelemetria_c", self.flag_insertTelemetria_c)
+
+            for canal in self.commu_module:
+                 canal.n_canales = int(ns[4])
+
         
         rospy.sleep(1)
         
