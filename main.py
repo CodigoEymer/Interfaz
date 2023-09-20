@@ -102,7 +102,8 @@ class MainWindow(QMainWindow):
 		self.updateBtn.clicked.connect(self.update_user_data_up)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
-		
+		self.layout = QVBoxLayout()
+		self.scrollAreaWidgetContents.setLayout(self.layout)
 		self.console.setReadOnly(True)
 		self.buffer = []
 		self.timer = QTimer()
@@ -353,8 +354,6 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.homePage_3)
 
 	def mission_page(self):
-		self.layout = QVBoxLayout()
-		self.scrollAreaWidgetContents.setLayout(self.layout)
 		self.set_default_icons()
 		icon = QIcon('./icons/IconoMisionGris.svg')
 		self.missionBtn.setIcon(icon)
@@ -363,13 +362,16 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
 	
-	def componente_estados(self,layout):
+	def componente_estados(self,layout,dron_id, estado,num_wp_total):
 		# Creamos el frame y su layout
 		frame = QFrame()
+		frame.setStyleSheet("background-color: #FFFFFF;")
 		frame_layout = QHBoxLayout()
 		# Creamos los botones
-		button1 = QPushButton('Dron 5')
-		button2 = QPushButton('Conectado')
+		button1 = QPushButton(dron_id)
+		button1.setStyleSheet("QPushButton {background-color: #E65E5C; color: white;}")
+		button2 = QPushButton(estado)
+		button2.setStyleSheet("QPushButton {background-color: #50E666; color: white;}")
 		button3 = QPushButton()
 		button3.setIcon(QIcon('./icons/batteryVerde.svg'))	
 		# Creamos la barra de progreso
@@ -379,6 +381,8 @@ class MainWindow(QMainWindow):
 		frame_layout.addWidget(button2)
 		frame_layout.addWidget(button3)
 		frame_layout.addWidget(progress_bar)
+		progress_bar.setMaximum(num_wp_total)
+		progress_bar.setValue(19)
 		# Asignamos el layout al frame
 		frame.setLayout(frame_layout)
 		# Anadimos el frame al layout principal
@@ -388,7 +392,7 @@ class MainWindow(QMainWindow):
 
 	def nuevo_item(self):
 		
-		self.componente_estados(self.layout)
+		self.componente_estados(self.layout, "Dronx", "Conectado",20)
 		
 
 	def print_console(self,text):	
