@@ -22,6 +22,7 @@ from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 import config_module
 from Trayectorias import Trayectorias
 from custom_widget import CustomFrame
+from sensores import CustomFrames
 from communication_module import communication_module
 from protocolo import protocolo
 from gestion import Gestion
@@ -102,9 +103,12 @@ class MainWindow(QMainWindow):
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.update_user_data_up)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
+		self.button_drone1.clicked.connect(self.nuevos_sensores)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.layout = QVBoxLayout()
 		self.scrollAreaWidgetContents.setLayout(self.layout)
+		self.layouts = QVBoxLayout()
+		self.frame_13.setLayout(self.layouts)
 		self.console.setReadOnly(True)
 		self.buffer = []
 		self.timer = QTimer()
@@ -364,11 +368,14 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
 
 	def nuevo_item(self):
-		frame = CustomFrame("dron_id", "estado", 100)
+		frame = CustomFrame("Dron1", "Desconectado", 100)
 		self.layout.addWidget(frame)
 		#self.componente_estados(self.layout, "Dronx", "Conectado",20)
 		
-
+	def nuevos_sensores(self):
+		frame = CustomFrames("Dronex","Conectado")
+		self.layouts.addWidget(frame)
+		
 	def print_console(self,text):	
 		self.buffer.append(text)
 			
@@ -520,9 +527,6 @@ class MainWindow(QMainWindow):
 
 	def hide_all_frames(self):
 		self.frame_drone1.hide()
-		self.frame_drone2.hide()
-		self.frame_drone3.hide()
-		self.frame_drone4.hide()
 
 
 def on_message_received(message):
