@@ -21,6 +21,7 @@ from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 #from Database.foto.foto import foto
 import config_module
 from Trayectorias import Trayectorias
+from custom_widget import CustomFrame
 from communication_module import communication_module
 from protocolo import protocolo
 from gestion import Gestion
@@ -361,38 +362,11 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
-	
-	def componente_estados(self,layout,dron_id, estado,num_wp_total):
-		# Creamos el frame y su layout
-		frame = QFrame()
-		frame.setStyleSheet("background-color: #FFFFFF;")
-		frame_layout = QHBoxLayout()
-		# Creamos los botones
-		button1 = QPushButton(dron_id)
-		button1.setStyleSheet("QPushButton {background-color: #E65E5C; color: white;}")
-		button2 = QPushButton(estado)
-		button2.setStyleSheet("QPushButton {background-color: #50E666; color: white;}")
-		button3 = QPushButton()
-		button3.setIcon(QIcon('./icons/batteryVerde.svg'))	
-		# Creamos la barra de progreso
-		progress_bar = QProgressBar()
-		# Anadimos los widgets al layout del frame
-		frame_layout.addWidget(button1)
-		frame_layout.addWidget(button2)
-		frame_layout.addWidget(button3)
-		frame_layout.addWidget(progress_bar)
-		progress_bar.setMaximum(num_wp_total)
-		progress_bar.setValue(19)
-		# Asignamos el layout al frame
-		frame.setLayout(frame_layout)
-		# Anadimos el frame al layout principal
-		layout.addWidget(frame)
-
-		
 
 	def nuevo_item(self):
-		
-		self.componente_estados(self.layout, "Dronx", "Conectado",20)
+		frame = CustomFrame("dron_id", "estado", 100)
+		self.layout.addWidget(frame)
+		#self.componente_estados(self.layout, "Dronx", "Conectado",20)
 		
 
 	def print_console(self,text):	
