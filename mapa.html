@@ -135,30 +135,35 @@
             
             linePoints.push(wp);           
           }
-          else if (event.data[0] == "_"){
-            var dato2 = event.data;
-            dato2 = dato2.replace("_","")
-            var sin_comillas2 = dato2.slice(1,-1);
-            var tupla2 = sin_comillas2.split(",");
-            var latitud2=Number(tupla2[0]);
-            var longitud2=Number(tupla2[1]);
-            var wp2= [latitud2,longitud2];
 
-            var circle1 = L.circle(wp2, {
-                radius: 0.5, // Radio del círculo en metros
-                color: '#000000', // Color del borde del círculo
-                fillColor: '#000000', // Color de relleno del círculo
-                fillOpacity: 1 // Opacidad del relleno del círculo
-            }).addTo(map);
-          }
-          else if (event.data[0] == "/"){
-            var dato2 = event.data;
-            dato2 = dato2.replace("/","")
-            var sin_comillas2 = dato2.slice(1,-1);
-            var tupla2 = sin_comillas2.split(",");
-            var latitud2=Number(tupla2[0]);
-            var longitud2=Number(tupla2[1]);
-            var wp2= [latitud2,longitud2];
+
+          else if (event.data[0] == "["){
+
+            // for para dibujar cada punto de i dron
+              if (event.data[0] == "_"){
+                var dato2 = event.data;
+                dato2 = dato2.replace("_","")
+                var sin_comillas2 = dato2.slice(1,-1);
+                var tupla2 = sin_comillas2.split(",");
+                var latitud2=Number(tupla2[0]);
+                var longitud2=Number(tupla2[1]);
+                var wp2= [latitud2,longitud2];
+
+                var circle1 = L.circle(wp2, {
+                    radius: 0.5, // Radio del círculo en metros
+                    color: '#000000', // Color del borde del círculo
+                    fillColor: '#000000', // Color de relleno del círculo
+                    fillOpacity: 1 // Opacidad del relleno del círculo
+                }).addTo(map);
+              }
+              else if (event.data[0] == "/"){
+                var dato2 = event.data;
+                dato2 = dato2.replace("/","")
+                var sin_comillas2 = dato2.slice(1,-1);
+                var tupla2 = sin_comillas2.split(",");
+                var latitud2=Number(tupla2[0]);
+                var longitud2=Number(tupla2[1]);
+                var wp2= [latitud2,longitud2];
 
             var circle1 = L.circle(wp2, {
                 radius: 0.5, // Radio del círculo en metros

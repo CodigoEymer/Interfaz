@@ -333,18 +333,12 @@ class MainWindow(QMainWindow):
 
 		
 	def startThread(self):
-		self.thread = prueba.Worker(self.protocolo.commu_module)
+		self.thread = prueba.Worker(self.protocolo.commu_module, self.gestion)
 		self.thread.dataLoaded.connect(self.setData)
 		self.thread.start()
 
 	def setData(self, Posicion):
-		colores = self.gestion.definir_color()
-		for i in range(self.n_drones):
-			color = colores[i]
-			latitud = Posicion[i][0]
-			longitud = Posicion[i][1]
-			wp = (latitud,longitud)
-			handler.broadcast(color+str(wp))
+		handler.broadcast(Posicion)
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
