@@ -323,12 +323,11 @@ class MainWindow(QMainWindow):
 	def init_trayct(self):
 		self.mission_page()
 		self.flag_telemetria = 1
-		self.startThread()
 		if self.finish_mission is None:
 			self.finish_mission = MisionEndWindow(self,self.fotos)
-		altura = self.max_height_text.text()
-		
+		altura = self.max_height_text.text()	
 		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
+		self.startThread()	
 		
 
 		
@@ -339,7 +338,7 @@ class MainWindow(QMainWindow):
 
 	def setData(self, Posicion):
 		print(Posicion)
-		handler.broadcast(Posicion)
+		handler.broadcast(str(Posicion))
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
