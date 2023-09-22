@@ -99,11 +99,10 @@ class MainWindow(QMainWindow):
 		self.date_btn.clicked.connect(self.date_btn_function)
 		self.generate_report.clicked.connect(self.report_function)
 		self.playBtn.clicked.connect(self.reanudar_mision)
-		self.stopBtn.clicked.connect(self.nuevo_item)		
+		#self.stopBtn.clicked.connect(self.nuevo_item)		
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.update_user_data_up)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
-		self.button_drone1.clicked.connect(self.nuevos_sensores)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.layout = QVBoxLayout()
 		self.scrollAreaWidgetContents.setLayout(self.layout)
@@ -114,9 +113,8 @@ class MainWindow(QMainWindow):
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.flush_buffer)
 		self.timer.start(1000)  # Flush the buffer every 1 second
-		self.hide_all_frames()
 		#self.commu_module = communication_module(self,telemetria,dron, foto)
-		self.protocolo = protocolo(self,telemetriaV,dronV, fotoV)
+		
 
 
 		
@@ -235,6 +233,7 @@ class MainWindow(QMainWindow):
 				self.user = user
 				self.main_window()
 				self.home_page()
+				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV)
 				self.error_label.setText("")
 				break
 			else:
@@ -367,14 +366,12 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
 
-	def nuevo_item(self):
-		frame = CustomFrame("Dron1", "Desconectado", 100)
-		self.layout.addWidget(frame)
-		#self.componente_estados(self.layout, "Dronx", "Conectado",20)
-		
-	def nuevos_sensores(self):
-		frame = CustomFrames("Dronex","Conectado")
+	def nuevo_item(self,ns):
+		frame = CustomFrames(ns, "Desconectado")
 		self.layouts.addWidget(frame)
+		print("Creando item")
+		return frame
+		#self.componente_estados(self.layout, "Dronx", "Conectado",20)
 		
 	def print_console(self,text):	
 		self.buffer.append(text)
@@ -524,9 +521,6 @@ class MainWindow(QMainWindow):
 
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
 
-
-	def hide_all_frames(self):
-		self.frame_drone1.hide()
 
 
 def on_message_received(message):

@@ -507,7 +507,7 @@ border-radius: 10px;</string>
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>1</number>
+                    <number>0</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QHBoxLayout" name="horizontalLayout_34">
@@ -582,7 +582,7 @@ border-radius: 10px;</string>
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>298</width>
+                                 <width>100</width>
                                  <height>675</height>
                                 </rect>
                                </property>
@@ -2301,7 +2301,7 @@ border-radius: 10px;</string>
                               </size>
                              </property>
                              <property name="currentIndex">
-                              <number>1</number>
+                              <number>0</number>
                              </property>
                              <widget class="QWidget" name="page_3">
                               <property name="maximumSize">
@@ -3003,275 +3003,6 @@ border-radius: 10px;</string>
                            <enum>QFrame::Raised</enum>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_33">
-                           <item>
-                            <widget class="QFrame" name="frame_drone1">
-                             <property name="styleSheet">
-                              <string notr="true">background-color: rgb(238, 238, 236);</string>
-                             </property>
-                             <property name="frameShape">
-                              <enum>QFrame::StyledPanel</enum>
-                             </property>
-                             <property name="frameShadow">
-                              <enum>QFrame::Raised</enum>
-                             </property>
-                             <layout class="QHBoxLayout" name="horizontalLayout_74">
-                              <item>
-                               <widget class="QPushButton" name="button_drone1">
-                                <property name="styleSheet">
-                                 <string notr="true">background-color: rgb(52, 101, 164);</string>
-                                </property>
-                                <property name="text">
-                                 <string>Dron 1</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QFrame" name="frame_status1">
-                                <property name="frameShape">
-                                 <enum>QFrame::StyledPanel</enum>
-                                </property>
-                                <property name="frameShadow">
-                                 <enum>QFrame::Raised</enum>
-                                </property>
-                                <layout class="QVBoxLayout" name="verticalLayout_162">
-                                 <item>
-                                  <widget class="QPushButton" name="conectado_status1">
-                                   <property name="styleSheet">
-                                    <string notr="true">background-color: rgb(255, 152, 0);</string>
-                                   </property>
-                                   <property name="text">
-                                    <string>Conectado</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                </layout>
-                               </widget>
-                              </item>
-                              <item>
-                               <spacer name="horizontalSpacer_11">
-                                <property name="orientation">
-                                 <enum>Qt::Horizontal</enum>
-                                </property>
-                                <property name="sizeHint" stdset="0">
-                                 <size>
-                                  <width>584</width>
-                                  <height>20</height>
-                                 </size>
-                                </property>
-                               </spacer>
-                              </item>
-                              <item>
-                               <widget class="QFrame" name="frame_salud1">
-                                <property name="frameShape">
-                                 <enum>QFrame::StyledPanel</enum>
-                                </property>
-                                <property name="frameShadow">
-                                 <enum>QFrame::Raised</enum>
-                                </property>
-                                <layout class="QHBoxLayout" name="horizontalLayout_75">
-                                 <item>
-                                  <widget class="QFrame" name="frame_battery1">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_163">
-                                    <item>
-                                     <widget class="QPushButton" name="battery_good1">
-                                      <property name="styleSheet">
-                                       <string notr="true"/>
-                                      </property>
-                                      <property name="text">
-                                       <string/>
-                                      </property>
-                                      <property name="icon">
-                                       <iconset resource="resources.qrc">
-                                        <normaloff>:/icons/icons/batteryVerde.svg</normaloff>
-                                        <normalon>:/icons/icons/batteryRojo.svg</normalon>:/icons/icons/batteryVerde.svg</iconset>
-                                      </property>
-                                      <property name="iconSize">
-                                       <size>
-                                        <width>36</width>
-                                        <height>36</height>
-                                       </size>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="frame_gps1">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_164">
-                                    <item>
-                                     <widget class="QPushButton" name="gps_good1">
-                                      <property name="styleSheet">
-                                       <string notr="true"/>
-                                      </property>
-                                      <property name="text">
-                                       <string/>
-                                      </property>
-                                      <property name="icon">
-                                       <iconset resource="resources.qrc">
-                                        <normaloff>:/icons/icons/gpsVerde.svg</normaloff>
-                                        <normalon>:/icons/icons/gpsRojo.svg</normalon>:/icons/icons/gpsVerde.svg</iconset>
-                                      </property>
-                                      <property name="iconSize">
-                                       <size>
-                                        <width>36</width>
-                                        <height>36</height>
-                                       </size>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="frame_motor1">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_165">
-                                    <item>
-                                     <widget class="QPushButton" name="motor_good1">
-                                      <property name="styleSheet">
-                                       <string notr="true"/>
-                                      </property>
-                                      <property name="text">
-                                       <string/>
-                                      </property>
-                                      <property name="icon">
-                                       <iconset resource="resources.qrc">
-                                        <normaloff>:/icons/icons/motorVerde.svg</normaloff>
-                                        <normalon>:/icons/icons/motorRojo.svg</normalon>:/icons/icons/motorVerde.svg</iconset>
-                                      </property>
-                                      <property name="iconSize">
-                                       <size>
-                                        <width>36</width>
-                                        <height>36</height>
-                                       </size>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="frame_autopilot1">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_166">
-                                    <item>
-                                     <widget class="QPushButton" name="autopilot_good1">
-                                      <property name="styleSheet">
-                                       <string notr="true"/>
-                                      </property>
-                                      <property name="text">
-                                       <string/>
-                                      </property>
-                                      <property name="icon">
-                                       <iconset resource="resources.qrc">
-                                        <normaloff>:/icons/icons/cpuVerde.svg</normaloff>
-                                        <normalon>:/icons/icons/cpuRojo.svg</normalon>:/icons/icons/cpuVerde.svg</iconset>
-                                      </property>
-                                      <property name="iconSize">
-                                       <size>
-                                        <width>36</width>
-                                        <height>36</height>
-                                       </size>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="frame_imu1">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_167">
-                                    <item>
-                                     <widget class="QPushButton" name="imu_good1">
-                                      <property name="styleSheet">
-                                       <string notr="true"/>
-                                      </property>
-                                      <property name="text">
-                                       <string/>
-                                      </property>
-                                      <property name="icon">
-                                       <iconset resource="resources.qrc">
-                                        <normaloff>:/icons/icons/imuVerde.svg</normaloff>
-                                        <normalon>:/icons/icons/imuRojo.svg</normalon>:/icons/icons/imuVerde.svg</iconset>
-                                      </property>
-                                      <property name="iconSize">
-                                       <size>
-                                        <width>36</width>
-                                        <height>36</height>
-                                       </size>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                 <item>
-                                  <widget class="QFrame" name="frame_camera1">
-                                   <property name="frameShape">
-                                    <enum>QFrame::StyledPanel</enum>
-                                   </property>
-                                   <property name="frameShadow">
-                                    <enum>QFrame::Raised</enum>
-                                   </property>
-                                   <layout class="QVBoxLayout" name="verticalLayout_168">
-                                    <item>
-                                     <widget class="QPushButton" name="camera_good1">
-                                      <property name="styleSheet">
-                                       <string notr="true"/>
-                                      </property>
-                                      <property name="text">
-                                       <string/>
-                                      </property>
-                                      <property name="icon">
-                                       <iconset resource="resources.qrc">
-                                        <normaloff>:/icons/icons/cameraVerde.svg</normaloff>:/icons/icons/cameraVerde.svg</iconset>
-                                      </property>
-                                      <property name="iconSize">
-                                       <size>
-                                        <width>36</width>
-                                        <height>36</height>
-                                       </size>
-                                      </property>
-                                     </widget>
-                                    </item>
-                                   </layout>
-                                  </widget>
-                                 </item>
-                                </layout>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
                            <item>
                             <widget class="QFrame" name="frame_13">
                              <property name="frameShape">
