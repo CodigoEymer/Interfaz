@@ -338,6 +338,7 @@ class MainWindow(QMainWindow):
 		self.thread.start()
 
 	def setData(self, Posicion):
+		print(Posicion)
 		handler.broadcast(Posicion)
 
 	def disconnect_socket(self):

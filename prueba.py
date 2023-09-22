@@ -19,5 +19,6 @@ class Worker(QThread):
                 longitud = self.commu_module[i].Posicion[1]
                 wp = (latitud,longitud)
                 lista.append([colores[i],wp])
+                lista.append([colores[i],wp])
             self.dataLoaded.emit(lista)
             time.sleep(1)
