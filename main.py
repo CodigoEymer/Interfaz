@@ -294,7 +294,7 @@ class MainWindow(QMainWindow):
 
 		self.gestion.completar_telemetrias(telemetriaV)
 
-		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[1].get_velocidad_max()))
+		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[0].get_velocidad_max()))
 
 		self.trayect = Trayectorias(coords,float(max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
 		matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno)
