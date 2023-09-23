@@ -507,7 +507,7 @@ border-radius: 10px;</string>
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>2</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QHBoxLayout" name="horizontalLayout_34">
@@ -523,7 +523,7 @@ border-radius: 10px;</string>
                         </size>
                        </property>
                        <property name="currentIndex">
-                        <number>1</number>
+                        <number>0</number>
                        </property>
                        <widget class="QWidget" name="page">
                         <property name="maximumSize">
@@ -582,7 +582,7 @@ border-radius: 10px;</string>
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>100</width>
+                                 <width>298</width>
                                  <height>675</height>
                                 </rect>
                                </property>
@@ -3820,7 +3820,7 @@ background-color: rgb(111, 110, 110);</string>
                      <item>
                       <widget class="QStackedWidget" name="stackedWidget_2">
                        <property name="currentIndex">
-                        <number>0</number>
+                        <number>1</number>
                        </property>
                        <widget class="QWidget" name="report_view_widget">
                         <layout class="QVBoxLayout" name="verticalLayout_52">

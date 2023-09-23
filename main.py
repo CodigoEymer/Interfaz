@@ -7,6 +7,7 @@ import resources_rc
 import json
 import datetime
 import Htelemetria
+from hilo_componente_estados import Worker
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios
 from Database.usuarios.usuarios import usuarios
 
@@ -21,9 +22,7 @@ from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 #from Database.foto.foto import foto
 import config_module
 from Trayectorias import Trayectorias
-from custom_widget import CustomFrame
 from sensores import CustomFrames
-from communication_module import communication_module
 from protocolo import protocolo
 from gestion import Gestion
 from user_settings import SecondWindow
@@ -114,9 +113,6 @@ class MainWindow(QMainWindow):
 		self.timer.timeout.connect(self.flush_buffer)
 		self.timer.start(1000)  # Flush the buffer every 1 second
 		#self.commu_module = communication_module(self,telemetria,dron, foto)
-		
-
-
 		
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
@@ -296,7 +292,7 @@ class MainWindow(QMainWindow):
 		self.gestion.insertar_drones(current_mision.get_id_mision())
 
 		parameters =[max_acce, int(max_speed)*100]
-		for commu in self.protocolo.commu_module:
+		for commu in self.protocolo.commu_modules:
 			commu.setFlightParameters(parameters)
 
 		self.gestion.completar_telemetrias(telemetriaV)
@@ -349,6 +345,19 @@ class MainWindow(QMainWindow):
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
+
+	def iniciar_hilo2(self,commu):
+		self.commu_objeto = commu
+		self.worker = Worker(commu)
+        # Conectamos la senal del worker a un metodo en la ventana principal
+		self.worker.create_frame_signal.connect(self.create_frame)
+		self.worker.start()
+
+	def create_frame(self, text1, text2):
+        # Este metodo sera llamado cuando el worker emita la senal
+		frame = CustomFrames(text1, text2)
+		self.layouts.addWidget(frame)
+		self.commu_objeto.frame_a_modificar(frame)
 
 	def home_page(self):
 		self.set_default_icons()

@@ -6,22 +6,18 @@ from mavros_msgs.srv import ParamSet
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QTableWidgetItem, QVBoxLayout
+from PyQt5.QtWidgets import QTableWidgetItem
 import cv2
 import datetime as d
-from Database.telemetria import telemetria
-from config_module import config_module
 import os
 
 from diagnostic_msgs.msg import DiagnosticArray
 from sensor_msgs.msg import CameraInfo
-from Database.foto.foto import foto
-from sensores import CustomFrames
 
 class communication_module():
 
 
-    def __init__(self, parent,telemetria,dron,foto,ns,config, flag_insertTelemetria, frame):
+    def __init__(self, parent,telemetria,dron,foto,ns,config, flag_insertTelemetria):
             self.config= config
             self.main = parent
             self.telemetria = telemetria
@@ -34,10 +30,7 @@ class communication_module():
             self.flag_insertTelemetria_c = int(ns[4])
             self.flag_insertTelemetria = flag_insertTelemetria
             self.n_canales = 1
-            self.frame = frame
-            print("He ingresado!!")
-
-
+            self.main.iniciar_hilo2(self)
             #rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
            
@@ -49,6 +42,7 @@ class communication_module():
             self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
             
+
     def create_folder(self, path):
         try:
             # If the folder does not exist, create it
@@ -151,7 +145,8 @@ class communication_module():
         rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         
         #self.frame.button2.setText("Conectado")
-
+    def frame_a_modificar(self, frame):
+        self.frame = frame
 
     def camera_callback(self, data):
         height = data.height

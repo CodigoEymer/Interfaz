@@ -32,14 +32,10 @@ class protocolo():
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
 
-    def nuevo(self):
-         frame = self.parent.nuevo_item("ns")
-
     def drone_data(self,data):
         ns = data.status[3].name
         ns = ns.split("/")
         ns = ns[0]
-
         if ns not in self.ns_unicos:
             telemetriaN = telemetria()
             dronN = dron()
@@ -48,7 +44,7 @@ class protocolo():
             self.dronV.append(dronN)
             self.fotoV.append(fotoN)
             config = Insert_telemetria()
-            commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns,config,self.flag_insertTelemetria, self.frame)
+            commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns,config,self.flag_insertTelemetria)
             self.commu_modules.append(commu_module)
             self.ns_unicos.append(ns)
             self.n_drones = len(self.ns_unicos)
