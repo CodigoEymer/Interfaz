@@ -38,6 +38,7 @@ from PyQt5.QtCore import pyqtSlot, QTimer
 from mavros_msgs.srv import *
 import time
 import MySQLdb
+import json
 
 
 DB_HOST = '127.0.0.1' 
@@ -337,8 +338,8 @@ class MainWindow(QMainWindow):
 		self.thread.start()
 
 	def setData(self, Posicion):
-		print(Posicion)
-		handler.broadcast(str(Posicion))
+		print(str(Posicion[0]))
+		handler.broadcast(str(Posicion[0]))
 
 	def disconnect_socket(self):
 		handler.on_disconnected()

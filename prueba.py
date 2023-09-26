@@ -13,6 +13,7 @@ class Worker(QThread):
     def run(self):
         while(True):
             lista = []
+            listastr =[]
             colores = self.gestion.definir_color()
             for i in range(len(self.commu_module)):
                 latitud = self.commu_module[i].Posicion[0]
@@ -20,5 +21,8 @@ class Worker(QThread):
                 wp = (latitud,longitud)
                 lista.append([colores[i],wp])
                 lista.append([colores[i],wp])
-            self.dataLoaded.emit(lista)
+            dato =str(lista)
+            listastr.append(dato)
+            
+            self.dataLoaded.emit(listastr)
             time.sleep(1) 
