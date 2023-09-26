@@ -24,7 +24,7 @@ class CustomFrame(QFrame):
         self.progress_bar.setAlignment(Qt.AlignCenter)
         
         self.progress_bar.setMaximum(num_wp_total)
-        self.progress_bar.setValue(19)
+        self.progress_bar.setValue(0)
 
         self.layout.addWidget(self.button1)
         self.layout.addWidget(self.button2)

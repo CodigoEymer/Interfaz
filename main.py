@@ -7,6 +7,7 @@ import resources_rc
 import json
 import datetime
 import Htelemetria
+import hilo_componente_mision
 from hilo_componente_estados import Worker
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios
 from Database.usuarios.usuarios import usuarios
@@ -23,6 +24,7 @@ from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 import config_module
 from Trayectorias import Trayectorias
 from sensores import CustomFrames
+from custom_widget import CustomFrame
 from protocolo import protocolo
 from gestion import Gestion
 from user_settings import SecondWindow
@@ -305,13 +307,17 @@ class MainWindow(QMainWindow):
 		self.dist_label.setText(str(round(self.trayect.distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
 		counter = 0
+		self.num_pws = []
 		for dron in matriz_general:
+			cont_wp = 0
 			for tramo in dron:
 				for wp in tramo:
+					cont_wp = cont_wp+1
 					if wp != tramo[-1]:
 						handler.broadcast("#"+str(counter)+str(wp))
 				handler.broadcast("?"+str(tramo[-2]))
 			handler.broadcast("&")
+			self.num_pws.append(cont_wp)
 			counter=counter+1
 
 		self.gestion.insertar_wp_drones(max_height,matriz_general)
@@ -326,6 +332,8 @@ class MainWindow(QMainWindow):
 	def init_trayct(self):
 		self.mission_page()
 		self.flag_telemetria = 1
+		self.startThread()
+		self.iniciar_hilo3()
 		if self.finish_mission is None:
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()	
@@ -343,21 +351,31 @@ class MainWindow(QMainWindow):
 		print(str(Posicion[0]))
 		handler.broadcast(str(Posicion[0]))
 
+	def iniciar_hilo3(self):
+		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
+		self.thread2.create_frame2_signal.connect(self.create_frame2)
+		self.thread2.start()
+
+	def create_frame2(self, name_space, state):
+		frame1 = CustomFrame(name_space, state, self.num_pws[int(name_space[-1])-1])
+		self.layout.addWidget(frame1)
+
 	def disconnect_socket(self):
 		handler.on_disconnected()
 
 	def iniciar_hilo2(self,commu):
 		self.commu_objeto = commu
-		self.worker = Worker()
+		self.worker = Worker(commu)
         # Conectamos la senal del worker a un metodo en la ventana principal
 		self.worker.create_frame_signal.connect(self.create_frame)
 		self.worker.start()
 
-	def create_frame(self, text1, text2):
+	def create_frame(self, name_space, state):
         # Este metodo sera llamado cuando el worker emita la senal
-		frame = CustomFrames(text1, text2)
+		frame = CustomFrames(name_space, state)
 		self.layouts.addWidget(frame)
 		self.commu_objeto.frame_a_modificar(frame)
+
 
 	def home_page(self):
 		self.set_default_icons()
