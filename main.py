@@ -348,7 +348,7 @@ class MainWindow(QMainWindow):
 
 	def iniciar_hilo2(self,commu):
 		self.commu_objeto = commu
-		self.worker = Worker(commu)
+		self.worker = Worker()
         # Conectamos la senal del worker a un metodo en la ventana principal
 		self.worker.create_frame_signal.connect(self.create_frame)
 		self.worker.start()

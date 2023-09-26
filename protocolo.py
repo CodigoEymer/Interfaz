@@ -49,7 +49,7 @@ class protocolo():
             self.ns_unicos.append(ns)
             self.n_drones = len(self.ns_unicos)
 
-            for canal in self.commu_module:
+            for canal in self.commu_modules:
                  canal.n_canales = int(ns[4])
 
         
