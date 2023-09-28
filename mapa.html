@@ -138,59 +138,30 @@
           }
           
           else if (event.data[0] == "["){     // "_"
-            let datastr = str(event.data);
-            while(k<5) {
-              alert("datastr"+datastr);
-              k =k+1;
-            }
+            let datastr = event.data;
+            datastr = datastr.replace(/\(/g, '[').replace(/\)/g, ']');
+            var Vposicion = JSON.parse(datastr.replace(/'/g, '"'));
 
-            // Primero, necesitamos reemplazar los parentesis con corchetes para que sea un formato JSON valido
-            let datastrconver = datastr.replace(/\(/g, '[').replace(/\)/g, ']');
-            while(k<5) {
-              alert("datastrconver"+datastrconver);
-              k =k+1;
-            }
-
-            // Ahora podemos convertirlo a un array
-            let arr = JSON.parse(datastrconver);
-
-            alert("vector1"+arr[0]);
-            alert("vector2"+arr[0]);
-
-
-
-
-
-            // var dato2 = event.data;
-            // dato2 = dato2.replace("_","")
-            // var sin_comillas2 = dato2.slice(1,-1);
-            // var tupla2 = sin_comillas2.split(",");
-            // var latitud2=Number(tupla2[0]);
-            // var longitud2=Number(tupla2[1]);
-            // var wp2= [latitud2,longitud2];
-
-            // var circle1 = L.circle(wp2, {
-            //     radius: 0.5, // Radio del círculo en metros
-            //     color: '#000000', // Color del borde del círculo
-            //     fillColor: '#000000', // Color de relleno del círculo
-            //     fillOpacity: 1 // Opacidad del relleno del círculo
-            // }).addTo(map);
-          }
-          else if (event.data[0] == "/"){
-            var dato2 = event.data;
-            dato2 = dato2.replace("/","")
-            var sin_comillas2 = dato2.slice(1,-1);
-            var tupla2 = sin_comillas2.split(",");
-            var latitud2=Number(tupla2[0]);
-            var longitud2=Number(tupla2[1]);
-            var wp2= [latitud2,longitud2];
-
-            var circle1 = L.circle(wp2, {
-                radius: 0.5, // Radio del círculo en metros
-                color: '#EBCA10', // Color del borde del círculo
-                fillColor: '#EBCA10', // Color de relleno del círculo
-                fillOpacity: 1 // Opacidad del relleno del círculo
-            }).addTo(map);
+            for (var i = 0; i < Vposicion.length; i++) {
+              var latitud2=Number(Vposicion[i][1][0]);
+              var longitud2=Number(Vposicion[i][1][1]);
+              var wp2= [latitud2,longitud2];
+                if (Vposicion[i][0] == '_'){
+                  var circle1 = L.circle(wp2, {
+                  radius: 0.5, // Radio del círculo en metros
+                  color: '#000000', // Color del borde del círculo
+                  fillColor: '#000000', // Color de relleno del círculo
+                  fillOpacity: 1 // Opacidad del relleno del círculo
+                  }).addTo(map);  
+                }else{
+                  var circle1 = L.circle(wp2, {
+                  radius: 0.5, // Radio del círculo en metros
+                  color: '#EBCA10', // Color del borde del círculo
+                  fillColor: '#EBCA10', // Color de relleno del círculo
+                  fillOpacity: 1 // Opacidad del relleno del círculo
+                  }).addTo(map);
+                }
+            }           
           }
           else if (event.data[0] == "&"){
             L.polyline(linePoints, {color: '#3772FF'}).addTo(map);
