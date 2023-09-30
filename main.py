@@ -7,6 +7,8 @@ import resources_rc
 import json
 import datetime
 import Htelemetria
+import hilo_componente_mision
+from hilo_componente_estados import Worker
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios
 from Database.usuarios.usuarios import usuarios
 
@@ -21,7 +23,8 @@ from Database.wp_recarga.wp_recarga import wp_recarga as wp_recarga_obj
 #from Database.foto.foto import foto
 import config_module
 from Trayectorias import Trayectorias
-from communication_module import communication_module
+from sensores import CustomFrames
+from custom_widget import CustomFrame
 from protocolo import protocolo
 from gestion import Gestion
 from user_settings import SecondWindow
@@ -29,7 +32,7 @@ from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTableWidgetItem, QWidget, QTextEdit
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QProgressBar, QHBoxLayout, QVBoxLayout, QFrame
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
@@ -96,22 +99,22 @@ class MainWindow(QMainWindow):
 		self.user_name_btn.clicked.connect(self.user_name_btn_function)
 		self.date_btn.clicked.connect(self.date_btn_function)
 		self.generate_report.clicked.connect(self.report_function)
-		self.playBtn.clicked.connect(self.reanudar_mision)		
+		self.playBtn.clicked.connect(self.reanudar_mision)
+		#self.stopBtn.clicked.connect(self.nuevo_item)		
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.update_user_data_up)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
-		
+		self.layout = QVBoxLayout()
+		self.scrollAreaWidgetContents.setLayout(self.layout)
+		self.layouts = QVBoxLayout()
+		self.frame_13.setLayout(self.layouts)
 		self.console.setReadOnly(True)
 		self.buffer = []
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.flush_buffer)
 		self.timer.start(1000)  # Flush the buffer every 1 second
-		self.hide_all_frames()
 		#self.commu_module = communication_module(self,telemetria,dron, foto)
-		self.protocolo = protocolo(self,telemetriaV,dronV, fotoV)
-
-
 		
 		self.file = QFile("mapa.html")
 		if self.file.open(QFile.ReadOnly | QFile.Text):
@@ -228,6 +231,7 @@ class MainWindow(QMainWindow):
 				self.user = user
 				self.main_window()
 				self.home_page()
+				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV)
 				self.error_label.setText("")
 				break
 			else:
@@ -290,7 +294,7 @@ class MainWindow(QMainWindow):
 		self.gestion.insertar_drones(current_mision.get_id_mision())
 
 		parameters =[max_acce, int(max_speed)*100]
-		for commu in self.protocolo.commu_module:
+		for commu in self.protocolo.commu_modules:
 			commu.setFlightParameters(parameters)
 
 		self.gestion.completar_telemetrias(telemetriaV)
@@ -303,13 +307,17 @@ class MainWindow(QMainWindow):
 		self.dist_label.setText(str(round(self.trayect.distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
 		counter = 0
+		self.num_pws = []
 		for dron in matriz_general:
+			cont_wp = 0
 			for tramo in dron:
 				for wp in tramo:
+					cont_wp = cont_wp+1
 					if wp != tramo[-1]:
 						handler.broadcast("#"+str(counter)+str(wp))
 				handler.broadcast("?"+str(tramo[-2]))
 			handler.broadcast("&")
+			self.num_pws.append(cont_wp)
 			counter=counter+1
 
 		self.gestion.insertar_wp_drones(max_height,matriz_general)
@@ -324,6 +332,8 @@ class MainWindow(QMainWindow):
 	def init_trayct(self):
 		self.mission_page()
 		self.flag_telemetria = 1
+		self.startThread()
+		self.iniciar_hilo3()
 		if self.finish_mission is None:
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()	
@@ -341,8 +351,31 @@ class MainWindow(QMainWindow):
 		print(str(Posicion[0]))
 		handler.broadcast(str(Posicion[0]))
 
+	def iniciar_hilo3(self):
+		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
+		self.thread2.create_frame2_signal.connect(self.create_frame2)
+		self.thread2.start()
+
+	def create_frame2(self, name_space, state):
+		frame1 = CustomFrame(name_space, state, self.num_pws[int(name_space[-1])-1])
+		self.layout.addWidget(frame1)
+
 	def disconnect_socket(self):
 		handler.on_disconnected()
+
+	def iniciar_hilo2(self,commu):
+		self.commu_objeto = commu
+		self.worker = Worker(commu)
+        # Conectamos la senal del worker a un metodo en la ventana principal
+		self.worker.create_frame_signal.connect(self.create_frame)
+		self.worker.start()
+
+	def create_frame(self, name_space, state):
+        # Este metodo sera llamado cuando el worker emita la senal
+		frame = CustomFrames(name_space, state)
+		self.layouts.addWidget(frame)
+		self.commu_objeto.frame_a_modificar(frame)
+
 
 	def home_page(self):
 		self.set_default_icons()
@@ -359,6 +392,13 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
+
+	def nuevo_item(self,ns):
+		frame = CustomFrames(ns, "Desconectado")
+		self.layouts.addWidget(frame)
+		print("Creando item")
+		return frame
+		#self.componente_estados(self.layout, "Dronx", "Conectado",20)
 		
 	def print_console(self,text):	
 		self.buffer.append(text)
@@ -508,12 +548,6 @@ class MainWindow(QMainWindow):
 
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
 
-
-	def hide_all_frames(self):
-		self.frame_drone1.hide()
-		self.frame_drone2.hide()
-		self.frame_drone3.hide()
-		self.frame_drone4.hide()
 
 
 def on_message_received(message):
