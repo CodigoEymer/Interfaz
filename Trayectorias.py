@@ -1,11 +1,13 @@
 import math
 import ast
+from collections import deque
+from scipy.spatial import distance
 
 class Trayectorias():
     def __init__(self,coords,altura,cvH,cvV,sobrelapamiento, wp_recarga):
         #input
         if wp_recarga == []:  
-            self.wp_recarga = [[-76.533004,3.371387]]
+            self.wp_recarga = [[3.371387,-76.533004]]
         else:
             self.wp_recarga = self.js_to_py(wp_recarga)
         self.vertices_global = self.js_to_py(coords)
@@ -173,19 +175,34 @@ class Trayectorias():
         y_rotated = (x - x0) * math.sin(theta) + (y - y0) * math.cos(theta) + y0
         return (x_rotated, y_rotated)
 
+    def reordenar_lista(self,lista, indice):
+        d = deque(lista)
+        d.rotate(-indice)
+        return list(d)
+
 
     def ciclos(self):
         all_vertices = []
         new_vertices = []
+
+        indexWp  = self.to_cartesian(self.wp_recargas[0][1],self.wp_recargas[0][0])
+        closest_point_index = distance.cdist([indexWp], self.vertices).argmin()
+
+
+        print("self.wp_recargas[0]",self.wp_recargas[0])
+        print("closest_point_index",closest_point_index)
         
-        if self.vertices[0][1] <= self.vertices[1][1]:
-            for index in range(self.p):
-                if index > 0:
-                    new_vertices.append(self.vertices[self.p-(index)])
-                else:
-                    new_vertices.append(self.vertices[0])
-        else:
-            new_vertices=self.vertices
+        self.vertices = self.reordenar_lista(self.vertices,closest_point_index)
+
+        # if self.vertices[0][1] <= self.vertices[1][1]:
+        #     for index in range(self.p):
+        #         if index > 0:
+        #             new_vertices.append(self.vertices[self.p-(index)])
+        #         else:
+        #             new_vertices.append(self.vertices[0])
+        # else:
+        #     new_vertices=self.vertices
+        new_vertices= self.vertices
         all_vertices = new_vertices
         p1=()
         p2=()
@@ -301,13 +318,13 @@ class Trayectorias():
             wp_dron_global.append((lat,long))
         return wp_dron_global
 
-    def mejor_punto(self, ult_punto):
+    def mejor_punto(self, ult_punto,listaWp):
         menor_dist = float("inf")
         x1 = ult_punto[0]
         y1 = ult_punto[1]
         x1,y1=self.to_cartesian(x1,y1)
         indice = 0
-        for punto in self.wp_recargas:
+        for punto in listaWp:
             x2 = punto[0]
             y2 = punto[1]
             x2,y2=self.to_cartesian(x2,y2)
@@ -359,7 +376,7 @@ class Trayectorias():
                 wp_retorno.append((lat,long))
                 self.wp_retorno_cartesian.append((punto_siguiente[0],punto_siguiente[1]))
                 wp_tramos_actual.append((lat,long))
-                indice = self.mejor_punto((lat,long))
+                indice = self.mejor_punto((lat,long),self.wp_recargas)
                 wp_tramos_actual.append(self.wp_recargas[indice])
                 self.wp_tramos.append(wp_tramos_actual) 
                 distancia_actual = 0
@@ -374,7 +391,7 @@ class Trayectorias():
 
         lat,long=self.to_geographic(punto_actual[0],punto_actual[1])
         wp_tramos_actual.append((lat,long))
-        indice = self.mejor_punto((lat,long))
+        indice = self.mejor_punto((lat,long),self.wp_recargas)
         wp_tramos_actual.append(self.wp_recargas[indice])                 
         self.wp_tramos.append(wp_tramos_actual)
         
