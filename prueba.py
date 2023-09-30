@@ -5,15 +5,24 @@ import communication_module
 
 class Worker(QThread):
     dataLoaded = pyqtSignal(list)
-    def __init__(self, commu_module):
+    def __init__(self, commu_module, gestion):
         super(Worker, self).__init__()
         self.commu_module = commu_module
+        self.gestion = gestion
 
     def run(self):
         while(True):
             lista = []
-            for comm in self.commu_module:
-                data = comm.Posicion
-                lista.append(data)
-            self.dataLoaded.emit(lista)
-            time.sleep(2)    
+            listastr =[]
+            colores = self.gestion.definir_color()
+            for i in range(len(self.commu_module)):
+                latitud = self.commu_module[i].Posicion[0]
+                longitud = self.commu_module[i].Posicion[1]
+                wp = (latitud,longitud)
+                lista.append([colores[i],wp])
+                lista.append([colores[i],wp])
+            dato =str(lista)
+            listastr.append(dato)
+            
+            self.dataLoaded.emit(listastr)
+            time.sleep(1) 

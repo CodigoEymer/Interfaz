@@ -38,6 +38,7 @@ from PyQt5.QtCore import pyqtSlot, QTimer
 from mavros_msgs.srv import *
 import time
 import MySQLdb
+import json
 
 
 DB_HOST = '127.0.0.1' 
@@ -294,7 +295,7 @@ class MainWindow(QMainWindow):
 
 		self.gestion.completar_telemetrias(telemetriaV)
 
-		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[1].get_velocidad_max()))
+		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[0].get_velocidad_max()))
 
 		self.trayect = Trayectorias(coords,float(max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
 		matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno)
@@ -323,28 +324,22 @@ class MainWindow(QMainWindow):
 	def init_trayct(self):
 		self.mission_page()
 		self.flag_telemetria = 1
-		self.startThread()
 		if self.finish_mission is None:
 			self.finish_mission = MisionEndWindow(self,self.fotos)
-		altura = self.max_height_text.text()
-		
+		altura = self.max_height_text.text()	
 		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
+		self.startThread()	
 		
 
 		
 	def startThread(self):
-		self.thread = prueba.Worker(self.protocolo.commu_module)
+		self.thread = prueba.Worker(self.protocolo.commu_module, self.gestion)
 		self.thread.dataLoaded.connect(self.setData)
 		self.thread.start()
 
 	def setData(self, Posicion):
-		colores = self.gestion.definir_color()
-		for i in range(self.n_drones):
-			color = colores[i]
-			latitud = Posicion[i][0]
-			longitud = Posicion[i][1]
-			wp = (latitud,longitud)
-			handler.broadcast(color+str(wp))
+		print(str(Posicion[0]))
+		handler.broadcast(str(Posicion[0]))
 
 	def disconnect_socket(self):
 		handler.on_disconnected()

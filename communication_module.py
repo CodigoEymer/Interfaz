@@ -111,7 +111,6 @@ class communication_module():
 
 
         if(self.main.flag_telemetria==1):
-            print("self.n_canales: "+str(self.n_canales)+"dron "+str(self.flag_insertTelemetria_c))
             self.v_telemetria.append(self.telemetria)
             if(len(self.v_telemetria)>=10 and self.flag_insertTelemetria['valor'] == self.flag_insertTelemetria_c):
                 self.config.insertar_telemetria(self.v_telemetria)
