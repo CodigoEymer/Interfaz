@@ -6,7 +6,7 @@ import rospkg
 import resources_rc
 import json
 import datetime
-import prueba
+import Htelemetria
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios
 from Database.usuarios.usuarios import usuarios
 
@@ -333,7 +333,7 @@ class MainWindow(QMainWindow):
 
 		
 	def startThread(self):
-		self.thread = prueba.Worker(self.protocolo.commu_module, self.gestion)
+		self.thread = Htelemetria.Worker(self.protocolo.commu_module)
 		self.thread.dataLoaded.connect(self.setData)
 		self.thread.start()
 
