@@ -348,7 +348,6 @@ class MainWindow(QMainWindow):
 		self.thread.start()
 
 	def setData(self, Posicion):
-		print(str(Posicion[0]))
 		handler.broadcast(str(Posicion[0]))
 
 	def iniciar_hilo3(self):
