@@ -25,4 +25,4 @@ class Worker(QThread):
             listastr.append(dato)
             
             self.dataLoaded.emit(listastr)
-            time.sleep(1) 
+            time.sleep(2) 

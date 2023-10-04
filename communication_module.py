@@ -6,7 +6,6 @@ from mavros_msgs.srv import ParamSet
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QTableWidgetItem
 import cv2
 import datetime as d
 import os
@@ -39,7 +38,6 @@ class communication_module():
             rospy.Subscriber("/"+self.ns+"/mavros/imu/data", Imu, self.imu_callback)
             rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
             rospy.Subscriber("/"+self.ns+"/mavros/camera/image_raw",  Image, self.image_callback)
-            self.dron_info()
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
             
 
@@ -101,10 +99,6 @@ class communication_module():
         self.telemetria.set_altitud(altitude)
         self.telemetria.set_hora_actualizacion(hora_actualizacion)
         
-        self.main.tableWidget.setItem(0, 0, QTableWidgetItem(str(self.dron.get_hardware_id())))
-        for item in range(3):
-            self.main.tableWidget.setItem(0, item+1, QTableWidgetItem(str(self.Posicion[item])))
-        #self.main.tableWidget.repaint()
 
 
         if(self.main.flag_telemetria==1):
@@ -118,12 +112,13 @@ class communication_module():
                     self.flag_insertTelemetria['valor']= self.flag_insertTelemetria['valor']+1
 
 
-    def setFlightParameters(self, parameters):
+    def setFlightParameters(self, parameters, altura):
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
             'WPNAV_SPEED_DN': 300,          #   10       10-500  cm/s
-            'RTL_ALT_FINAL': 0 # cm
+            'RTL_ALT': altura,
+            'RTL_ALT_FINAL': altura # cm
         }
         for id, value in params_to_set.items():
             if not self.set_param(id, value):
@@ -140,12 +135,9 @@ class communication_module():
         except rospy.ServiceException as e:
             print("Fallo al llamar el servicio: %s" %e)
 
-    def dron_info(self):
-        dron=self.ns[-1]
-        rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         
-        #self.frame.button2.setText("Conectado")
     def frame_a_modificar(self, frame):
+
         self.frame = frame
 
     def camera_callback(self, data):
@@ -161,8 +153,9 @@ class communication_module():
         salud_acelerometro = ""
         salud_magnetometro = ""
         salud_presion = ""
-        for item in data.status:
 
+        
+        for item in data.status:
             if item.name == self.ns+'/mavros: Heartbeat':
                     id = item.hardware_id
                     self.dron.set_hardware_id(id)
@@ -184,6 +177,8 @@ class communication_module():
                         porcentaje = value.value
                         self.telemetria.set_porcentaje_bateria(porcentaje)
 
+            if item.name == self.ns+"/mavros: FCU connection":
+                self.frame.button2.setText(item.message)
 
             if item.name == self.ns+"/mavros: System":
                 for value in item.values:

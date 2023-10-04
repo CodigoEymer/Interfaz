@@ -7,7 +7,7 @@ class Trayectorias():
     def __init__(self,coords,altura,cvH,cvV,sobrelapamiento, wp_recarga):
         #input
         if wp_recarga == []:  
-            self.wp_recarga = [[3.371387,-76.533004]]
+            self.wp_recarga = [[-76.533004,3.371387]]
         else:
             self.wp_recarga = self.js_to_py(wp_recarga)
         self.vertices_global = self.js_to_py(coords)
@@ -185,12 +185,8 @@ class Trayectorias():
         all_vertices = []
         new_vertices = []
 
-        indexWp  = self.to_cartesian(self.wp_recargas[0][1],self.wp_recargas[0][0])
+        indexWp  = self.to_cartesian(self.wp_recargas[0][0],self.wp_recargas[0][1])
         closest_point_index = distance.cdist([indexWp], self.vertices).argmin()
-
-
-        print("self.wp_recargas[0]",self.wp_recargas[0])
-        print("closest_point_index",closest_point_index)
         
         self.vertices = self.reordenar_lista(self.vertices,closest_point_index)
 
