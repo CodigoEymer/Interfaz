@@ -345,11 +345,12 @@ class MainWindow(QMainWindow):
 
 	def create_grid(self, rows,columns):
 		self.grid = QGridLayout(self)
+        header = ["Hardware id","Latitud","Longitud","Altitud"]
 		self.labels = []
 		for i in range(rows):
 			row = []
 			for j in range(columns):
- 				label = QLabel(f'Label {i+1}-{j+1}')
+ 				label = QLabel(header[j])
 				self.grid.addWidget(label, i, j)
 				row.append(label)
 			self.labels.append(row)
