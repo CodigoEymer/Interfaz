@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import os
 import io
 import rospy
@@ -37,7 +37,6 @@ from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QTimer
-from grid_telemetria import GridWindow
 
 from mavros_msgs.srv import *
 import time
@@ -345,7 +344,7 @@ class MainWindow(QMainWindow):
 
 	def create_grid(self, rows,columns):
 		self.grid = QGridLayout(self)
-        header = ["Hardware id","Latitud","Longitud","Altitud"]
+		header = ["Hardware id","Latitud","Longitud","Altitud"]
 		self.labels = []
 		for i in range(rows):
 			row = []
@@ -366,10 +365,10 @@ class MainWindow(QMainWindow):
 		for i in range(len(dronV)):
 			pos = self.protocolo.commu_modules[i].Posicion
 			pos[2] = self.gestion.coberturas[i].current_altitude
-            self.labels[i+1][0].setText(dronV[i].get_hardware_id())
+   			self.labels[i+1][0].setText(dronV[i].get_hardware_id())
 			#self.tableWidget.setItem(i, 0, QTableWidgetItem(str(dronV[i].get_hardware_id())))
 			for item in range(3):
-                self.labels[i+1][item+1].setText(str(pos[item]))
+				self.labels[i+1][item+1].setText(str(pos[item]))
 				#self.tableWidget.setItem(i, item+1, QTableWidgetItem(str(pos[item])))
 
 	def iniciar_hilo3(self):
