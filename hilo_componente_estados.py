@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
 from PyQt5.QtCore import QThread, pyqtSignal
-
+import time
 
 class Worker(QThread):
     create_frame_signal = pyqtSignal(str, str)

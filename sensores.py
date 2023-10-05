@@ -39,11 +39,9 @@ class CustomFrames(QFrame):
         self.cameraBtn.setIcon(QIcon('./icons/cameraRojo.svg'))
         self.cameraBtn.setIconSize(QSize(30, 30))
 
-        #self.spacerItem = QSpacerItem(584, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.layout.addWidget(self.button1)
         self.layout.addWidget(self.button2)
-        #self.layout.addWidget(self.spacerItem)
         self.layout.addWidget(self.batteryBtn)
         self.layout.addWidget(self.gpsBtn)
         self.layout.addWidget(self.motorBtn)

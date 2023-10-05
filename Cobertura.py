@@ -10,12 +10,13 @@ from geometry_msgs.msg import PoseStamped
 
 class Cobertura():
 
-    def __init__(self, parent, progress_bar,altura,wp_retorno_aut,wp_tramos, msn_end_w, ns):
+    def __init__(self, parent, progress_bar,altura_segura,altura_wp,wp_retorno_aut,wp_tramos, msn_end_w, ns):
         self.main = parent
         self.progress_bar = progress_bar
         self.wp_tramos = wp_tramos
         self.n_tramos = len(self.wp_tramos)       
-        self.altura = float(altura)
+        self.altura_wp = altura_wp
+        self.altura_segura = altura_segura
         self.current_altitude = None
         self.wp_retorno_aut = wp_retorno_aut
         self.tramo_actual = 0
@@ -134,16 +135,16 @@ class Cobertura():
 
         try:
             takeoffService = rospy.ServiceProxy("/"+self.ns+"/mavros/cmd/takeoff", mavros_msgs.srv.CommandTOL) 
-            takeoff_response = takeoffService(altitude = self.altura, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
+            takeoff_response = takeoffService(altitude = self.altura_segura, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
         except rospy.ServiceException as e:
             self.main.print_console (self.ns+": Service takeoff call failed: %s"%e)
 
         # Esperar a que el drone alcance la altitud deseada
 
-        while self.current_altitude is None or self.current_altitude < self.altura:
+        while self.current_altitude is None or self.current_altitude < self.altura_segura:
             rospy.sleep(0.1)
 
-    def wp_a_waypoint(self, i, latitud, longitud):
+    def wp_a_waypoint(self, i, latitud, longitud,altitud):
         wp = Waypoint()
         wp.frame = 3 # MAV_FRAME_GLOBAL_RELATIVE_ALT
         wp.command = 16 # MAV_CMD_NAV_WAYPOINT
@@ -153,18 +154,21 @@ class Cobertura():
         #wp.param1 = 1 # Hover in sec
         wp.x_lat = latitud # Latitud en grados
         wp.y_long = longitud # Longitud en grados
-        wp.z_alt = self.altura # Altitud en metros
+        wp.z_alt = altitud # Altitud en metros
         
         return wp
 
     def formato_wp(self,lista_wp):
         waypoints = []
-        wp = self.wp_a_waypoint(0,3.371387,-76.533004)
+        wp = self.wp_a_waypoint(0,3.371387,-76.533004,0)
         waypoints.append(wp)     
         for i in range(len(lista_wp)): 
             latitud = lista_wp[i][0]
             longitud = lista_wp[i][1]
-            wp = self.wp_a_waypoint(i+1,latitud,longitud)
+            if(i==len(lista_wp)-1):
+                wp = self.wp_a_waypoint(i+1,latitud,longitud,self.altura_segura)
+            else:
+                wp = self.wp_a_waypoint(i+1,latitud,longitud,self.altura_wp)
             waypoints.append(wp)
         self.set_waypoint(waypoints)
 

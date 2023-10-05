@@ -32,7 +32,7 @@ from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QProgressBar, QHBoxLayout, QVBoxLayout, QFrame
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QProgressBar, QHBoxLayout, QVBoxLayout, QFrame, QTableWidgetItem
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
@@ -82,6 +82,8 @@ class MainWindow(QMainWindow):
 		self.second_window = None
 		self.finish_mission = None
 		self.fotos=[]
+		self.c=0
+		self.commu_objeto = []
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
 		self.crearUsuarioBtn.clicked.connect(self.signup_page)
@@ -100,7 +102,7 @@ class MainWindow(QMainWindow):
 		self.date_btn.clicked.connect(self.date_btn_function)
 		self.generate_report.clicked.connect(self.report_function)
 		self.playBtn.clicked.connect(self.reanudar_mision)
-		#self.stopBtn.clicked.connect(self.nuevo_item)		
+		self.stopBtn.clicked.connect(self.stop_mision)		
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.update_user_data_up)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
@@ -148,11 +150,8 @@ class MainWindow(QMainWindow):
 			self.user.set_correo(str(correo))
 
 		except MySQLdb._exceptions.IntegrityError as e:
-			#print(e)
 			self.user_feedback.setStyleSheet("color: red;")
-			#self.user_feedback.setText("error al actualizar usuario, intente de nuevo")
 		
-		#self.stackedWidget.setCurrentWidget(self.mainWindowWidget)
 		self.main_window()
 
 	def main_window(self):
@@ -294,8 +293,11 @@ class MainWindow(QMainWindow):
 		self.gestion.insertar_drones(current_mision.get_id_mision())
 
 		parameters =[max_acce, int(max_speed)*100]
+		altura= int(self.max_height_text.text())
+		c = 100
 		for commu in self.protocolo.commu_modules:
-			commu.setFlightParameters(parameters)
+			commu.setFlightParameters(parameters, altura*100 + c)
+			c = c+100
 
 		self.gestion.completar_telemetrias(telemetriaV)
 
@@ -332,23 +334,29 @@ class MainWindow(QMainWindow):
 	def init_trayct(self):
 		self.mission_page()
 		self.flag_telemetria = 1
-		self.startThread()
 		self.iniciar_hilo3()
 		if self.finish_mission is None:
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()	
 		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
+		self.tableWidget.setRowCount(self.n_drones)
 		self.startThread()	
 		
 
 		
 	def startThread(self):
-		self.thread = Htelemetria.Worker(self.protocolo.commu_module)
+		self.thread = Htelemetria.Worker(self.protocolo.commu_modules,self.gestion)
 		self.thread.dataLoaded.connect(self.setData)
 		self.thread.start()
 
 	def setData(self, Posicion):
 		handler.broadcast(str(Posicion[0]))
+		for i in range(len(dronV)):
+			pos = self.protocolo.commu_modules[i].Posicion
+			pos[2] = self.gestion.coberturas[i].current_altitude
+			self.tableWidget.setItem(i, 0, QTableWidgetItem(str(dronV[i].get_hardware_id())))
+			for item in range(3):
+				self.tableWidget.setItem(i, item+1, QTableWidgetItem(str(pos[item])))
 
 	def iniciar_hilo3(self):
 		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
@@ -363,7 +371,7 @@ class MainWindow(QMainWindow):
 		handler.on_disconnected()
 
 	def iniciar_hilo2(self,commu):
-		self.commu_objeto = commu
+		self.commu_objeto.append(commu)
 		self.worker = Worker(commu)
         # Conectamos la senal del worker a un metodo en la ventana principal
 		self.worker.create_frame_signal.connect(self.create_frame)
@@ -371,9 +379,11 @@ class MainWindow(QMainWindow):
 
 	def create_frame(self, name_space, state):
         # Este metodo sera llamado cuando el worker emita la senal
+		obj=self.commu_objeto[self.c]
 		frame = CustomFrames(name_space, state)
 		self.layouts.addWidget(frame)
-		self.commu_objeto.frame_a_modificar(frame)
+		obj.frame_a_modificar(frame)
+		self.c=self.c+1
 
 
 	def home_page(self):
@@ -392,12 +402,8 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
 
-	def nuevo_item(self,ns):
-		frame = CustomFrames(ns, "Desconectado")
-		self.layouts.addWidget(frame)
-		print("Creando item")
-		return frame
-		#self.componente_estados(self.layout, "Dronx", "Conectado",20)
+	def stop_mision(self):
+		pass
 		
 	def print_console(self,text):	
 		self.buffer.append(text)
@@ -415,10 +421,6 @@ class MainWindow(QMainWindow):
 		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
 		self.stackedWidget_2.setCurrentWidget(self.filers_widget)
-		
-		# self.date_frame.hide()
-		# self.city_frame.hide()
-		# self.mission_frame.hide()
 
 	def user_name_btn_function(self):
 		self.user_options.clear()
