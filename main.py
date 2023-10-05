@@ -353,7 +353,7 @@ class MainWindow(QMainWindow):
 				self.grid.addWidget(label, i, j)
 				row.append(label)
 			self.labels.append(row)
-		self.frame_34.setLayout(self.grid)
+		self.scrollAreaWidgetContents_3.setLayout(self.grid)
 		
 	def startThread(self):
 		self.thread = Htelemetria.Worker(self.protocolo.commu_modules,self.gestion)
