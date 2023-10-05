@@ -78,7 +78,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
        <string notr="true">background-color: rgb(203, 218, 216);</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="mainWindowWidget">
        <property name="sizePolicy">
@@ -582,7 +582,7 @@ border-radius: 10px;</string>
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>298</width>
+                                 <width>100</width>
                                  <height>675</height>
                                 </rect>
                                </property>
@@ -2398,71 +2398,6 @@ border-radius: 10px;</string>
                                        <property name="frameShadow">
                                         <enum>QFrame::Raised</enum>
                                        </property>
-                                       <layout class="QVBoxLayout" name="verticalLayout_61">
-                                        <property name="spacing">
-                                         <number>0</number>
-                                        </property>
-                                        <property name="leftMargin">
-                                         <number>0</number>
-                                        </property>
-                                        <property name="topMargin">
-                                         <number>0</number>
-                                        </property>
-                                        <property name="rightMargin">
-                                         <number>0</number>
-                                        </property>
-                                        <property name="bottomMargin">
-                                         <number>0</number>
-                                        </property>
-                                        <item>
-                                         <widget class="QTableWidget" name="tableWidget">
-                                          <property name="sizePolicy">
-                                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                                            <horstretch>0</horstretch>
-                                            <verstretch>0</verstretch>
-                                           </sizepolicy>
-                                          </property>
-                                          <property name="minimumSize">
-                                           <size>
-                                            <width>500</width>
-                                            <height>0</height>
-                                           </size>
-                                          </property>
-                                          <property name="showGrid">
-                                           <bool>true</bool>
-                                          </property>
-                                          <property name="wordWrap">
-                                           <bool>true</bool>
-                                          </property>
-                                          <attribute name="horizontalHeaderDefaultSectionSize">
-                                           <number>120</number>
-                                          </attribute>
-                                          <attribute name="horizontalHeaderMinimumSectionSize">
-                                           <number>100</number>
-                                          </attribute>
-                                          <column>
-                                           <property name="text">
-                                            <string>Hardware id</string>
-                                           </property>
-                                          </column>
-                                          <column>
-                                           <property name="text">
-                                            <string>Latitud</string>
-                                           </property>
-                                          </column>
-                                          <column>
-                                           <property name="text">
-                                            <string>Longitud</string>
-                                           </property>
-                                          </column>
-                                          <column>
-                                           <property name="text">
-                                            <string>Altitud</string>
-                                           </property>
-                                          </column>
-                                         </widget>
-                                        </item>
-                                       </layout>
                                       </widget>
                                      </item>
                                     </layout>

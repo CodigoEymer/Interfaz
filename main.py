@@ -32,11 +32,12 @@ from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QProgressBar, QHBoxLayout, QVBoxLayout, QFrame, QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QApplication,  QVBoxLayout, QGridLayout, QTableWidgetItem, QLabel, QWidget
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, QTimer
+from grid_telemetria import GridWindow
 
 from mavros_msgs.srv import *
 import time
@@ -339,24 +340,36 @@ class MainWindow(QMainWindow):
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()	
 		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
-		self.tableWidget.setRowCount(self.n_drones)
-		self.startThread()	
-		
+		self.create_grid(self.n_drones+1,4)
+		self.startThread()
 
+	def create_grid(self, rows,columns):
+		self.grid = QGridLayout(self)
+		self.labels = []
+		for i in range(rows):
+			row = []
+			for j in range(columns):
+ 				label = QLabel(f'Label {i+1}-{j+1}')
+				self.grid.addWidget(label, i, j)
+				row.append(label)
+			self.labels.append(row)
+		self.frame_34.setLayout(self.grid)
 		
 	def startThread(self):
 		self.thread = Htelemetria.Worker(self.protocolo.commu_modules,self.gestion)
 		self.thread.dataLoaded.connect(self.setData)
 		self.thread.start()
-
+  
 	def setData(self, Posicion):
 		handler.broadcast(str(Posicion[0]))
 		for i in range(len(dronV)):
 			pos = self.protocolo.commu_modules[i].Posicion
 			pos[2] = self.gestion.coberturas[i].current_altitude
-			self.tableWidget.setItem(i, 0, QTableWidgetItem(str(dronV[i].get_hardware_id())))
+            self.labels[i+1][0].setText(dronV[i].get_hardware_id())
+			#self.tableWidget.setItem(i, 0, QTableWidgetItem(str(dronV[i].get_hardware_id())))
 			for item in range(3):
-				self.tableWidget.setItem(i, item+1, QTableWidgetItem(str(pos[item])))
+                self.labels[i+1][item+1].setText(str(pos[item]))
+				#self.tableWidget.setItem(i, item+1, QTableWidgetItem(str(pos[item])))
 
 	def iniciar_hilo3(self):
 		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
