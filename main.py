@@ -366,10 +366,8 @@ class MainWindow(QMainWindow):
 			pos = self.protocolo.commu_modules[i].Posicion
 			pos[2] = self.gestion.coberturas[i].current_altitude
    			self.labels[i+1][0].setText(dronV[i].get_hardware_id())
-			#self.tableWidget.setItem(i, 0, QTableWidgetItem(str(dronV[i].get_hardware_id())))
 			for item in range(3):
 				self.labels[i+1][item+1].setText(str(pos[item]))
-				#self.tableWidget.setItem(i, item+1, QTableWidgetItem(str(pos[item])))
 
 	def iniciar_hilo3(self):
 		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
