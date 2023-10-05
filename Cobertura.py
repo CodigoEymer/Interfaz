@@ -80,8 +80,8 @@ class Cobertura():
                 self.f_despegar = 0
 
     def reanudar_mision(self):
-        self.tramo_actual=self.tramo_actual+3 
-        if self.tramo_actual < self.n_tramos:               
+        self.tramo_actual=self.tramo_actual+1
+        if self.tramo_actual < self.n_tramos:           
             self.start_mision = 1
             self.f_estable =1
             
@@ -97,7 +97,7 @@ class Cobertura():
             self.f_land = 1
         if data.wp_seq == 1:
             self.fcolorposse = "_"
-        if data.wp_seq == self.long_tramo:
+        if data.wp_seq == self.long_tramo+2:
             self.fcolorposse = "/"
             
 
@@ -165,13 +165,13 @@ class Cobertura():
         for i in range(len(lista_wp)): 
             latitud = lista_wp[i][0]
             longitud = lista_wp[i][1]
-            if(i==len(lista_wp)-1 ):
+            if(i==len(lista_wp)-2 ):
                 wp = self.wp_a_waypoint(i,latitud,longitud,self.altura_wp)
                 waypoints.append(wp)
                 wp = self.wp_a_waypoint(i,latitud,longitud,self.altura_segura)
-            elif (i==len(lista_wp)):
+            elif (i==len(lista_wp)-1):
                 wp = self.wp_a_waypoint(i,latitud,longitud,self.altura_segura)
-            elif i==1:
+            elif i==0:
                 wp = self.wp_a_waypoint(i,latitud,longitud,self.altura_segura)
                 waypoints.append(wp)
                 wp = self.wp_a_waypoint(i,latitud,longitud,self.altura_wp)
