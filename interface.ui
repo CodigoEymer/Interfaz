@@ -1610,7 +1610,7 @@ color: rgb(238, 238, 236);</string>
                          </property>
                          <item>
                           <widget class="QWidget" name="widget_6" native="true">
-                           <layout class="QVBoxLayout" name="verticalLayout_35">
+                           <layout class="QVBoxLayout" name="verticalLayout_11">
                             <item>
                              <widget class="QFrame" name="frame_43">
                               <property name="frameShape">
@@ -1703,11 +1703,23 @@ color: rgb(238, 238, 236);</string>
                              </widget>
                             </item>
                             <item>
-                             <widget class="QWidget" name="widget_16" native="true">
-                              <property name="styleSheet">
-                               <string notr="true">background-color: rgb(3, 33, 77);</string>
+                             <widget class="QWidget" name="widget_40" native="true">
+                              <property name="minimumSize">
+                               <size>
+                                <width>300</width>
+                                <height>100</height>
+                               </size>
                               </property>
-                              <layout class="QVBoxLayout" name="verticalLayout_58">
+                              <property name="font">
+                               <font>
+                                <family>Ubuntu Mono</family>
+                                <pointsize>10</pointsize>
+                               </font>
+                              </property>
+                              <property name="styleSheet">
+                               <string notr="true">background-color: rgb(46, 52, 54);</string>
+                              </property>
+                              <layout class="QVBoxLayout" name="verticalLayout_40">
                                <property name="spacing">
                                 <number>0</number>
                                </property>
@@ -1724,81 +1736,10 @@ color: rgb(238, 238, 236);</string>
                                 <number>0</number>
                                </property>
                                <item>
-                                <widget class="QFrame" name="frame_36">
-                                 <property name="frameShape">
-                                  <enum>QFrame::StyledPanel</enum>
+                                <widget class="QTextEdit" name="console">
+                                 <property name="styleSheet">
+                                  <string notr="true">color: rgb(238, 238, 236);</string>
                                  </property>
-                                 <property name="frameShadow">
-                                  <enum>QFrame::Raised</enum>
-                                 </property>
-                                 <layout class="QVBoxLayout" name="verticalLayout_60">
-                                  <property name="leftMargin">
-                                   <number>0</number>
-                                  </property>
-                                  <property name="topMargin">
-                                   <number>0</number>
-                                  </property>
-                                  <property name="rightMargin">
-                                   <number>0</number>
-                                  </property>
-                                  <property name="bottomMargin">
-                                   <number>0</number>
-                                  </property>
-                                  <item alignment="Qt::AlignHCenter">
-                                   <widget class="QLabel" name="label_27">
-                                    <property name="styleSheet">
-                                     <string notr="true">color: rgb(255, 255, 255);</string>
-                                    </property>
-                                    <property name="text">
-                                     <string>ESTADO DRONES</string>
-                                    </property>
-                                   </widget>
-                                  </item>
-                                 </layout>
-                                </widget>
-                               </item>
-                               <item>
-                                <widget class="QFrame" name="frame_35">
-                                 <property name="frameShape">
-                                  <enum>QFrame::StyledPanel</enum>
-                                 </property>
-                                 <property name="frameShadow">
-                                  <enum>QFrame::Raised</enum>
-                                 </property>
-                                 <layout class="QVBoxLayout" name="verticalLayout_65">
-                                  <property name="spacing">
-                                   <number>0</number>
-                                  </property>
-                                  <property name="leftMargin">
-                                   <number>0</number>
-                                  </property>
-                                  <property name="topMargin">
-                                   <number>0</number>
-                                  </property>
-                                  <property name="rightMargin">
-                                   <number>0</number>
-                                  </property>
-                                  <property name="bottomMargin">
-                                   <number>0</number>
-                                  </property>
-                                  <item>
-                                   <widget class="QScrollArea" name="scrollArea">
-                                    <property name="widgetResizable">
-                                     <bool>true</bool>
-                                    </property>
-                                    <widget class="QWidget" name="scrollAreaWidgetContents">
-                                     <property name="geometry">
-                                      <rect>
-                                       <x>0</x>
-                                       <y>0</y>
-                                       <width>288</width>
-                                       <height>121</height>
-                                      </rect>
-                                     </property>
-                                    </widget>
-                                   </widget>
-                                  </item>
-                                 </layout>
                                 </widget>
                                </item>
                               </layout>
@@ -1921,23 +1862,11 @@ color: rgb(238, 238, 236);</string>
                              </widget>
                             </item>
                             <item>
-                             <widget class="QWidget" name="widget_40" native="true">
-                              <property name="minimumSize">
-                               <size>
-                                <width>300</width>
-                                <height>100</height>
-                               </size>
-                              </property>
-                              <property name="font">
-                               <font>
-                                <family>Ubuntu Mono</family>
-                                <pointsize>10</pointsize>
-                               </font>
-                              </property>
+                             <widget class="QWidget" name="widget_16" native="true">
                               <property name="styleSheet">
-                               <string notr="true">background-color: rgb(46, 52, 54);</string>
+                               <string notr="true">background-color: rgb(3, 33, 77);</string>
                               </property>
-                              <layout class="QVBoxLayout" name="verticalLayout_40">
+                              <layout class="QVBoxLayout" name="verticalLayout_58">
                                <property name="spacing">
                                 <number>0</number>
                                </property>
@@ -1954,10 +1883,81 @@ color: rgb(238, 238, 236);</string>
                                 <number>0</number>
                                </property>
                                <item>
-                                <widget class="QTextEdit" name="console">
-                                 <property name="styleSheet">
-                                  <string notr="true">color: rgb(238, 238, 236);</string>
+                                <widget class="QFrame" name="frame_36">
+                                 <property name="frameShape">
+                                  <enum>QFrame::StyledPanel</enum>
                                  </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Raised</enum>
+                                 </property>
+                                 <layout class="QVBoxLayout" name="verticalLayout_60">
+                                  <property name="leftMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="topMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="rightMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="bottomMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <item alignment="Qt::AlignHCenter">
+                                   <widget class="QLabel" name="label_27">
+                                    <property name="styleSheet">
+                                     <string notr="true">color: rgb(255, 255, 255);</string>
+                                    </property>
+                                    <property name="text">
+                                     <string>ESTADO DRONES</string>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                 </layout>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="QFrame" name="frame_35">
+                                 <property name="frameShape">
+                                  <enum>QFrame::StyledPanel</enum>
+                                 </property>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Raised</enum>
+                                 </property>
+                                 <layout class="QVBoxLayout" name="verticalLayout_65">
+                                  <property name="spacing">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="leftMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="topMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="rightMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="bottomMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <item>
+                                   <widget class="QScrollArea" name="scrollArea">
+                                    <property name="widgetResizable">
+                                     <bool>true</bool>
+                                    </property>
+                                    <widget class="QWidget" name="scrollAreaWidgetContents">
+                                     <property name="geometry">
+                                      <rect>
+                                       <x>0</x>
+                                       <y>0</y>
+                                       <width>288</width>
+                                       <height>121</height>
+                                      </rect>
+                                     </property>
+                                    </widget>
+                                   </widget>
+                                  </item>
+                                 </layout>
                                 </widget>
                                </item>
                               </layout>
