@@ -13,6 +13,8 @@ import os
 from diagnostic_msgs.msg import DiagnosticArray
 from sensor_msgs.msg import CameraInfo
 
+
+
 class communication_module():
 
 
@@ -30,7 +32,6 @@ class communication_module():
             self.flag_insertTelemetria = flag_insertTelemetria
             self.n_canales = 1
             self.main.iniciar_hilo2(self)
-            #rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
            
             rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -39,6 +40,7 @@ class communication_module():
             rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
             rospy.Subscriber("/"+self.ns+"/mavros/camera/image_raw",  Image, self.image_callback)
             self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
+            self.c=0
             
 
     def create_folder(self, path):
@@ -153,70 +155,61 @@ class communication_module():
         salud_acelerometro = ""
         salud_magnetometro = ""
         salud_presion = ""
-
         
-        for item in data.status:
-            if item.name == self.ns+'/mavros: Heartbeat':
-                    id = item.hardware_id
-                    self.dron.set_hardware_id(id)
+        self.dron.set_hardware_id(data.status[3].hardware_id)
+        self.dron.set_tipo(data.status[3].values[2].value)
 
-                    for v in item.values:
-                        if v.key == 'Vehicle type':
-                            self.dron.set_tipo(v.value)
-                            self.telemetria.set_salud_controladora("Ok")
+        tipoControladora = data.status[3].values[3].value
+        self.dron.set_controladora(tipoControladora)
+        if tipoControladora == 'ArduPilot':
+            self.telemetria.set_salud_controladora("Ok")
 
-                        if v.key == 'Autopilot type':
-                            self.dron.set_controladora(v.value)
+        self.dron.set_voltaje_inicial(data.status[5].values[0].value)
+        self.telemetria.set_porcentaje_bateria(data.status[5].values[2].value)
+        estado_conexion = data.status[0].message
+        self.frame.button_estado.setText(estado_conexion)
+        print(self.c)
+        print(estado_conexion)
+        self.c=self.c+1
 
 
-            if item.name == self.ns+"/mavros: Battery":
-                for value in item.values:
-                    if value.key == "Voltage":
-                        self.dron.set_voltaje_inicial(str(value.value))
-                    if value.key == "Remaining":
-                        porcentaje = value.value
-                        self.telemetria.set_porcentaje_bateria(porcentaje)
+        salud_bateria = data.status[4].values[17].value
+        if salud_bateria == "Ok" and estado_conexion == 'connected':
+            self.telemetria.set_salud_bateria(salud_bateria)
+            self.frame.batteryBtn.setIcon(QIcon('./icons/batteryVerde.svg'))
+        else:
+            self.frame.batteryBtn.setIcon(QIcon('./icons/batteryRojo.svg'))
 
-            if item.name == self.ns+"/mavros: FCU connection":
-                self.frame.button2.setText(item.message)
 
-            if item.name == self.ns+"/mavros: System":
-                for value in item.values:
-                    if value.key == "Battery":
-                        if value.value == "Ok":
-                            self.telemetria.set_salud_bateria(value.value)
-                            self.frame.batteryBtn.setIcon(QIcon('./icons/batteryVerde.svg'))
-                        else:
-                            self.frame.batteryBtn.setIcon(QIcon('./icons/batteryRojo.svg'))
-                    if value.key == "GPS":
-                        if value.value == "Ok":
-                            self.telemetria.set_salud_gps(value.value)
-                            self.frame.gpsBtn.setIcon(QIcon('./icons/gpsVerde.svg'))
-                        else:
-                            self.frame.gpsBtn.setIcon(QIcon('./icons/gpsRojo.svg'))           
-                    if value.key == "motor outputs / control":
-                        if value.value == "Ok":
-                            self.telemetria.set_salud_motores(value.value)
-                            self.frame.motorBtn.setIcon(QIcon('./icons/motorVerde.svg'))
-                        else:
-                            self.frame.motorBtn.setIcon(QIcon('./icons/motorRojo.svg'))
-                    if value.key == "rc receiver":
-                        if value.value == "Ok":
-                            self.frame.autopilotBtn.setIcon(QIcon('./icons/cpuVerde.svg'))
-                        else:
-                            self.frame.autopilotBtn.setIcon(QIcon('./icons/cpuRojo.svg'))
-                    if value.key == "3D gyro":
-                        salud_gyro = value.value
-                    if value.key == "3D magnetometer":
-                        salud_magnetometro = value.value
-                    if value.key == "3D accelerometer":
-                        salud_acelerometro = value.value
-                    if value.key == "absolute pressure":
-                        salud_presion = value.value
+        salud_gps = data.status[4].values[7].value
+        if salud_gps == "Ok" and estado_conexion == 'connected':
+            self.telemetria.set_salud_gps(salud_gps)
+            self.frame.gpsBtn.setIcon(QIcon('./icons/gpsVerde.svg'))
+        else:
+            self.frame.gpsBtn.setIcon(QIcon('./icons/gpsRojo.svg'))   
 
-                    if salud_gyro == "Ok" and salud_magnetometro == "Ok" and salud_acelerometro == "Ok" and salud_presion == "Ok":
-                        self.telemetria.set_salud_imu("Ok")
-                        self.frame.imuBtn.setIcon(QIcon('./icons/imuVerde.svg'))
-                    else:
-                        self.frame.imuBtn.setIcon(QIcon('./icons/imuRojo.svg'))
-        rospy.sleep(1)
+        salud_motor = data.status[4].values[13].value
+        if salud_motor == "Ok" and estado_conexion == 'connected':
+            self.telemetria.set_salud_motores(salud_motor)
+            self.frame.motorBtn.setIcon(QIcon('./icons/motorVerde.svg'))
+        else:
+            self.frame.motorBtn.setIcon(QIcon('./icons/motorRojo.svg'))
+        
+        salud_auto = data.status[4].values[14].value
+        if salud_auto == "Ok" and estado_conexion == 'connected':
+            self.frame.autopilotBtn.setIcon(QIcon('./icons/cpuVerde.svg'))
+        else:
+            self.frame.autopilotBtn.setIcon(QIcon('./icons/cpuRojo.svg'))
+
+        salud_gyro = data.status[4].values[3].value
+        salud_magnetometro = data.status[4].values[5].value
+        salud_acelerometro = data.status[4].values[4].value
+        salud_presion = data.status[4].values[6].value
+
+        if salud_gyro == "Ok" and salud_magnetometro == "Ok" and salud_acelerometro == "Ok" and salud_presion == "Ok" and estado_conexion == 'connected':
+            self.telemetria.set_salud_imu("Ok")
+            self.frame.imuBtn.setIcon(QIcon('./icons/imuVerde.svg'))
+        else:
+            self.frame.imuBtn.setIcon(QIcon('./icons/imuRojo.svg'))
+                    
+        #rospy.sleep(1)

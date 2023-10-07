@@ -31,13 +31,14 @@ class protocolo():
             
             rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-            self.rate = rospy.Rate(0.3)                 
+            self.rate = rospy.Rate(1)                 
 
     def drone_data(self,data):
         ns = data.status[3].name
         ns = ns.split("/")
         ns = ns[0]
         if ns not in self.ns_unicos:
+            #print(data)
             telemetriaN = telemetria()
             dronN = dron()
             fotoN = foto()
