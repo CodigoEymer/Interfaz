@@ -12,8 +12,8 @@ class CustomFrames(QFrame):
         self.button1 = QPushButton(dron_id)
         self.button1.setStyleSheet("QPushButton {background-color: #E65E5C; color: white;}")
 
-        self.button2 = QPushButton(estado)
-        self.button2.setStyleSheet("QPushButton {background-color: #FF9800; color: white;}")
+        self.button_estado = QPushButton(estado)
+        self.button_estado.setStyleSheet("QPushButton {background-color: #FF9800; color: white;}")
 
         self.batteryBtn = QPushButton()
         self.batteryBtn.setIcon(QIcon('./icons/batteryRojo.svg'))
@@ -41,7 +41,7 @@ class CustomFrames(QFrame):
 
 
         self.layout.addWidget(self.button1)
-        self.layout.addWidget(self.button2)
+        self.layout.addWidget(self.button_estado)
         self.layout.addWidget(self.batteryBtn)
         self.layout.addWidget(self.gpsBtn)
         self.layout.addWidget(self.motorBtn)
