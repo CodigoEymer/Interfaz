@@ -8,7 +8,7 @@ import json
 import datetime
 import Htelemetria
 import hilo_componente_mision
-from hilo_componente_estados import Worker
+import hilo_componente_estados
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios
 from Database.usuarios.usuarios import usuarios
 
@@ -349,7 +349,7 @@ class MainWindow(QMainWindow):
 		for i in range(rows):
 			row = []
 			for j in range(columns):
- 				label = QLabel(header[j])
+				label = QLabel(header[j])
 				self.grid.addWidget(label, i, j)
 				row.append(label)
 			self.labels.append(row)
@@ -365,7 +365,7 @@ class MainWindow(QMainWindow):
 		for i in range(len(dronV)):
 			pos = self.protocolo.commu_modules[i].Posicion
 			pos[2] = self.gestion.coberturas[i].current_altitude
-   			self.labels[i+1][0].setText(dronV[i].get_hardware_id())
+			self.labels[i+1][0].setText(dronV[i].get_hardware_id())
 			for item in range(3):
 				self.labels[i+1][item+1].setText(str(pos[item]))
 
@@ -383,10 +383,10 @@ class MainWindow(QMainWindow):
 
 	def iniciar_hilo2(self,commu):
 		self.commu_objeto.append(commu)
-		self.worker = Worker(commu)
+		self.thread3 = hilo_componente_estados.Worker(commu.ns)
         # Conectamos la senal del worker a un metodo en la ventana principal
-		self.worker.create_frame_signal.connect(self.create_frame)
-		self.worker.start()
+		self.thread3.create_frame_signal.connect(self.create_frame)
+		self.thread3.start()
 
 	def create_frame(self, name_space, state):
         # Este metodo sera llamado cuando el worker emita la senal
