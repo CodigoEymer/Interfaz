@@ -26,6 +26,10 @@ class config_module():
         self.wp_recarga = wp_recarga
         self.mision = mision
 
+    def insertar_fotos(self, fotos):
+        prueba = foto_dao_imp(conn)
+        prueba.insert_batch(fotos)
+        
     def insertar_mision(self):
         prueba = mision_dao_imp(conn)
         date=d.date.today()
@@ -66,9 +70,7 @@ class multi_config_module():
     def __init__(self,dron= None):
         self.dron = dron
 
-    def insertar_fotos(self, fotos):
-        prueba = foto_dao_imp(conn)
-        prueba.insert_batch(fotos)
+    
 
     def insertar_dron(self,dron,id_mision):
         self.id_dron = ""
