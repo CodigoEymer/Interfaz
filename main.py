@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
 		self.wp_tramos = None
 		self.cobertura = None
 		self.config = config_module.config_module(None) 
-
+		self.contador = 0
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
 		self.second_window = None
@@ -368,7 +368,16 @@ class MainWindow(QMainWindow):
 			self.labels[i+1][0].setText(dronV[i].get_hardware_id())
 			for item in range(3):
 				self.labels[i+1][item+1].setText(str(pos[item]))
+	
+	def stop_all(self):
+		self.contador=self.contador+1
+		if self.n_drones == self.contador:
+			self.thread.stop()
+			self.finish_mission.exec_()
 
+			
+		
+ 
 	def iniciar_hilo3(self):
 		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
 		self.thread2.create_frame2_signal.connect(self.create_frame2)
@@ -414,7 +423,9 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
 
 	def stop_mision(self):
-		pass
+		if self.finish_mission is None:
+			self.finish_mission = MisionEndWindow(self,self.fotos)
+			self.finish_mission.exec_()
 		
 	def print_console(self,text):	
 		self.buffer.append(text)
