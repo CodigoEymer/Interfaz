@@ -168,8 +168,6 @@ class communication_module():
         self.telemetria.set_porcentaje_bateria(data.status[5].values[2].value)
         estado_conexion = data.status[0].message
         self.frame.button_estado.setText(estado_conexion)
-        print(self.c)
-        print(estado_conexion)
         self.c=self.c+1
 
 
