@@ -9,9 +9,13 @@ class Worker(QThread):
         super(Worker, self).__init__()
         self.commu_module = commu_module
         self.gestion = gestion
+        self.running = True
+        
+    def stop(self):
+        self.running = False
 
     def run(self):
-        while(True):
+        while self.running:
             lista = []
             listastr =[]
             colores = self.gestion.definir_color()
