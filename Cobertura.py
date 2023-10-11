@@ -27,13 +27,15 @@ class Cobertura():
         self.ns = ns
         self.start_mision = 0
         self.fcolorposse = "/"
+        self.nWpActual = 0
         
-
+        
     def status_callback(self, status):
         self.status = status
         
 
     def StartMision(self):
+        self.nWpActual = 0
         self.start_mision = 1
         self.f_estable =1
         self.f_armar = 0
@@ -84,17 +86,23 @@ class Cobertura():
         if self.tramo_actual < self.n_tramos:           
             self.start_mision = 1
             self.f_estable =1
-            
+
 
     def retorno(self,data):
         text = self.ns+": Waypoint alcanzado #"+ str(data.wp_seq) 
         self.main.print_console(text)
-        self.progress_bar.setValue(data.wp_seq)
+        self.frameEstados.progress_bar.setValue(data.wp_seq)        
+        self.nWpActual = self.nWpActual+1
+        with self.lock:
+            self.nWpActualGeneral = self.nWpActualGeneral+1
+            self.progress_bar.setValue(self.nWpActualGeneral)
+        print("dron:"+self.ns+str(self.nWpActualGeneral))
         if data.wp_seq==self.long_tramo+3:
             self.main.print_console(self.ns+": Aterrizando.")
             self.modo_land()
             self.start_mision = 0
             self.f_land = 1
+            
         if data.wp_seq == 1:
             self.fcolorposse = "_"
         if data.wp_seq == self.long_tramo+2:
@@ -226,3 +234,9 @@ class Cobertura():
         except rospy.ServiceException as e:
 
             self.main.print_console(self.ns+": Service set_mode call failed: %s. LAND Mode could not be set. Check that GPS is enabled"%e)
+            
+    def frame_a_modificar(self, frame, nWpActualGeneral, look):
+        self.frameEstados = frame
+        self.lock = lock
+        with self.lock:
+            self.nWpActualGeneral = nWpActualGeneral
