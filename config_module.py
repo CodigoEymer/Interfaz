@@ -27,6 +27,7 @@ class config_module():
         self.mision = mision
 
     def insertar_fotos(self, fotos):
+        print("Insertando fotos")
         prueba = foto_dao_imp(conn)
         prueba.insert_batch(fotos)
         
