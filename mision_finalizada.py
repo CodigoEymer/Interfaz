@@ -21,7 +21,6 @@ class MisionEndWindow(QDialog):
         for filename in os.listdir(dname):
             if filename.endswith('.jpg'):
                 with open(os.path.join(dname, filename), "rb") as file:
-                    print(filename)
                     data = file.read()
                     partes = filename.split('/')
                     ultima_parte = partes[-1]
