@@ -33,7 +33,6 @@ class communication_module():
             self.flag_insertTelemetria = flag_insertTelemetria
             self.n_canales = 1
             self.main.iniciar_hilo2(self)
-            #rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
            
             rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
             rospy.Subscriber("/"+self.ns+"/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
