@@ -70,6 +70,7 @@ current_mision = mision()
 current_wp_recarga = wp_recarga_obj()
 #foto = foto()
 lock_progress_bar = threading.Lock()
+lock_console = threading.Lock()
 
 class MainWindow(QMainWindow):
 
@@ -116,7 +117,7 @@ class MainWindow(QMainWindow):
 		self.scrollAreaWidgetContents.setLayout(self.layout)
 		self.layouts = QVBoxLayout()
 		self.frame_13.setLayout(self.layouts)
-		self.console.setReadOnly(True)
+		self.Qconsole.setReadOnly(True)
 		self.buffer = []
 		self.timer = QTimer()
 		self.timer.timeout.connect(self.flush_buffer)
@@ -349,6 +350,8 @@ class MainWindow(QMainWindow):
 
 	def db_fotos(self):
 		self.config.insertar_fotos(self.fotos)
+		self.report_after_finish()
+
 
 	def init_trayct(self):
 		self.value = 0
@@ -447,13 +450,14 @@ class MainWindow(QMainWindow):
 	def stop_mision(self):
 		pass
 		
-	def print_console(self,text):	
-		self.buffer.append(text)
+	def console(self,text):
+		with lock_console:
+			self.buffer.append(text)
 			
 
 	def flush_buffer(self):
 		if self.buffer:
-			self.console.append('\n'.join(self.buffer))
+			self.Qconsole.append('\n'.join(self.buffer))
 			self.buffer = []
 	    
 	def report_page(self):
@@ -591,7 +595,16 @@ class MainWindow(QMainWindow):
 
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
 
-
+	def report_after_finish(self):
+		self.set_default_icons()
+		icon = QIcon('./icons/IconoReporteGris.svg')
+		self.reportBtn.setIcon(icon)
+		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
+		self.switchPagesStacked.setCurrentWidget(self.reportPage)
+		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
+		print(current_usuario.get_id_usuario(), current_usuario.get_nombre())
+		print(current_mision.get_id_mision())
+		print(current_wp_recarga.get_id_wp_recarga())
 
 def on_message_received(message):
     coords_dict = json.loads(message)

@@ -50,7 +50,7 @@ class Cobertura():
     def estado_vuelo(self,state):
         self.estado = state
         if self.estado.armed==False and self.f_land==1:
-            self.main.print_console(self.ns+": Desarmado")
+            self.main.console(self.ns+": Desarmado")
             self.f_land = 0
         if self.estado.armed==False and self.respuesta==1:
             self.main.stop_all()
@@ -87,12 +87,12 @@ class Cobertura():
             
     def retorno(self,data):
         text = self.ns+": Waypoint alcanzado #"+ str(data.wp_seq) 
-        self.main.print_console(text)
+        self.main.console(text)
         self.nWpActual = self.nWpActual+1
         self.frameEstados.progress_bar.setValue(self.nWpActual)
         self.main.update_progress_bar()
         if data.wp_seq==self.long_tramo+3:
-            self.main.print_console(self.ns+": Aterrizando.")
+            self.main.console(self.ns+": Aterrizando.")
             self.modo_land()
             self.start_mision = 0
             self.f_land = 1
@@ -107,39 +107,39 @@ class Cobertura():
         self.current_altitude = data.pose.position.z  
 
     def modo_estable(self):
-        self.main.print_console(self.ns+": Activando modo ESTABLE")
+        self.main.console(self.ns+": Activando modo ESTABLE")
         rospy.wait_for_service("/"+self.ns+"/mavros/set_mode")
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
             flightModeService(custom_mode="STABILIZE")
         except rospy.ServiceException as e:
-            self.main.print_console(self.ns+": Service set_mode call failed: %s. STABLE Mode could not be set. Check that GPS is enabled"%e)
+            self.main.console(self.ns+": Service set_mode call failed: %s. STABLE Mode could not be set. Check that GPS is enabled"%e)
 
     def armar_dron(self):
         rospy.wait_for_service("/"+self.ns+"/mavros/cmd/arming")
         arm_service = rospy.ServiceProxy("/"+self.ns+"/mavros/cmd/arming", CommandBool)
         arm_service(True)
-        self.main.print_console(self.ns+": Armando motores.")
+        self.main.console(self.ns+": Armando motores.")
 
     def modo_guiado(self):
 
-        self.main.print_console(self.ns+": Activando modo GUIADO.")
+        self.main.console(self.ns+": Activando modo GUIADO.")
         rospy.wait_for_service("/"+self.ns+"/mavros/set_mode")
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
             isModeChanged = flightModeService(custom_mode="GUIDED") 
         except rospy.ServiceException as e:
-            self.main.print_console(self.ns+": Service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
+            self.main.console(self.ns+": Service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
     def despegar(self):
-        self.main.print_console(self.ns+": Despegando.")
+        self.main.console(self.ns+": Despegando.")
         rospy.wait_for_service("/"+self.ns+"/mavros/cmd/takeoff")
 
         try:
             takeoffService = rospy.ServiceProxy("/"+self.ns+"/mavros/cmd/takeoff", mavros_msgs.srv.CommandTOL) 
             takeoff_response = takeoffService(altitude = self.altura_segura, latitude = 0, longitude = 0, min_pitch = 0, yaw = 0)
         except rospy.ServiceException as e:
-            self.main.print_console (self.ns+": Service takeoff call failed: %s"%e)
+            self.main.console (self.ns+": Service takeoff call failed: %s"%e)
 
         # Esperar a que el drone alcance la altitud deseada
 
@@ -193,20 +193,20 @@ class Cobertura():
             respuesta=push_wp(start_index=0, waypoints=waypoints)
             flag=respuesta.success
             if flag:
-                self.main.print_console(self.ns+": Waypoint cargado")
+                self.main.console(self.ns+": Waypoint cargado")
             else:
-                self.main.print_console(self.ns+": Waypoint no cargados")
+                self.main.console(self.ns+": Waypoint no cargados")
         except rospy.ServiceException as e:
             rospy.logerr("Service call failed: %s"%e)
 
     def modo_automatico(self):
-        self.main.print_console(self.ns+": Activando modo AUTO")
+        self.main.console(self.ns+": Activando modo AUTO")
         rospy.wait_for_service("/"+self.ns+"/mavros/set_mode")
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
             flightModeService(custom_mode="AUTO") 
         except rospy.ServiceException as e:
-            self.main.print_console(self.ns+": Service set_mode call failed: %s. AUTO Mode could not be set. Check that GPS is enabled"%e)
+            self.main.console(self.ns+": Service set_mode call failed: %s. AUTO Mode could not be set. Check that GPS is enabled"%e)
 
         #self.progress_bar.setMaximum(len(self.lista_wp)) 
 
@@ -216,18 +216,18 @@ class Cobertura():
             isModeChanged = flightModeService(custom_mode="RTL") 
         except rospy.ServiceException as e:
 
-            self.main.print_console(self.ns+": Service set_mode call failed: %s. RTL Mode could not be set. Check that GPS is enabled"%e)
+            self.main.console(self.ns+": Service set_mode call failed: %s. RTL Mode could not be set. Check that GPS is enabled"%e)
 
     def modo_land(self):
 
-        self.main.print_console(self.ns+": Activando modo LAND")
+        self.main.console(self.ns+": Activando modo LAND")
         rospy.wait_for_service("/"+self.ns+"/mavros/set_mode")
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
             isModeChanged = flightModeService(custom_mode="LAND") 
         except rospy.ServiceException as e:
 
-            self.main.print_console(self.ns+": Service set_mode call failed: %s. LAND Mode could not be set. Check that GPS is enabled"%e)
+            self.main.console(self.ns+": Service set_mode call failed: %s. LAND Mode could not be set. Check that GPS is enabled"%e)
             
     def frame_a_modificar(self, frame):
         self.frameEstados = frame

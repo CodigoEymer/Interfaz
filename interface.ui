@@ -597,7 +597,7 @@ border-radius: 10px;</string>
                                    <rect>
                                     <x>0</x>
                                     <y>0</y>
-                                    <width>265</width>
+                                    <width>100</width>
                                     <height>348</height>
                                    </rect>
                                   </property>
@@ -1224,7 +1224,7 @@ color: rgb(238, 238, 236);</string>
                                    <number>0</number>
                                   </property>
                                   <item>
-                                   <widget class="QTextEdit" name="console">
+                                   <widget class="QTextEdit" name="Qconsole">
                                     <property name="styleSheet">
                                      <string notr="true">color: rgb(238, 238, 236);</string>
                                     </property>
@@ -4064,7 +4064,7 @@ background-color: rgb(111, 110, 110);</string>
                      <item>
                       <widget class="QStackedWidget" name="stackedWidget_2">
                        <property name="currentIndex">
-                        <number>1</number>
+                        <number>0</number>
                        </property>
                        <widget class="QWidget" name="report_view_widget">
                         <layout class="QVBoxLayout" name="verticalLayout_52">
@@ -4123,7 +4123,7 @@ background-color: rgb(111, 110, 110);</string>
                                <item>
                                 <widget class="QTabWidget" name="tabWidget_2">
                                  <property name="currentIndex">
-                                  <number>0</number>
+                                  <number>2</number>
                                  </property>
                                  <widget class="QWidget" name="tab">
                                   <attribute name="title">

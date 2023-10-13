@@ -107,6 +107,7 @@ class Trayectorias():
         if y2<0:
             tetha= -(math.acos(dot_product/mag_product))
         else:
+            print(dot_product,mag_product)
             tetha= (math.acos(dot_product/mag_product))
         return tetha
 
