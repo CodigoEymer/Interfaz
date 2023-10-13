@@ -6,8 +6,6 @@ from sensor_msgs.msg import NavSatFix
 from mavros_msgs.srv import *
 from mavros_msgs.msg import WaypointList, Waypoint, State, WaypointReached, StatusText
 from geometry_msgs.msg import PoseStamped
-
-
 class Cobertura():
 
     def __init__(self, parent, progress_bar,altura_segura,altura_wp,wp_retorno_aut,wp_tramos, msn_end_w, ns):
@@ -86,19 +84,13 @@ class Cobertura():
         if self.tramo_actual < self.n_tramos:           
             self.start_mision = 1
             self.f_estable =1
-
-
+            
     def retorno(self,data):
         text = self.ns+": Waypoint alcanzado #"+ str(data.wp_seq) 
         self.main.print_console(text)
         self.nWpActual = self.nWpActual+1
-        self.frameEstados.progress_bar.setValue(self.nWpActual)        
-        
-        
-        #with self.lock:
-            #self.nWpActualGeneral = self.nWpActualGeneral+1
-            #self.progress_bar.setValue(self.nWpActualGeneral)
-        print("WP ACTUAL dron:"+self.ns+": "+str(self.nWpActual))
+        self.frameEstados.progress_bar.setValue(self.nWpActual)
+        self.main.update_progress_bar()
         if data.wp_seq==self.long_tramo+3:
             self.main.print_console(self.ns+": Aterrizando.")
             self.modo_land()
@@ -237,8 +229,5 @@ class Cobertura():
 
             self.main.print_console(self.ns+": Service set_mode call failed: %s. LAND Mode could not be set. Check that GPS is enabled"%e)
             
-    def frame_a_modificar(self, frame, nWpActualGeneral, look):
+    def frame_a_modificar(self, frame):
         self.frameEstados = frame
-        self.lock = look
-        with self.lock:
-            self.nWpActualGeneral = nWpActualGeneral

@@ -507,7 +507,7 @@ border-radius: 10px;</string>
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>1</number>
+                    <number>0</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QVBoxLayout" name="verticalLayout_39">
@@ -538,7 +538,7 @@ border-radius: 10px;</string>
                            </size>
                           </property>
                           <property name="currentIndex">
-                           <number>0</number>
+                           <number>1</number>
                           </property>
                           <widget class="QWidget" name="page">
                            <property name="maximumSize">
@@ -1167,8 +1167,11 @@ color: rgb(238, 238, 236);</string>
                                        <property name="styleSheet">
                                         <string notr="true">background-color: rgb(114, 159, 207);</string>
                                        </property>
+                                       <property name="maximum">
+                                        <number>1</number>
+                                       </property>
                                        <property name="value">
-                                        <number>24</number>
+                                        <number>0</number>
                                        </property>
                                        <property name="alignment">
                                         <set>Qt::AlignCenter</set>
@@ -1843,8 +1846,8 @@ border-radius: 10px;</string>
                                          <rect>
                                           <x>0</x>
                                           <y>0</y>
-                                          <width>438</width>
-                                          <height>163</height>
+                                          <width>94</width>
+                                          <height>24</height>
                                          </rect>
                                         </property>
                                        </widget>
@@ -1981,8 +1984,8 @@ border-radius: 10px;</string>
                                          <rect>
                                           <x>0</x>
                                           <y>0</y>
-                                          <width>590</width>
-                                          <height>163</height>
+                                          <width>94</width>
+                                          <height>24</height>
                                          </rect>
                                         </property>
                                        </widget>

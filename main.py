@@ -69,11 +69,12 @@ current_usuario = usuarios()
 current_mision = mision()
 current_wp_recarga = wp_recarga_obj()
 #foto = foto()
+lock_progress_bar = threading.Lock()
 
 class MainWindow(QMainWindow):
 
 	def __init__(self):
-		self.lock = threading.Lock()
+		
 		self.flag_telemetria = 0
 		self.wp_tramos = None
 		self.cobertura = None
@@ -334,19 +335,23 @@ class MainWindow(QMainWindow):
 			self.num_pws.append(cont_wp)
 			counter=counter+1
 			wpTotales = wpTotales+cont_wp
-			self.progressBar_4.setMaximum(wpTotales)
+		self.progressBar_4.setMaximum(wpTotales)
 
 		self.gestion.insertar_wp_drones(max_height,matriz_general)
 
 	def reanudar_mision(self):
 		self.gestion.reanudar_misiones()
 		
+	def update_progress_bar(self):
+		self.value = self.value+1
+		with lock_progress_bar:
+			self.progressBar_4.setValue(self.value)
 
 	def db_fotos(self):
 		self.config.insertar_fotos(self.fotos)
 
 	def init_trayct(self):
-		self.nWpActualGeneral = 0
+		self.value = 0
 		self.mission_page()
 		self.flag_telemetria = 1
 		if self.finish_mission is None:
@@ -402,7 +407,7 @@ class MainWindow(QMainWindow):
 	def create_frame2(self, name_space, state):
 		frame1 = CustomFrame(name_space, state, self.num_pws[int(name_space[-1])-1])
 		self.layout.addWidget(frame1)
-		self.gestion.coberturas[self.n_cober].frame_a_modificar(frame1,self.nWpActualGeneral,self.lock)
+		self.gestion.coberturas[self.n_cober].frame_a_modificar(frame1)
 		self.n_cober=self.n_cober+1
 
 	def disconnect_socket(self):
