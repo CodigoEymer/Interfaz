@@ -370,7 +370,6 @@ class MainWindow(QMainWindow):
 				self.labels[i+1][item+1].setText(str(pos[item]))
 	
 	def stop_all(self):
-		print(self.contador)
 		self.contador=self.contador+1
 		if self.n_drones == self.contador:
 			self.thread.stop()

@@ -69,8 +69,8 @@ class communication_module():
         self.foto.set_id_dron(self.dron.get_id_dron())
         self.foto.set_hora_captura(hora_captura)
         self.foto.set_latitud_captura(self.telemetria.get_latitud())
-        self.foto.set_longitud_captura(self.telemetria.get_latitud())
-        self.foto.set_altitud_captura(self.telemetria.get_latitud())
+        self.foto.set_longitud_captura(self.telemetria.get_longitud())
+        self.foto.set_altitud_captura(self.telemetria.get_altitud())
         with lock_fotos:
             self.fotos.append(self.foto)
 
