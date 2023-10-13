@@ -22,7 +22,7 @@ class CustomFrame(QFrame):
         self.progress_bar = QProgressBar()
         self.progress_bar.setStyleSheet("background-color: #729fcf;")
         self.progress_bar.setAlignment(Qt.AlignCenter)
-        
+        print("dron_id"+dron_id+"  . num_wp_total"+str(num_wp_total))
         self.progress_bar.setMaximum(num_wp_total)
         self.progress_bar.setValue(0)
 

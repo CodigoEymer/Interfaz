@@ -42,6 +42,7 @@ from mavros_msgs.srv import *
 import time
 import MySQLdb
 import json
+import threading
 
 
 DB_HOST = '127.0.0.1' 
@@ -72,6 +73,7 @@ current_wp_recarga = wp_recarga_obj()
 class MainWindow(QMainWindow):
 
 	def __init__(self):
+		self.lock = threading.Lock()
 		self.flag_telemetria = 0
 		self.wp_tramos = None
 		self.cobertura = None
@@ -83,6 +85,7 @@ class MainWindow(QMainWindow):
 		self.finish_mission = None
 		self.fotos=[]
 		self.c=0
+		self.n_cober = 0
 		self.commu_objeto = []
 		self.ingresarBtn.clicked.connect(self.user_validation)
 		self.user_name_login.returnPressed.connect(self.user_validation)
@@ -247,7 +250,7 @@ class MainWindow(QMainWindow):
 		self.vision_field_text.setText("114.492")
 		self.vision_field_text_2.setText("98.7566")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("5")
+		self.max_speed_text.setText("1")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("1")
 		######
@@ -310,6 +313,7 @@ class MainWindow(QMainWindow):
 		self.area_label.setText(str(round(area,2)))
 		counter = 0
 		self.num_pws = []
+		wpTotales = 0
 		for dron in matriz_general:
 			cont_wp = 0
 			for tramo in dron:
@@ -318,9 +322,13 @@ class MainWindow(QMainWindow):
 					if wp != tramo[-1]:
 						handler.broadcast("#"+str(counter)+str(wp))
 				handler.broadcast("?"+str(tramo[-2]))
+			cont_wp = cont_wp+2*len(dron)
 			handler.broadcast("&")
 			self.num_pws.append(cont_wp)
 			counter=counter+1
+			wpTotales = wpTotales+cont_wp
+			self.progressBar_4.setMaximum(wpTotales)
+			print("wpTotales",wpTotales)
 
 		self.gestion.insertar_wp_drones(max_height,matriz_general)
 
@@ -332,13 +340,15 @@ class MainWindow(QMainWindow):
 		self.config.insertar_fotos(self.fotos)
 
 	def init_trayct(self):
+		self.nWpActualGeneral = 0
 		self.mission_page()
 		self.flag_telemetria = 1
-		self.iniciar_hilo3()
 		if self.finish_mission is None:
 			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()	
 		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
+		self.iniciar_hilo3()
+		
 		self.create_grid(self.n_drones+1,4)
 		self.startThread()
 
@@ -386,6 +396,8 @@ class MainWindow(QMainWindow):
 	def create_frame2(self, name_space, state):
 		frame1 = CustomFrame(name_space, state, self.num_pws[int(name_space[-1])-1])
 		self.layout.addWidget(frame1)
+		self.gestion.coberturas[self.n_cober].frame_a_modificar(frame1,self.nWpActualGeneral,self.lock)
+		self.n_cober=self.n_cober+1
 
 	def disconnect_socket(self):
 		handler.on_disconnected()
@@ -399,10 +411,9 @@ class MainWindow(QMainWindow):
 
 	def create_frame(self, name_space, state):
         # Este metodo sera llamado cuando el worker emita la senal
-		obj=self.commu_objeto[self.c]
 		frame = CustomFrames(name_space, state)
 		self.layouts.addWidget(frame)
-		obj.frame_a_modificar(frame)
+		self.commu_objeto[self.c].frame_a_modificar(frame)
 		self.c=self.c+1
 
 
