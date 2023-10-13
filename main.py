@@ -335,7 +335,6 @@ class MainWindow(QMainWindow):
 			counter=counter+1
 			wpTotales = wpTotales+cont_wp
 			self.progressBar_4.setMaximum(wpTotales)
-			print("wpTotales",wpTotales)
 
 		self.gestion.insertar_wp_drones(max_height,matriz_general)
 
