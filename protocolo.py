@@ -36,7 +36,6 @@ class protocolo():
         self.rate = rate
         
     def drone_data(self,data):
-        print(self.rate.sleep_dur.to_sec())
         ns = data.status[3].name
         ns = ns.split("/")
         ns = ns[0]

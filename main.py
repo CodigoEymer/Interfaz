@@ -161,7 +161,6 @@ class MainWindow(QMainWindow):
 	def set_rate_hz(self):
 		rate = rospy.Rate(float(self.node_rate.text()))
 		self.protocolo.modify_rate(rate)
-		print("set")
   
 	def main_window(self):
 			self.stackedWidget.setCurrentWidget(self.mainWindowWidget)
