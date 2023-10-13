@@ -91,12 +91,14 @@ class Cobertura():
     def retorno(self,data):
         text = self.ns+": Waypoint alcanzado #"+ str(data.wp_seq) 
         self.main.print_console(text)
-        self.frameEstados.progress_bar.setValue(data.wp_seq)        
         self.nWpActual = self.nWpActual+1
-        with self.lock:
-            self.nWpActualGeneral = self.nWpActualGeneral+1
-            self.progress_bar.setValue(self.nWpActualGeneral)
-        print("dron:"+self.ns+str(self.nWpActualGeneral))
+        self.frameEstados.progress_bar.setValue(self.nWpActual)        
+        
+        
+        #with self.lock:
+            #self.nWpActualGeneral = self.nWpActualGeneral+1
+            #self.progress_bar.setValue(self.nWpActualGeneral)
+        print("WP ACTUAL dron:"+self.ns+": "+str(self.nWpActual))
         if data.wp_seq==self.long_tramo+3:
             self.main.print_console(self.ns+": Aterrizando.")
             self.modo_land()
@@ -237,6 +239,6 @@ class Cobertura():
             
     def frame_a_modificar(self, frame, nWpActualGeneral, look):
         self.frameEstados = frame
-        self.lock = lock
+        self.lock = look
         with self.lock:
             self.nWpActualGeneral = nWpActualGeneral
