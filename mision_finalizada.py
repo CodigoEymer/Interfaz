@@ -21,7 +21,6 @@ class MisionEndWindow(QDialog):
         for filename in os.listdir(dname):
             if filename.endswith('.jpg'):
                 with open(os.path.join(dname, filename), "rb") as file:
-                    print(filename)
                     data = file.read()
                     partes = filename.split('/')
                     ultima_parte = partes[-1]
@@ -30,8 +29,6 @@ class MisionEndWindow(QDialog):
                     id = id_y_hora[0]
                     hora = id_y_hora[1]
                     for foto in self.fotos:
-                        print(foto.get_id_dron())
-                        print(foto.get_hora_captura())
                         if foto.get_id_dron()==id and foto.get_hora_captura()==hora:
                                 foto.set_foto(data)
         self.parent.db_fotos()

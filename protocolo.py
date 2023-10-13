@@ -18,11 +18,12 @@ from Database.dron.dron import dron
 from Database.foto.foto import foto
 
 class protocolo():
-    def __init__(self,parent, telemetriaV,dronV,fotoV):
+    def __init__(self,parent, telemetriaV,dronV,fotoV, fotos):
             self.parent = parent
             self.telemetriaV = telemetriaV
             self.dronV = dronV
             self.fotoV = fotoV
+            self.fotos = fotos
             self.ns_unicos = []
             self.commu_modules= []
             self.n_drones = 0
@@ -46,14 +47,15 @@ class protocolo():
             self.dronV.append(dronN)
             self.fotoV.append(fotoN)
             config = Insert_telemetria()
-            commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns,config,self.flag_insertTelemetria)
+            commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],ns,config,self.flag_insertTelemetria, self.fotos)
             self.commu_modules.append(commu_module)
             self.ns_unicos.append(ns)
             self.n_drones = len(self.ns_unicos)
 
             for canal in self.commu_modules:
                  canal.n_canales = int(ns[4])
-
+        indice = self.ns_unicos.index(ns)
+        self.commu_modules[indice].drone_data(data)
         
         self.rate.sleep()
         

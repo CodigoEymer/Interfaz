@@ -8,8 +8,6 @@ class Worker(QThread):
     def __init__(self, ns):
         super(Worker, self).__init__()
         self.ns = ns
-        print("ns",ns)
-        print(type(ns))
 
     def run(self):
         self.create_frame_signal.emit(self.ns, "not_connected")

@@ -31,9 +31,7 @@ class Cobertura():
 
     def status_callback(self, status):
         self.status = status
-        if not self.estado.armed and self.respuesta==1:
-            self.msn_end_w.exec_()
-            self.respuesta=0
+        
 
     def StartMision(self):
         self.start_mision = 1
@@ -54,7 +52,10 @@ class Cobertura():
         if self.estado.armed==False and self.f_land==1:
             self.main.print_console(self.ns+": Desarmado")
             self.f_land = 0
-
+        if self.estado.armed==False and self.respuesta==1:
+            self.main.stop_all()
+            self.respuesta=0
+            
         if (self.start_mision == 1 ):
             if(self.f_estable ==1 and self.estado.armed==False):
                 self.modo_estable() 
@@ -71,7 +72,6 @@ class Cobertura():
                 self.f_guided = 0
                 self.f_despegar = 1
             if( self.f_despegar == 1 and "EKF3 IMU" in self.status.text and "yaw alignment complete" in self.status.text):
-               
                 self.formato_wp(self.wp_tramos[self.tramo_actual])
                 self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
                 self.modo_automatico()

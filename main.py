@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
 		self.wp_tramos = None
 		self.cobertura = None
 		self.config = config_module.config_module(None) 
-
+		self.contador = 0
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
 		self.second_window = None
@@ -230,7 +230,7 @@ class MainWindow(QMainWindow):
 				self.user = user
 				self.main_window()
 				self.home_page()
-				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV)
+				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV, self.fotos)
 				self.error_label.setText("")
 				break
 			else:
@@ -368,7 +368,16 @@ class MainWindow(QMainWindow):
 			self.labels[i+1][0].setText(dronV[i].get_hardware_id())
 			for item in range(3):
 				self.labels[i+1][item+1].setText(str(pos[item]))
+	
+	def stop_all(self):
+		self.contador=self.contador+1
+		if self.n_drones == self.contador:
+			self.thread.stop()
+			self.finish_mission.exec_()
 
+			
+		
+ 
 	def iniciar_hilo3(self):
 		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
 		self.thread2.create_frame2_signal.connect(self.create_frame2)
