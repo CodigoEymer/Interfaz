@@ -38,10 +38,6 @@ class Gestion():
             c=c+2
             self.cobertura.StartMision()
             self.coberturas.append(self.cobertura)
-
-    def reanudar_misiones(self):
-        for cobertura in self.coberturas:
-            cobertura.reanudar_mision()
     
     def definir_color(self):
         colores=[]

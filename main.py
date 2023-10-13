@@ -65,6 +65,14 @@ telemetriaV = []
 dronV = []
 fotoV = []
 
+colors=[
+          "#8A00AD",
+          "#06AD00",
+          "#0000FF",
+          "#FF00FF",
+          "#FFFF00",
+          "#00FFFF"
+        ]
 current_usuario = usuarios()
 current_mision = mision()
 current_wp_recarga = wp_recarga_obj()
@@ -107,7 +115,6 @@ class MainWindow(QMainWindow):
 		self.user_name_btn.clicked.connect(self.user_name_btn_function)
 		self.date_btn.clicked.connect(self.date_btn_function)
 		self.generate_report.clicked.connect(self.report_function)
-		self.playBtn.clicked.connect(self.reanudar_mision)
 		self.stopBtn.clicked.connect(self.stop_mision)		
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.update_user_data_up)
@@ -339,9 +346,6 @@ class MainWindow(QMainWindow):
 		self.progressBar_4.setMaximum(wpTotales)
 
 		self.gestion.insertar_wp_drones(max_height,matriz_general)
-
-	def reanudar_mision(self):
-		self.gestion.reanudar_misiones()
 		
 	def update_progress_bar(self):
 		self.value = self.value+1
@@ -408,7 +412,7 @@ class MainWindow(QMainWindow):
 		self.thread2.start()
 
 	def create_frame2(self, name_space, state):
-		frame1 = CustomFrame(name_space, state, self.num_pws[int(name_space[-1])-1])
+		frame1 = CustomFrame(colors[self.n_cober], name_space, state, self.num_pws[int(name_space[-1])-1], self.gestion.coberturas[self.n_cober])
 		self.layout.addWidget(frame1)
 		self.gestion.coberturas[self.n_cober].frame_a_modificar(frame1)
 		self.n_cober=self.n_cober+1

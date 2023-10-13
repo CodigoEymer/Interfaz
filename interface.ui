@@ -1292,32 +1292,6 @@ color: rgb(238, 238, 236);</string>
                                     </property>
                                     <layout class="QHBoxLayout" name="horizontalLayout_30">
                                      <item>
-                                      <widget class="QPushButton" name="playBtn">
-                                       <property name="cursor">
-                                        <cursorShape>PointingHandCursor</cursorShape>
-                                       </property>
-                                       <property name="toolTip">
-                                        <string>Iniciar</string>
-                                       </property>
-                                       <property name="styleSheet">
-                                        <string notr="true">background-color: rgb(0, 255, 0);</string>
-                                       </property>
-                                       <property name="text">
-                                        <string/>
-                                       </property>
-                                       <property name="icon">
-                                        <iconset resource="resources.qrc">
-                                         <normaloff>:/basic/icons/feather/play-circle.svg</normaloff>:/basic/icons/feather/play-circle.svg</iconset>
-                                       </property>
-                                       <property name="iconSize">
-                                        <size>
-                                         <width>32</width>
-                                         <height>32</height>
-                                        </size>
-                                       </property>
-                                      </widget>
-                                     </item>
-                                     <item>
                                       <widget class="QPushButton" name="stopBtn">
                                        <property name="cursor">
                                         <cursorShape>PointingHandCursor</cursorShape>
@@ -1675,7 +1649,7 @@ border-radius: 10px;</string>
                            </size>
                           </property>
                           <property name="currentIndex">
-                           <number>1</number>
+                           <number>0</number>
                           </property>
                           <widget class="QWidget" name="page_3">
                            <property name="minimumSize">
@@ -1728,7 +1702,7 @@ border-radius: 10px;</string>
                                 <widget class="QWidget" name="widget_16" native="true">
                                  <property name="maximumSize">
                                   <size>
-                                   <width>450</width>
+                                   <width>500</width>
                                    <height>16777215</height>
                                   </size>
                                  </property>
@@ -1846,8 +1820,8 @@ border-radius: 10px;</string>
                                          <rect>
                                           <x>0</x>
                                           <y>0</y>
-                                          <width>94</width>
-                                          <height>24</height>
+                                          <width>488</width>
+                                          <height>163</height>
                                          </rect>
                                         </property>
                                        </widget>
@@ -1984,8 +1958,8 @@ border-radius: 10px;</string>
                                          <rect>
                                           <x>0</x>
                                           <y>0</y>
-                                          <width>94</width>
-                                          <height>24</height>
+                                          <width>540</width>
+                                          <height>163</height>
                                          </rect>
                                         </property>
                                        </widget>
