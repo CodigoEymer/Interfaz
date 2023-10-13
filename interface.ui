@@ -78,7 +78,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
        <string notr="true">background-color: rgb(203, 218, 216);</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="mainWindowWidget">
        <property name="sizePolicy">
@@ -507,7 +507,7 @@ border-radius: 10px;</string>
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>1</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QVBoxLayout" name="verticalLayout_39">
@@ -597,7 +597,7 @@ border-radius: 10px;</string>
                                    <rect>
                                     <x>0</x>
                                     <y>0</y>
-                                    <width>279</width>
+                                    <width>100</width>
                                     <height>348</height>
                                    </rect>
                                   </property>
@@ -1831,8 +1831,8 @@ border-radius: 10px;</string>
                                          <rect>
                                           <x>0</x>
                                           <y>0</y>
-                                          <width>514</width>
-                                          <height>110</height>
+                                          <width>33</width>
+                                          <height>16</height>
                                          </rect>
                                         </property>
                                        </widget>
@@ -1969,8 +1969,8 @@ border-radius: 10px;</string>
                                          <rect>
                                           <x>0</x>
                                           <y>0</y>
-                                          <width>514</width>
-                                          <height>110</height>
+                                          <width>33</width>
+                                          <height>16</height>
                                          </rect>
                                         </property>
                                        </widget>
@@ -2534,7 +2534,7 @@ color: rgb(238, 238, 236);</string>
                              <property name="maximumSize">
                               <size>
                                <width>250</width>
-                               <height>70</height>
+                               <height>80</height>
                               </size>
                              </property>
                              <property name="styleSheet">
@@ -2576,7 +2576,7 @@ color: rgb(238, 238, 236);</string>
                                 <property name="frameShadow">
                                  <enum>QFrame::Raised</enum>
                                 </property>
-                                <layout class="QVBoxLayout" name="verticalLayout_124">
+                                <layout class="QVBoxLayout" name="verticalLayout_47">
                                  <property name="spacing">
                                   <number>0</number>
                                  </property>
@@ -2608,36 +2608,85 @@ color: rgb(238, 238, 236);</string>
                                   </widget>
                                  </item>
                                  <item>
-                                  <widget class="QLineEdit" name="vision_field_text_3">
-                                   <property name="font">
-                                    <font>
-                                     <pointsize>10</pointsize>
-                                    </font>
+                                  <widget class="QFrame" name="frame_28">
+                                   <property name="frameShape">
+                                    <enum>QFrame::StyledPanel</enum>
                                    </property>
-                                   <property name="styleSheet">
-                                    <string notr="true">background-color: rgb(238, 238, 236);</string>
+                                   <property name="frameShadow">
+                                    <enum>QFrame::Raised</enum>
                                    </property>
-                                   <property name="placeholderText">
-                                    <string>1</string>
-                                   </property>
+                                   <layout class="QHBoxLayout" name="horizontalLayout_72">
+                                    <property name="spacing">
+                                     <number>0</number>
+                                    </property>
+                                    <property name="leftMargin">
+                                     <number>0</number>
+                                    </property>
+                                    <property name="topMargin">
+                                     <number>0</number>
+                                    </property>
+                                    <property name="rightMargin">
+                                     <number>0</number>
+                                    </property>
+                                    <property name="bottomMargin">
+                                     <number>0</number>
+                                    </property>
+                                    <item>
+                                     <widget class="QLineEdit" name="node_rate">
+                                      <property name="font">
+                                       <font>
+                                        <pointsize>10</pointsize>
+                                       </font>
+                                      </property>
+                                      <property name="styleSheet">
+                                       <string notr="true">background-color: rgb(238, 238, 236);</string>
+                                      </property>
+                                      <property name="placeholderText">
+                                       <string>1</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QLabel" name="vision_field_label_12">
+                                      <property name="font">
+                                       <font>
+                                        <pointsize>10</pointsize>
+                                       </font>
+                                      </property>
+                                      <property name="styleSheet">
+                                       <string notr="true">color: rgb(0, 0, 0);</string>
+                                      </property>
+                                      <property name="text">
+                                       <string>Hz</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                    <item>
+                                     <widget class="QPushButton" name="set_rate">
+                                      <property name="minimumSize">
+                                       <size>
+                                        <width>100</width>
+                                        <height>0</height>
+                                       </size>
+                                      </property>
+                                      <property name="maximumSize">
+                                       <size>
+                                        <width>100</width>
+                                        <height>16777215</height>
+                                       </size>
+                                      </property>
+                                      <property name="styleSheet">
+                                       <string notr="true">background-color: rgb(78, 154, 6);</string>
+                                      </property>
+                                      <property name="text">
+                                       <string>Establecer</string>
+                                      </property>
+                                     </widget>
+                                    </item>
+                                   </layout>
                                   </widget>
                                  </item>
                                 </layout>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QLabel" name="vision_field_label_12">
-                                <property name="font">
-                                 <font>
-                                  <pointsize>10</pointsize>
-                                 </font>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">color: rgb(0, 0, 0);</string>
-                                </property>
-                                <property name="text">
-                                 <string>Hz</string>
-                                </property>
                                </widget>
                               </item>
                              </layout>

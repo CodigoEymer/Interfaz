@@ -93,6 +93,7 @@ class MainWindow(QMainWindow):
 		self.registerBtn.clicked.connect(self.register_button)
 		self.cancelRegisterBtn.clicked.connect(self.login_page)	
 		self.homeBtn.clicked.connect(self.home_page)
+		self.set_rate.clicked.connect(self.set_rate_hz)
 		self.generarTrayectBtn.clicked.connect(self.gen_tray)
 		self.iniciarTrayectBtn.clicked.connect(self.init_trayct)
 		self.drone_1.clicked.connect(self.disconnect_socket)
@@ -157,6 +158,11 @@ class MainWindow(QMainWindow):
 		
 		self.main_window()
 
+	def set_rate_hz(self):
+		rate = rospy.Rate(float(self.node_rate.text()))
+		self.protocolo.modify_rate(rate)
+		print("set")
+  
 	def main_window(self):
 			self.stackedWidget.setCurrentWidget(self.mainWindowWidget)
 			
@@ -233,7 +239,9 @@ class MainWindow(QMainWindow):
 				self.user = user
 				self.main_window()
 				self.home_page()
-				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV, self.fotos)
+				rospy.init_node('srvComand_node', anonymous=True)
+				self.rate = rospy.Rate(2)
+				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV, self.fotos, self.rate)
 				self.error_label.setText("")
 				break
 			else:
@@ -243,14 +251,14 @@ class MainWindow(QMainWindow):
 		self.n_drones = self.protocolo.n_drones
 		######
 		self.city_text.setText("Cali")
-		self.address_text.setText("calle 13")
-		self.mission_name_text.setText("mision 1")
+		self.address_text.setText("calle 13, carrera 100")
+		self.mission_name_text.setText("mision de prueba")
 		self.roi_name_text.setText("Campus Univalle")
 		self.description_text.setText("sobrevolando canchas")
 		self.vision_field_text.setText("114.492")
 		self.vision_field_text_2.setText("98.7566")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("1")
+		self.max_speed_text.setText("5")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("1")
 		######

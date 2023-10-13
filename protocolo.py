@@ -18,7 +18,7 @@ from Database.dron.dron import dron
 from Database.foto.foto import foto
 
 class protocolo():
-    def __init__(self,parent, telemetriaV,dronV,fotoV, fotos):
+    def __init__(self,parent, telemetriaV,dronV,fotoV, fotos, rate):
             self.parent = parent
             self.telemetriaV = telemetriaV
             self.dronV = dronV
@@ -29,17 +29,18 @@ class protocolo():
             self.n_drones = 0
             self.flag_insertTelemetria_c = 1
             self.flag_insertTelemetria = {'valor': 1}
-            
-            rospy.init_node('srvComand_node', anonymous=True)
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
-            self.rate = rospy.Rate(1)                 
+            self.rate = rate               
 
+    def modify_rate(self, rate):
+        self.rate = rate
+        
     def drone_data(self,data):
+        print(self.rate.sleep_dur.to_sec())
         ns = data.status[3].name
         ns = ns.split("/")
         ns = ns[0]
         if ns not in self.ns_unicos:
-            #print(data)
             telemetriaN = telemetria()
             dronN = dron()
             fotoN = foto()
