@@ -230,7 +230,7 @@ class MainWindow(QMainWindow):
 				self.user = user
 				self.main_window()
 				self.home_page()
-				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV)
+				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV, self.fotos)
 				self.error_label.setText("")
 				break
 			else:
@@ -370,6 +370,7 @@ class MainWindow(QMainWindow):
 				self.labels[i+1][item+1].setText(str(pos[item]))
 	
 	def stop_all(self):
+		print(self.contador)
 		self.contador=self.contador+1
 		if self.n_drones == self.contador:
 			self.thread.stop()
@@ -423,9 +424,7 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
 
 	def stop_mision(self):
-		if self.finish_mission is None:
-			self.finish_mission = MisionEndWindow(self,self.fotos)
-			self.finish_mission.exec_()
+		pass
 		
 	def print_console(self,text):	
 		self.buffer.append(text)

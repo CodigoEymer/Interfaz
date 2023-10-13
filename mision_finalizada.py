@@ -28,6 +28,7 @@ class MisionEndWindow(QDialog):
                     id_y_hora = sin_extension.split('_')
                     id = id_y_hora[0]
                     hora = id_y_hora[1]
+                    print(len(self.fotos))
                     for foto in self.fotos:
                         print(foto.get_id_dron())
                         print(foto.get_hora_captura())

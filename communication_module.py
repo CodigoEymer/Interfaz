@@ -9,21 +9,22 @@ from PyQt5.QtGui import QIcon
 import cv2
 import datetime as d
 import os
+import threading
 
 from diagnostic_msgs.msg import DiagnosticArray
 from sensor_msgs.msg import CameraInfo
 
-
+lock_fotos = threading.Lock()
 
 class communication_module():
 
 
-    def __init__(self, parent,telemetria,dron,foto,ns,config, flag_insertTelemetria):
+    def __init__(self, parent,telemetria,dron,foto,ns,config, flag_insertTelemetria, fotos):
             self.config= config
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
-            self.fotos=[]
+            self.fotos= fotos
             self.dron = dron
             self.foto = foto
             self.ns = ns
@@ -32,7 +33,6 @@ class communication_module():
             self.flag_insertTelemetria = flag_insertTelemetria
             self.n_canales = 1
             self.main.iniciar_hilo2(self)
-            rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
            
             rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
             rospy.Subscriber("/"+self.ns+"/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
@@ -71,7 +71,8 @@ class communication_module():
         self.foto.set_latitud_captura(self.telemetria.get_latitud())
         self.foto.set_longitud_captura(self.telemetria.get_latitud())
         self.foto.set_altitud_captura(self.telemetria.get_latitud())
-        self.fotos.append(self.foto)
+        with lock_fotos:
+            self.fotos.append(self.foto)
 
     def image_callback(self, image):
         self.image = image
