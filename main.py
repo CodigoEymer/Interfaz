@@ -326,7 +326,7 @@ class MainWindow(QMainWindow):
 			self.num_pws.append(cont_wp)
 			counter=counter+1
 			wpTotales = wpTotales+cont_wp
-			self.progress_bar.setMaximum(wpTotales) 
+			self.progressBar_4.setMaximum(wpTotales) 
 
 		self.gestion.insertar_wp_drones(max_height,matriz_general)
 
@@ -387,7 +387,7 @@ class MainWindow(QMainWindow):
 		
  
 	def iniciar_hilo3(self):
-		self.thread2 = hilo_componente_mision.Worker()
+		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
 		self.thread2.create_frame2_signal.connect(self.create_frame2)
 		self.thread2.start()
 
