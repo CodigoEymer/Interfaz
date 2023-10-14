@@ -5,7 +5,6 @@ from PyQt5.QtCore import QSize, Qt
 class CustomFrame(QFrame):
     def __init__(self, color, ns, estado, num_wp_total, cobertura, parent=None):
         super(CustomFrame, self).__init__(parent)
-        print("Creando frame")
         self.cobertura=cobertura
         self.setStyleSheet("background-color: #FFFFFF;")
         

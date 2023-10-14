@@ -507,7 +507,7 @@ border-radius: 10px;</string>
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>2</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QVBoxLayout" name="verticalLayout_39">
@@ -4097,7 +4097,7 @@ background-color: rgb(111, 110, 110);</string>
                                <item>
                                 <widget class="QTabWidget" name="tabWidget_2">
                                  <property name="currentIndex">
-                                  <number>2</number>
+                                  <number>0</number>
                                  </property>
                                  <widget class="QWidget" name="tab">
                                   <attribute name="title">
@@ -4665,7 +4665,10 @@ background-color: rgb(111, 110, 110);</string>
                                            </property>
                                            <layout class="QVBoxLayout" name="verticalLayout_122">
                                             <item>
-                                             <widget class="QPushButton" name="pushButton_4">
+                                             <widget class="QPushButton" name="uploadPhotosBtn">
+                                              <property name="cursor">
+                                               <cursorShape>PointingHandCursor</cursorShape>
+                                              </property>
                                               <property name="styleSheet">
                                                <string notr="true">background-color: rgb(78, 154, 6);
 </string>
@@ -5561,7 +5564,7 @@ background-color: rgb(111, 110, 110);</string>
                                                <item>
                                                 <widget class="QLabel" name="label_117">
                                                  <property name="text">
-                                                  <string>5</string>
+                                                  <string/>
                                                  </property>
                                                 </widget>
                                                </item>
@@ -5617,7 +5620,7 @@ background-color: rgb(111, 110, 110);</string>
                                                <item>
                                                 <widget class="QLabel" name="label_119">
                                                  <property name="text">
-                                                  <string>15 min</string>
+                                                  <string/>
                                                  </property>
                                                 </widget>
                                                </item>
@@ -5705,21 +5708,21 @@ background-color: rgb(111, 110, 110);</string>
                                             <item>
                                              <widget class="QLabel" name="label_123">
                                               <property name="text">
-                                               <string>100%-15%</string>
+                                               <string/>
                                               </property>
                                              </widget>
                                             </item>
                                             <item>
                                              <widget class="QLabel" name="label_124">
                                               <property name="text">
-                                               <string>0</string>
+                                               <string/>
                                               </property>
                                              </widget>
                                             </item>
                                             <item>
                                              <widget class="QLabel" name="label_125">
                                               <property name="text">
-                                               <string>Comunicación, batería</string>
+                                               <string/>
                                               </property>
                                              </widget>
                                             </item>
@@ -5915,23 +5918,23 @@ background-color: rgb(111, 110, 110);</string>
                                        </property>
                                        <layout class="QVBoxLayout" name="verticalLayout_75">
                                         <item>
-                                         <widget class="QLabel" name="label_36">
+                                         <widget class="QLabel" name="nombre">
                                           <property name="text">
-                                           <string>Jaime Andrés Gonzalez</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QLabel" name="label_37">
+                                         <widget class="QLabel" name="correo">
                                           <property name="text">
-                                           <string>jaime.galeano@correounivalle.edu.co</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
-                                         <widget class="QLabel" name="label_38">
+                                         <widget class="QLabel" name="celular">
                                           <property name="text">
-                                           <string>3016000648</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
@@ -6193,56 +6196,56 @@ background-color: rgb(111, 110, 110);</string>
                                         <item>
                                          <widget class="QLabel" name="label_48">
                                           <property name="text">
-                                           <string>Palmira</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
                                          <widget class="QLabel" name="label_47">
                                           <property name="text">
-                                           <string>Misión de prueba</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
                                          <widget class="QLabel" name="label_50">
                                           <property name="text">
-                                           <string>Cultivo de algodon</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
                                          <widget class="QLabel" name="label_49">
                                           <property name="text">
-                                           <string>Finca de Jonas</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
                                          <widget class="QLabel" name="label_51">
                                           <property name="text">
-                                           <string>100 m2</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
                                          <widget class="QLabel" name="label_52">
                                           <property name="text">
-                                           <string>20 minutos</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
                                          <widget class="QLabel" name="label_53">
                                           <property name="text">
-                                           <string>3</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>
                                         <item>
                                          <widget class="QLabel" name="label_55">
                                           <property name="text">
-                                           <string>03/01/2023</string>
+                                           <string/>
                                           </property>
                                          </widget>
                                         </item>

@@ -54,7 +54,6 @@ class Trayectorias():
         self.calcular_wp_distancia(wp_spiral,dist_por_dron)
         list_wp_limites = self.get_wp_retorno_cartesian()
         self.matriz_wp_drones = self.dividir_listas(list_wp_limites, wp_spiral)
-
         self.matriz_general = []
         self.wp_retorno_aut = []
         for wpsxdron in self.matriz_wp_drones:
@@ -107,7 +106,6 @@ class Trayectorias():
         if y2<0:
             tetha= -(math.acos(dot_product/mag_product))
         else:
-            print(dot_product,mag_product)
             tetha= (math.acos(dot_product/mag_product))
         return tetha
 
