@@ -488,7 +488,7 @@ class MainWindow(QMainWindow):
 		user_conect = usuarios_dao_imp(conn)
 		db_user_list = user_conect.get_all_users()
 		for user in db_user_list:
-			nameUsers.append(user.get_nombre_usuario()) 
+			nameUsers.append(user.get_nombre_usuario())
 		
 		nameUsers = set(nameUsers)
 
@@ -607,10 +607,10 @@ class MainWindow(QMainWindow):
 		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
-		print(current_usuario.get_id_usuario(), current_usuario.get_nombre())
+		print(self.user.get_id_usuario(), self.user.get_nombre())
 		print(current_mision.get_id_mision())
 		print(current_wp_recarga.get_id_wp_recarga())
-
+		
 def on_message_received(message):
     coords_dict = json.loads(message)
 
