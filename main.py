@@ -32,7 +32,7 @@ from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication,  QVBoxLayout, QGridLayout, QTableWidgetItem, QLabel, QWidget
+from PyQt5.QtWidgets import QMainWindow, QApplication,  QVBoxLayout, QGridLayout, QTableWidgetItem, QLabel, QWidget, QFileDialog, QSpacerItem, QSizePolicy
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
@@ -110,6 +110,7 @@ class MainWindow(QMainWindow):
 		self.settingsBtn.clicked.connect(self.settings_page)
 		self.missionBtn.clicked.connect(self.mission_page)
 		self.reportBtn.clicked.connect(self.report_page)
+		self.uploadPhotosBtn.clicked.connect(self.upload_photos)
 		self.city_btn.clicked.connect(self.city_btn_function)
 		self.mission_name_btn.clicked.connect(self.mission_name_btn_function)
 		self.user_name_btn.clicked.connect(self.user_name_btn_function)
@@ -121,7 +122,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.layout = QVBoxLayout()
-		self.scrollAreaWidgetContents.setLayout(self.layout)
+		self.widget_10.setLayout(self.layout)
 		self.layouts = QVBoxLayout()
 		self.frame_13.setLayout(self.layouts)
 		self.Qconsole.setReadOnly(True)
@@ -233,7 +234,6 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.stackedWidget_4.setCurrentWidget(self.page)
 		self.stackedWidget_5.setCurrentWidget(self.page_4)
-
 		
 		
 	def user_validation(self):
@@ -371,7 +371,7 @@ class MainWindow(QMainWindow):
 		self.startThread()
 
 	def create_grid(self, rows,columns):
-		self.grid = QGridLayout(self)
+		self.grid = QGridLayout()
 		header = ["Hardware id","Latitud","Longitud","Altitud"]
 		self.labels = []
 		for i in range(rows):
@@ -382,6 +382,8 @@ class MainWindow(QMainWindow):
 				row.append(label)
 			self.labels.append(row)
 		self.scrollAreaWidgetContents_3.setLayout(self.grid)
+		spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+		self.grid.addItem(spacer)
 		
 	def startThread(self):
 		self.thread = Htelemetria.Worker(self.protocolo.commu_modules,self.gestion)
@@ -401,7 +403,7 @@ class MainWindow(QMainWindow):
 		self.contador=self.contador+1
 		if self.n_drones == self.contador:
 			self.thread.stop()
-			self.finish_mission.exec_()
+			self.report_after_finish()
 
 	def mode(self,frame,mode):
 		frame.button2.setText(mode) 
@@ -411,6 +413,7 @@ class MainWindow(QMainWindow):
 		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
 		self.thread2.create_frame2_signal.connect(self.create_frame2)
 		self.thread2.start()
+
 
 	def create_frame2(self, name_space, state):
 		frame1 = CustomFrame(colors[self.n_cober], name_space, state, self.num_pws[int(name_space[-1])-1], self.gestion.coberturas[self.n_cober])
@@ -581,14 +584,19 @@ class MainWindow(QMainWindow):
 		self.selected_date.setText(select_item)
 		
 	def report_function(self):
-		self.label_36.setText(self.db_user.get_nombre())
-		self.label_37.setText(self.db_user.get_correo())
-		self.label_38.setText(self.db_user.get_celular())
-
+		self.show_user_data(db_user)
 		dateTimeList = self.selected_date.text().split()
 		mision_load = mision_dao_imp(conn)
 		mision = mision_load.get_mission(dateTimeList[0],dateTimeList[1])
+		self.show_mission_data(mision)
+		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
 
+	def show_user_data(self, user):
+		self.nombre.setText(self.user.get_nombre())
+		self.correo.setText(self.user.get_correo())
+		self.celular.setText(self.user.get_celular())
+
+	def show_mission_data(self, mision):
 		self.label_47.setText(mision.get_nombre_mision())
 		self.label_48.setText(mision.get_ciudad())
 		self.label_49.setText(mision.get_nombre_ubicacion())
@@ -598,7 +606,11 @@ class MainWindow(QMainWindow):
 		self.label_53.setText("TO DO")
 		self.label_55.setText(str(mision.get_fecha()))
 
-		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
+	def show_wp_path(self,lista):
+		for i in lista:
+			for j in i:
+				self.label_71.setText(str(j[0]))
+				self.label_76.setText(str(j[1]))
 
 	def report_after_finish(self):
 		self.set_default_icons()
@@ -607,9 +619,26 @@ class MainWindow(QMainWindow):
 		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
-		print(self.user.get_id_usuario(), self.user.get_nombre())
-		print(current_mision.get_id_mision())
-		print(current_wp_recarga.get_id_wp_recarga())
+		self.show_user_data(self.user)
+		self.show_mission_data(current_mision)
+		self.show_wp_path(self.trayect.matriz_wp_drones) #Hay que pasarlas a globales
+
+	def upload_photos(self):
+		dname = QFileDialog.getExistingDirectory(self, 'Open directory', './')
+		for filename in os.listdir(dname):
+			if filename.endswith('.jpg'):
+				with open(os.path.join(dname, filename), "rb") as file:
+					data = file.read()
+					partes = filename.split('/')
+					ultima_parte = partes[-1]
+					sin_extension = ultima_parte.split('.jpg')[0]
+					id_y_hora = sin_extension.split('_')
+					id = id_y_hora[0]
+					hora = id_y_hora[1]
+					for foto in self.fotos:
+						if foto.get_id_dron()==id and foto.get_hora_captura()==hora:
+							foto.set_foto(data)
+		self.db_fotos()
 		
 def on_message_received(message):
     coords_dict = json.loads(message)

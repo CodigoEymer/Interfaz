@@ -114,8 +114,7 @@ class communication_module():
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
             'WPNAV_SPEED_DN': 300,          #   10       10-500  cm/s
-            'RTL_ALT': altura,
-            'RTL_ALT_FINAL': altura # cm
+            'RTL_ALT': altura
         }
         for id, value in params_to_set.items():
             if not self.set_param(id, value):
