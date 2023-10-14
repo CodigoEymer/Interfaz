@@ -10,4 +10,4 @@ class Worker(QThread):
 
     def run(self):
         for commu in self.commus:
-            self.create_frame2_signal.emit(commu.ns, "Mssion")
+            self.create_frame2_signal.emit(commu.ns, "")

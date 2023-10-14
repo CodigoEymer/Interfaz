@@ -112,6 +112,7 @@ class Cobertura():
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
             flightModeService(custom_mode="STABILIZE")
+            self.main.mode(self.frameEstados,self.estado.mode)
         except rospy.ServiceException as e:
             self.main.console(self.ns+": Service set_mode call failed: %s. STABLE Mode could not be set. Check that GPS is enabled"%e)
 
@@ -127,7 +128,8 @@ class Cobertura():
         rospy.wait_for_service("/"+self.ns+"/mavros/set_mode")
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
-            isModeChanged = flightModeService(custom_mode="GUIDED") 
+            isModeChanged = flightModeService(custom_mode="GUIDED")
+            self.main.mode(self.frameEstados,self.estado.mode)
         except rospy.ServiceException as e:
             self.main.console(self.ns+": Service set_mode call failed: %s. GUIDED Mode could not be set. Check that GPS is enabled"%e)
 
@@ -204,7 +206,8 @@ class Cobertura():
         rospy.wait_for_service("/"+self.ns+"/mavros/set_mode")
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
-            flightModeService(custom_mode="AUTO") 
+            flightModeService(custom_mode="AUTO")
+            self.main.mode(self.frameEstados,self.estado.mode)
         except rospy.ServiceException as e:
             self.main.console(self.ns+": Service set_mode call failed: %s. AUTO Mode could not be set. Check that GPS is enabled"%e)
 
@@ -213,7 +216,8 @@ class Cobertura():
     def modo_rtl(self):
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
-            isModeChanged = flightModeService(custom_mode="RTL") 
+            isModeChanged = flightModeService(custom_mode="RTL")
+            self.main.mode(self.frameEstados,self.estado.mode) 
         except rospy.ServiceException as e:
 
             self.main.console(self.ns+": Service set_mode call failed: %s. RTL Mode could not be set. Check that GPS is enabled"%e)
@@ -224,7 +228,8 @@ class Cobertura():
         rospy.wait_for_service("/"+self.ns+"/mavros/set_mode")
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
-            isModeChanged = flightModeService(custom_mode="LAND") 
+            isModeChanged = flightModeService(custom_mode="LAND")
+            self.main.mode(self.frameEstados,self.estado.mode)
         except rospy.ServiceException as e:
 
             self.main.console(self.ns+": Service set_mode call failed: %s. LAND Mode could not be set. Check that GPS is enabled"%e)

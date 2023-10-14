@@ -403,7 +403,8 @@ class MainWindow(QMainWindow):
 			self.thread.stop()
 			self.finish_mission.exec_()
 
-			
+	def mode(self,frame,mode):
+		frame.button2.setText(mode) 
 		
  
 	def iniciar_hilo3(self):

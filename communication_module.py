@@ -140,7 +140,6 @@ class communication_module():
 
         
     def frame_a_modificar(self, frame):
-
         self.frame = frame
 
     def camera_callback(self, data):
