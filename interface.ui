@@ -59,7 +59,7 @@ border-image: url(:/icons/icons/SimboloPcDrones.svg);
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_8">
+   <layout class="QVBoxLayout" name="verticalLayout_70">
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="sizePolicy">
@@ -507,7 +507,7 @@ border-radius: 10px;</string>
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>2</number>
+                    <number>0</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QVBoxLayout" name="verticalLayout_39">
@@ -1824,6 +1824,24 @@ border-radius: 10px;</string>
                                           <height>163</height>
                                          </rect>
                                         </property>
+                                        <layout class="QVBoxLayout" name="verticalLayout_124">
+                                         <item>
+                                          <widget class="QWidget" name="widget_10" native="true"/>
+                                         </item>
+                                         <item>
+                                          <spacer name="verticalSpacer_8">
+                                           <property name="orientation">
+                                            <enum>Qt::Vertical</enum>
+                                           </property>
+                                           <property name="sizeHint" stdset="0">
+                                            <size>
+                                             <width>20</width>
+                                             <height>126</height>
+                                            </size>
+                                           </property>
+                                          </spacer>
+                                         </item>
+                                        </layout>
                                        </widget>
                                       </widget>
                                      </item>

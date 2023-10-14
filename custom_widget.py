@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QFrame, QHBoxLayout, QPushButton, QProgressBar
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QCursor
 from PyQt5.QtCore import QSize, Qt
 
 class CustomFrame(QFrame):
@@ -11,7 +11,7 @@ class CustomFrame(QFrame):
         self.layout = QHBoxLayout(self)
 
         self.button1 = QPushButton(ns)
-        self.button1.setStyleSheet("QPushButton {background-color: "+color+"; color: black;}")
+        self.button1.setStyleSheet("QPushButton {background-color: "+color+"; color: white;}")
 
         self.button2 = QPushButton(estado)
         self.button2.setStyleSheet("QPushButton {background-color: #FF9800; color: black;}")
@@ -28,15 +28,20 @@ class CustomFrame(QFrame):
         
         self.continue_button = QPushButton()
         self.continue_button.setIcon(QIcon('./icons/feather/play-circle.svg'))
+        self.continue_button.setIconSize(QSize(30, 30))
         self.continue_button.setStyleSheet("QPushButton {background-color: #4e9a06;}")
+        self.continue_button.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.layout.setContentsMargins(0, 0, 0, 0)
         
+
         self.layout.addWidget(self.continue_button)
         self.layout.addWidget(self.button1)
         self.layout.addWidget(self.button2)
         self.layout.addWidget(self.button3)
         self.layout.addWidget(self.progress_bar)
+
+        
         
         self.continue_button.clicked.connect(self.reanudar_mision)
     

@@ -32,7 +32,7 @@ from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
-from PyQt5.QtWidgets import QMainWindow, QApplication,  QVBoxLayout, QGridLayout, QTableWidgetItem, QLabel, QWidget, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication,  QVBoxLayout, QGridLayout, QTableWidgetItem, QLabel, QWidget, QFileDialog, QSpacerItem, QSizePolicy
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
@@ -122,7 +122,7 @@ class MainWindow(QMainWindow):
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.layout = QVBoxLayout()
-		self.scrollAreaWidgetContents.setLayout(self.layout)
+		self.widget_10.setLayout(self.layout)
 		self.layouts = QVBoxLayout()
 		self.frame_13.setLayout(self.layouts)
 		self.Qconsole.setReadOnly(True)
@@ -382,6 +382,8 @@ class MainWindow(QMainWindow):
 				row.append(label)
 			self.labels.append(row)
 		self.scrollAreaWidgetContents_3.setLayout(self.grid)
+		spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+		self.grid.addItem(spacer)
 		
 	def startThread(self):
 		self.thread = Htelemetria.Worker(self.protocolo.commu_modules,self.gestion)
@@ -411,6 +413,7 @@ class MainWindow(QMainWindow):
 		self.thread2 = hilo_componente_mision.Worker(self.protocolo.commu_modules)
 		self.thread2.create_frame2_signal.connect(self.create_frame2)
 		self.thread2.start()
+
 
 	def create_frame2(self, name_space, state):
 		frame1 = CustomFrame(colors[self.n_cober], name_space, state, self.num_pws[int(name_space[-1])-1], self.gestion.coberturas[self.n_cober])
@@ -618,7 +621,7 @@ class MainWindow(QMainWindow):
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
 		self.show_user_data(self.user)
 		self.show_mission_data(current_mision)
-		self.show_wp_path(self.trayect.matriz_wp_drones)
+		self.show_wp_path(self.trayect.matriz_wp_drones) #Hay que pasarlas a globales
 
 	def upload_photos(self):
 		dname = QFileDialog.getExistingDirectory(self, 'Open directory', './')
