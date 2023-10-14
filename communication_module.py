@@ -16,22 +16,22 @@ from sensor_msgs.msg import CameraInfo
 
 lock_fotos = threading.Lock()
 
+
 class communication_module():
 
-
-    def __init__(self, parent,telemetria,dron,foto,ns,config, flag_insertTelemetria, fotos):
+    flag_insertTelemetria = 1
+    def __init__(self, parent,telemetria,dron,foto,n_canal,ns,config, fotos):
             self.config= config
+
             self.main = parent
             self.telemetria = telemetria
             self.v_telemetria = []
             self.fotos= fotos
             self.dron = dron
-            self.foto = foto
             self.ns = ns
+            self.foto = foto
             self.Posicion = ["null","null","null"]
-            self.flag_insertTelemetria_c = int(ns[4])
-            self.flag_insertTelemetria = flag_insertTelemetria
-            self.n_canales = 1
+            self.flag_insertTelemetria_c = n_canal
             self.main.iniciar_hilo2(self)
            
             rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
@@ -102,18 +102,12 @@ class communication_module():
         self.telemetria.set_altitud(altitude)
         self.telemetria.set_hora_actualizacion(hora_actualizacion)
         
-
-
         if(self.main.flag_telemetria==1):
             self.v_telemetria.append(self.telemetria)
-            if(len(self.v_telemetria)>=10 and self.flag_insertTelemetria['valor'] == self.flag_insertTelemetria_c):
+            if(len(self.v_telemetria)>=10 and communication_module.flag_insertTelemetria == self.flag_insertTelemetria_c):
                 self.config.insertar_telemetria(self.v_telemetria)
                 self.v_telemetria = []
-                if(self.n_canales ==self.flag_insertTelemetria['valor']):
-                    self.flag_insertTelemetria['valor'] = 1
-                else:
-                    self.flag_insertTelemetria['valor']= self.flag_insertTelemetria['valor']+1
-
+                communication_module.flag_insertTelemetria= communication_module.flag_insertTelemetria+1
 
     def setFlightParameters(self, parameters, altura):
         params_to_set = {                  # Increment  Range    Units
