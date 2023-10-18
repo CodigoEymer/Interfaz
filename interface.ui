@@ -4650,16 +4650,16 @@ background-color: rgb(111, 110, 110);</string>
                                            </property>
                                            <layout class="QVBoxLayout" name="verticalLayout_91">
                                             <item>
-                                             <widget class="QLabel" name="label_66">
+                                             <widget class="QLabel" name="battery_per">
                                               <property name="text">
-                                               <string>100%-15%</string>
+                                               <string/>
                                               </property>
                                              </widget>
                                             </item>
                                             <item>
-                                             <widget class="QLabel" name="label_70">
+                                             <widget class="QLabel" name="n_recharges">
                                               <property name="text">
-                                               <string>0</string>
+                                               <string/>
                                               </property>
                                              </widget>
                                             </item>

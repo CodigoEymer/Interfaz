@@ -628,7 +628,11 @@ class MainWindow(QMainWindow):
 	def show_general_info(self):
 		mission_time = time.time() - self.start_time
 		self.mission_time.setText(str(mission_time))
-		self.n_photos.setText(str(self.n_cober))	
+		#valores por definir
+		#self.n_photos.setText(str(s)) 
+		#self.n_recharges.setText(str())
+		#self.battery_per.setText(str())
+		
 
 	def upload_photos(self):
 		dname = QFileDialog.getExistingDirectory(self, 'Open directory', './')
