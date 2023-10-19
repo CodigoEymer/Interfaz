@@ -457,6 +457,8 @@ class MainWindow(QMainWindow):
 
 	def stop_mision(self):
 		pass
+		#self.thread.stop()
+		
 		
 	def console(self,text):
 		with lock_console:
@@ -584,7 +586,7 @@ class MainWindow(QMainWindow):
 		self.selected_date.setText(select_item)
 		
 	def report_function(self):
-		self.show_user_data(db_user)
+		self.show_user_data(self.db_user)
 		dateTimeList = self.selected_date.text().split()
 		mision_load = mision_dao_imp(conn)
 		mision = mision_load.get_mission(dateTimeList[0],dateTimeList[1])
