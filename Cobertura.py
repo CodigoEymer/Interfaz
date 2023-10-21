@@ -8,7 +8,7 @@ from mavros_msgs.msg import WaypointList, Waypoint, State, WaypointReached, Stat
 from geometry_msgs.msg import PoseStamped
 class Cobertura():
 
-    def __init__(self, parent, progress_bar,altura_segura,altura_wp,wp_retorno_aut,wp_tramos, msn_end_w, ns):
+    def __init__(self, parent, progress_bar,altura_segura,altura_wp,wp_retorno_aut,wp_tramos, ns):
         self.main = parent
         self.progress_bar = progress_bar
         self.wp_tramos = wp_tramos
@@ -21,7 +21,6 @@ class Cobertura():
         self.respuesta = 0
         self.long_tramo = 0
         self.end=0
-        self.msn_end_w = msn_end_w
         self.ns = ns
         self.start_mision = 0
         self.fcolorposse = "/"

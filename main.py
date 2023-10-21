@@ -28,7 +28,6 @@ from custom_widget import CustomFrame
 from protocolo import protocolo
 from gestion import Gestion
 from user_settings import SecondWindow
-from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
@@ -92,7 +91,6 @@ class MainWindow(QMainWindow):
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
 		self.second_window = None
-		self.finish_mission = None
 		self.fotos=[]
 		self.c=0
 		self.n_cober = 0
@@ -309,8 +307,6 @@ class MainWindow(QMainWindow):
 		self.config.insertar_wp_region()
 		self.config.insertar_wp_recarga()
 
-		self.gestion.insertar_drones(current_mision.get_id_mision())
-
 		parameters =[max_acce, int(max_speed)*100]
 		altura= int(self.max_height_text.text())
 		c = 100
@@ -318,13 +314,10 @@ class MainWindow(QMainWindow):
 			commu.setFlightParameters(parameters, altura*100 + c)
 			c = c+100
 
-		self.gestion.completar_telemetrias(telemetriaV)
-
 		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[0].get_velocidad_max()))
 
 		self.trayect = Trayectorias(coords,float(max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
 		matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno)
-
 		self.dist_label.setText(str(round(self.trayect.distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
 		counter = 0
@@ -345,7 +338,8 @@ class MainWindow(QMainWindow):
 			wpTotales = wpTotales+cont_wp
 		self.progressBar_4.setMaximum(wpTotales)
 
-		self.gestion.insertar_wp_drones(max_height,matriz_general)
+		self.gestion.insertar_drones(current_mision.get_id_mision(),matriz_general,max_height)
+		self.gestion.completar_telemetrias(telemetriaV)
 		
 	def update_progress_bar(self):
 		self.value = self.value+1
@@ -361,10 +355,8 @@ class MainWindow(QMainWindow):
 		self.value = 0
 		self.mission_page()
 		self.flag_telemetria = 1
-		if self.finish_mission is None:
-			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()	
-		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
+		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.protocolo.ns_unicos)
 		self.iniciar_hilo3()
 		
 		self.create_grid(self.n_drones+1,4)

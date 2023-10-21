@@ -15,26 +15,24 @@ class Gestion():
             dron.set_cvH(cvh)
             dron.set_cvV(cvv)
 
-    def insertar_drones(self,id_mision):
-        for dron in self.dronV:
-            self.multi.insertar_dron(dron,id_mision)
+    def insertar_drones(self,id_mision,m_gen,alt):
+        self.matriz_general = m_gen
+        for i in range(len(self.dronV)):
+            self.multi.insertar_dron(self.dronV[i],id_mision,self.matriz_general[i],alt)
 
     def completar_telemetrias(self, telemetriaV):
         idron = 0
         for telemetria in telemetriaV:
             telemetria.set_id_dron(self.dronV[idron].get_id_dron())
+            print(self.dronV[idron].get_id_dron())
             idron = idron+1
-    
-    def insertar_wp_drones(self,max_height,matriz_general):
-        self.matriz_general = matriz_general
-        for wp_dron in self.matriz_general:
-            self.multi.insertar_wp_dron(wp_dron,max_height)
+            
 
-    def coberturas(self,parent,wp_retorno_aut,progressBar_4,altura,finish_mission, ns):
+    def coberturas(self,parent,wp_retorno_aut,progressBar_4,altura, ns):
         self.coberturas=[]
         c = 1
         for i in range(len(ns)):
-            self.cobertura = Cobertura(parent,progressBar_4,float(altura)+c,float(altura), wp_retorno_aut[i],self.matriz_general[i],finish_mission,ns[i])
+            self.cobertura = Cobertura(parent,progressBar_4,float(altura)+c,float(altura), wp_retorno_aut[i],self.matriz_general[i],ns[i])
             c=c+2
             self.cobertura.StartMision()
             self.coberturas.append(self.cobertura)
