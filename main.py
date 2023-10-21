@@ -28,7 +28,6 @@ from custom_widget import CustomFrame
 from protocolo import protocolo
 from gestion import Gestion
 from user_settings import SecondWindow
-from mision_finalizada import MisionEndWindow
 import server
 import Cobertura
 from PyQt5 import QtNetwork, QtWidgets, QtCore
