@@ -21,26 +21,27 @@ class communication_module():
 
     flag_insertTelemetria = 1
     def __init__(self, parent,telemetria,dron,foto,n_canal,ns,config, fotos):
-            self.config= config
+        self.config= config
+        self.main = parent
+        self.telemetria = telemetria
+        self.v_telemetria = []
+        self.fotos= fotos
+        self.dron = dron
+        self.ns = ns
+        self.foto = foto
+        self.Posicion = ["null","null","null"]
+        self.flag_insertTelemetria_c = n_canal
+        self.main.iniciar_hilo2(self)
+        self.c=0
 
-            self.main = parent
-            self.telemetria = telemetria
-            self.v_telemetria = []
-            self.fotos= fotos
-            self.dron = dron
-            self.ns = ns
-            self.foto = foto
-            self.Posicion = ["null","null","null"]
-            self.flag_insertTelemetria_c = n_canal
-            self.main.iniciar_hilo2(self)
-           
-            rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
-            rospy.Subscriber("/"+self.ns+"/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
-            rospy.Subscriber("/"+self.ns+"/mavros/imu/data", Imu, self.imu_callback)
-            rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
-            rospy.Subscriber("/"+self.ns+"/mavros/camera/image_raw",  Image, self.image_callback)
-            self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
-            self.c=0
+    def topicos(self):
+        rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
+        rospy.Subscriber("/"+self.ns+"/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
+        rospy.Subscriber("/"+self.ns+"/mavros/imu/data", Imu, self.imu_callback)
+        rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
+        rospy.Subscriber("/"+self.ns+"/mavros/camera/image_raw",  Image, self.image_callback)
+        self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
+            
             
 
     def create_folder(self, path):
@@ -134,6 +135,7 @@ class communication_module():
         
     def frame_a_modificar(self, frame):
         self.frame = frame
+        self.topicos()
 
     def camera_callback(self, data):
         height = data.height
