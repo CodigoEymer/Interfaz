@@ -352,6 +352,7 @@ class MainWindow(QMainWindow):
 
 
 	def init_trayct(self):
+		self.start_time = time.time()
 		self.value = 0
 		self.mission_page()
 		self.flag_telemetria = 1
@@ -611,9 +612,19 @@ class MainWindow(QMainWindow):
 		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
+		self.show_general_info()
 		self.show_user_data(self.user)
 		self.show_mission_data(current_mision)
 		self.show_wp_path(self.trayect.matriz_wp_drones) #Hay que pasarlas a globales
+
+	def show_general_info(self):
+		mission_time = time.time() - self.start_time
+		self.mission_time.setText(str(mission_time))
+		#valores por definir
+		#self.n_photos.setText(str(s)) 
+		#self.n_recharges.setText(str())
+		#self.battery_per.setText(str())
+		
 
 	def upload_photos(self):
 		dname = QFileDialog.getExistingDirectory(self, 'Open directory', './')
