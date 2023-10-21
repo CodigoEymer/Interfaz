@@ -615,15 +615,17 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.reportPage)
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
 		self.show_general_info()
-		self.show_user_data(self.user)
+		self.show_user_data()
 		self.show_mission_data(current_mision)
 		self.show_wp_path(self.trayect.matriz_wp_drones) #Hay que pasarlas a globales
 
 	def show_general_info(self):
 		mission_time = time.time() - self.start_time
-		self.mission_time.setText(str(mission_time))
+		minutos= int(mission_time / 60)
+		segundos = int(mission_time % 60)
+		self.mission_time.setText(str(minutos)+":"+str(segundos))
+		self.n_photos.setText(str(len(self.fotos))) 
 		#valores por definir
-		#self.n_photos.setText(str(s)) 
 		#self.n_recharges.setText(str())
 		#self.battery_per.setText(str())
 		
