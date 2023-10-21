@@ -314,8 +314,6 @@ class MainWindow(QMainWindow):
 			commu.setFlightParameters(parameters, altura*100 + c)
 			c = c+100
 
-		self.gestion.completar_telemetrias(telemetriaV)
-
 		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[0].get_velocidad_max()))
 
 		self.trayect = Trayectorias(coords,float(max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
@@ -341,7 +339,7 @@ class MainWindow(QMainWindow):
 		self.progressBar_4.setMaximum(wpTotales)
 
 		self.gestion.insertar_drones(current_mision.get_id_mision(),matriz_general,max_height)
-		#self.gestion.insertar_wp_drones(max_height,matriz_general)
+		self.gestion.completar_telemetrias(telemetriaV)
 		
 	def update_progress_bar(self):
 		self.value = self.value+1
