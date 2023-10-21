@@ -586,14 +586,14 @@ class MainWindow(QMainWindow):
 		self.selected_date.setText(select_item)
 		
 	def report_function(self):
-		self.show_user_data(self.db_user)
+		self.show_user_data()
 		dateTimeList = self.selected_date.text().split()
 		mision_load = mision_dao_imp(conn)
 		mision = mision_load.get_mission(dateTimeList[0],dateTimeList[1])
 		self.show_mission_data(mision)
 		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
 
-	def show_user_data(self, user):
+	def show_user_data(self):
 		self.nombre.setText(self.user.get_nombre())
 		self.correo.setText(self.user.get_correo())
 		self.celular.setText(self.user.get_celular())
