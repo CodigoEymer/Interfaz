@@ -85,8 +85,9 @@ class multi_config_module():
 
     def insertar_wp_dron(self,id_dron,Vwp,h):
         prueba = wp_dron_dao_imp(conn)
-        for wp_dron in Vwp:
-            prueba.insert_wp_dron(id_dron,wp_dron[0],wp_dron[1],h)
+        for tramos in Vwp:
+            for wp_dron in tramos:
+                prueba.insert_wp_dron(id_dron,wp_dron[0],wp_dron[1],h)
 
 
 class Insert_telemetria():

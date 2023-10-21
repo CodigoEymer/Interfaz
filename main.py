@@ -92,7 +92,6 @@ class MainWindow(QMainWindow):
 		super(MainWindow, self).__init__()
 		loadUi('interface.ui', self)
 		self.second_window = None
-		self.finish_mission = None
 		self.fotos=[]
 		self.c=0
 		self.n_cober = 0
@@ -359,10 +358,8 @@ class MainWindow(QMainWindow):
 		self.value = 0
 		self.mission_page()
 		self.flag_telemetria = 1
-		if self.finish_mission is None:
-			self.finish_mission = MisionEndWindow(self,self.fotos)
 		altura = self.max_height_text.text()	
-		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.finish_mission,self.protocolo.ns_unicos)
+		self.gestion.coberturas(self,self.trayect.wp_retorno_aut,self.progressBar_4,altura,self.protocolo.ns_unicos)
 		self.iniciar_hilo3()
 		
 		self.create_grid(self.n_drones+1,4)
