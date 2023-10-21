@@ -8,7 +8,7 @@ from mavros_msgs.msg import WaypointList, Waypoint, State, WaypointReached, Stat
 from geometry_msgs.msg import PoseStamped
 class Cobertura():
 
-    def __init__(self, parent, progress_bar,altura_segura,altura_wp,wp_retorno_aut,wp_tramos, msn_end_w, ns):
+    def __init__(self, parent, progress_bar,altura_segura,altura_wp,wp_retorno_aut,wp_tramos, ns):
         self.main = parent
         self.progress_bar = progress_bar
         self.wp_tramos = wp_tramos
@@ -21,11 +21,11 @@ class Cobertura():
         self.respuesta = 0
         self.long_tramo = 0
         self.end=0
-        self.msn_end_w = msn_end_w
         self.ns = ns
         self.start_mision = 0
         self.fcolorposse = "/"
         self.nWpActual = 0
+        self.frameEstados = None
         
         
     def status_callback(self, status):
@@ -48,37 +48,38 @@ class Cobertura():
 
 
     def estado_vuelo(self,state):
-        self.estado = state
-        self.main.mode(self.frameEstados,self.estado.mode)
-        if self.estado.armed==False and self.f_land==1:
-            self.main.console(self.ns+": Desarmado")
-            self.f_land = 0
-        if self.estado.armed==False and self.respuesta==1:
-            self.main.stop_all()
-            self.respuesta=0
-            
-        if (self.start_mision == 1 ):
-            if(self.f_estable ==1 and self.estado.armed==False):
-                self.modo_estable() 
-                self.f_estable = 0
-                self.armar_dron()
-                self.f_armar = 1
-            if(self.estado.armed and self.f_armar == 1):
+        if self.frameEstados!=None:
+            self.estado = state
+            self.main.mode(self.frameEstados,self.estado.mode)
+            if self.estado.armed==False and self.f_land==1:
+                self.main.console(self.ns+": Desarmado")
+                self.f_land = 0
+            if self.estado.armed==False and self.respuesta==1:
+                self.main.stop_all()
+                self.respuesta=0
+                
+            if (self.start_mision == 1 ):
+                if(self.f_estable ==1 and self.estado.armed==False):
+                    self.modo_estable() 
+                    self.f_estable = 0
+                    self.armar_dron()
+                    self.f_armar = 1
+                if(self.estado.armed and self.f_armar == 1):
 
-                self.modo_guiado()
-                self.f_armar = 0
-                self.f_guided =1
-            if(self.estado.guided and self.f_guided == 1):
-                self.despegar()
-                self.f_guided = 0
-                self.f_despegar = 1
-            if( self.f_despegar == 1 and "EKF3 IMU" in self.status.text and "yaw alignment complete" in self.status.text):
-                self.formato_wp(self.wp_tramos[self.tramo_actual])
-                self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
-                self.modo_automatico()
-                if self.tramo_actual==self.n_tramos-1:
-                    self.respuesta = 1
-                self.f_despegar = 0
+                    self.modo_guiado()
+                    self.f_armar = 0
+                    self.f_guided =1
+                if(self.estado.guided and self.f_guided == 1):
+                    self.despegar()
+                    self.f_guided = 0
+                    self.f_despegar = 1
+                if( self.f_despegar == 1 and "EKF3 IMU" in self.status.text and "yaw alignment complete" in self.status.text):
+                    self.formato_wp(self.wp_tramos[self.tramo_actual])
+                    self.long_tramo = len(self.wp_tramos[self.tramo_actual])-1
+                    self.modo_automatico()
+                    if self.tramo_actual==self.n_tramos-1:
+                        self.respuesta = 1
+                    self.f_despegar = 0
 
     def reanudar_mision(self):
         self.tramo_actual=self.tramo_actual+1
