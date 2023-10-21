@@ -309,8 +309,6 @@ class MainWindow(QMainWindow):
 		self.config.insertar_wp_region()
 		self.config.insertar_wp_recarga()
 
-		self.gestion.insertar_drones(current_mision.get_id_mision())
-
 		parameters =[max_acce, int(max_speed)*100]
 		altura= int(self.max_height_text.text())
 		c = 100
@@ -324,7 +322,6 @@ class MainWindow(QMainWindow):
 
 		self.trayect = Trayectorias(coords,float(max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
 		matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno)
-
 		self.dist_label.setText(str(round(self.trayect.distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
 		counter = 0
@@ -345,7 +342,8 @@ class MainWindow(QMainWindow):
 			wpTotales = wpTotales+cont_wp
 		self.progressBar_4.setMaximum(wpTotales)
 
-		self.gestion.insertar_wp_drones(max_height,matriz_general)
+		self.gestion.insertar_drones(current_mision.get_id_mision(),matriz_general,max_height)
+		#self.gestion.insertar_wp_drones(max_height,matriz_general)
 		
 	def update_progress_bar(self):
 		self.value = self.value+1

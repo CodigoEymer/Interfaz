@@ -15,9 +15,9 @@ class Gestion():
             dron.set_cvH(cvh)
             dron.set_cvV(cvv)
 
-    def insertar_drones(self,id_mision):
-        for dron in self.dronV:
-            self.multi.insertar_dron(dron,id_mision)
+    def insertar_drones(self,id_mision,m_gen,alt):
+        for i in range(len(self.dronV)):
+            self.multi.insertar_dron(self.dronV[i],id_mision,m_gen[i],alt)
 
     def completar_telemetrias(self, telemetriaV):
         idron = 0

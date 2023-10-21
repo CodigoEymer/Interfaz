@@ -72,20 +72,21 @@ class multi_config_module():
 
     
 
-    def insertar_dron(self,dron,id_mision):
-        self.id_dron = ""
+    def insertar_dron(self,dron,id_mision, m_gen, alt):
+        id_dron = ""
         prueba = dron_dao_imp(conn)
         dron.set_id_mision(id_mision)
         prueba.insert_dron(dron)
         current_dron = prueba.get_dron(id_mision, dron.get_hardware_id()) 
-        self.id_dron = str(current_dron.get_id_dron())
-        dron.set_id_dron(self.id_dron)
+        id_dron = str(current_dron.get_id_dron())
+        dron.set_id_dron(id_dron)
+        self.insertar_wp_dron(id_dron,m_gen,alt)
 
 
-    def insertar_wp_dron(self,Vwp,h):
+    def insertar_wp_dron(self,id_dron,Vwp,h):
         prueba = wp_dron_dao_imp(conn)
         for wp_dron in Vwp:
-            prueba.insert_wp_dron(self.id_dron,wp_dron[0],wp_dron[1],h)
+            prueba.insert_wp_dron(id_dron,wp_dron[0],wp_dron[1],h)
 
 
 class Insert_telemetria():
