@@ -21,11 +21,8 @@ class Gestion():
             self.multi.insertar_dron(self.dronV[i],id_mision,self.matriz_general[i],alt)
 
     def completar_telemetrias(self, telemetriaV):
-        idron = 0
-        for telemetria in telemetriaV:
-            telemetria.set_id_dron(self.dronV[idron].get_id_dron())
-            print(self.dronV[idron].get_id_dron())
-            idron = idron+1
+        for i in range(len(telemetriaV)):
+            telemetriaV[i].set_id_dron(self.dronV[i].get_id_dron())
             
 
     def coberturas(self,parent,wp_retorno_aut,progressBar_4,altura, ns):
