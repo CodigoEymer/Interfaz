@@ -72,7 +72,7 @@ class multi_config_module():
 
     def insertar_dron(self,dron,id_mision, m_gen, alt):
         id_dron = ""
-        prueba = dron_dao_imp(conn)
+        prueba = dron_dao(conn)
         dron.set_id_mision(id_mision)
         prueba.insert_dron(dron)
         current_dron = prueba.get_dron(id_mision, dron.get_hardware_id()) 
