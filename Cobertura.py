@@ -240,7 +240,7 @@ class Cobertura():
     def stop_mission(self):
         self.main.console(self.ns+": Configurando altura segura para RTL.")
         # Set the RTL altitude to the safe altitude
-        self.set_rtl_altitude(self.altura_segura)
+        #self.set_rtl_altitude(self.altura_segura)
         
         # Switch to RTL mode to return home
         self.activate_rtl_mode()
@@ -248,15 +248,15 @@ class Cobertura():
         # Reset mission parameters as needed
         self.cleanup_after_stop()
 
-    def set_rtl_altitude(self, alt):
-        try:
-            # Assuming there is a parameter set service to change the RTL altitude
-            set_param_service = rospy.ServiceProxy("/"+self.ns+"/mavros/param/set", ParamSet)
-            # The parameter name for RTL altitude may vary depending on the flight stack
-            param_id = "RTL_ALTITUDE" # This is an example, the actual parameter ID may be different
-            set_param_service(param_id=param_id, value=ParamValue(integer=0, real=alt))
-        except rospy.ServiceException as e:
-            self.main.console(self.ns+": Failed to set RTL altitude: %s"%e)
+    # def set_rtl_altitude(self, alt):
+    #     try:
+    #         # Assuming there is a parameter set service to change the RTL altitude
+    #         set_param_service = rospy.ServiceProxy("/"+self.ns+"/mavros/param/set", ParamSet)
+    #         # The parameter name for RTL altitude may vary depending on the flight stack
+    #         param_id = "RTL_ALTITUDE" # This is an example, the actual parameter ID may be different
+    #         set_param_service(param_id=param_id, value=ParamValue(integer=0, real=alt))
+    #     except rospy.ServiceException as e:
+    #        self.main.console(self.ns+": Failed to set RTL altitude: %s"%e)
 
     def activate_rtl_mode(self):
         try:
