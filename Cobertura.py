@@ -4,7 +4,7 @@ import rospy
 from std_msgs.msg import String
 from sensor_msgs.msg import NavSatFix
 from mavros_msgs.srv import *
-from mavros_msgs.msg import WaypointList, Waypoint, State, WaypointReached, StatusText
+from mavros_msgs.msg import WaypointList, Waypoint, State, WaypointReached, StatusText, ParamValue
 from geometry_msgs.msg import PoseStamped
 class Cobertura():
 
@@ -235,3 +235,41 @@ class Cobertura():
             
     def frame_a_modificar(self, frame):
         self.frameEstados = frame
+
+
+    def stop_mission(self):
+        self.main.console(self.ns+": Configurando altura segura para RTL.")
+        # Set the RTL altitude to the safe altitude
+        #self.set_rtl_altitude(self.altura_segura)
+        
+        # Switch to RTL mode to return home
+        self.activate_rtl_mode()
+        
+        # Reset mission parameters as needed
+        self.cleanup_after_stop()
+
+    # def set_rtl_altitude(self, alt):
+    #     try:
+    #         # Assuming there is a parameter set service to change the RTL altitude
+    #         set_param_service = rospy.ServiceProxy("/"+self.ns+"/mavros/param/set", ParamSet)
+    #         # The parameter name for RTL altitude may vary depending on the flight stack
+    #         param_id = "RTL_ALTITUDE" # This is an example, the actual parameter ID may be different
+    #         set_param_service(param_id=param_id, value=ParamValue(integer=0, real=alt))
+    #     except rospy.ServiceException as e:
+    #        self.main.console(self.ns+": Failed to set RTL altitude: %s"%e)
+
+    def activate_rtl_mode(self):
+        try:
+            flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
+            flightModeService(custom_mode="RTL")
+            self.main.console(self.ns+": Modo RTL activado.")
+        except rospy.ServiceException as e:
+            self.main.console(self.ns+": Service set_mode call failed: %s. RTL Mode could not be set. Check that GPS is enabled"%e)
+
+    def cleanup_after_stop(self):
+        self.start_mision = 0
+        self.tramo_actual = 0
+        self.nWpActual = 0
+        # Update the progress bar or any GUI elements if necessary
+        self.progress_bar.setValue(0)
+        self.main.update_progress_bar()

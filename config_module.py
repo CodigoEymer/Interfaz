@@ -62,8 +62,8 @@ class config_module():
     def calcular_autonomia(self,peso,potenciaXKg,voltaje_b,capacidad_b, seguridad,factor_seguridad,velocidad):
         corriente_empuje = 1000*(peso*potenciaXKg)/voltaje_b
         autonomia_vuelo = capacidad_b*seguridad*60/(corriente_empuje*factor_seguridad)
-        dwr = autonomia_vuelo*60*velocidad/(1000*10)
-
+        dwr = autonomia_vuelo*60*velocidad
+        print("Autonomia: ",autonomia_vuelo)
         return dwr
     
 class multi_config_module():
