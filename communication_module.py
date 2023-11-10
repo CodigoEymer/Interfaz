@@ -41,7 +41,7 @@ class communication_module():
         rospy.Subscriber("/"+self.ns+"/mavros/imu/data", Imu, self.imu_callback)
         rospy.Subscriber("/"+self.ns+"/mavros/mission/reached", WaypointReached, self.waypoint_reached_callback)
         rospy.Subscriber("/"+self.ns+"/mavros/camera/image_raw",  Image, self.image_callback)
-        self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
+        #self.main.drone_1.setIcon(QIcon('./icons/drone_ok.svg'))
             
             
 

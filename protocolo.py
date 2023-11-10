@@ -56,6 +56,7 @@ class protocolo():
 
             for canal in self.commu_modules:
                  canal.n_canales = int(ns[4])
+            self.parent.lcdNumber.display(len(self.ns_unicos))
         indice = self.ns_unicos.index(ns)
         self.commu_modules[indice].drone_data(data)
         
