@@ -104,7 +104,7 @@ class MainWindow(QMainWindow):
 		self.set_rate.clicked.connect(self.set_rate_hz)
 		self.generarTrayectBtn.clicked.connect(self.gen_tray)
 		self.iniciarTrayectBtn.clicked.connect(self.init_trayct)
-		self.drone_1.clicked.connect(self.disconnect_socket)
+		#self.drone_1.clicked.connect(self.disconnect_socket)
 		self.settingsBtn.clicked.connect(self.settings_page)
 		self.missionBtn.clicked.connect(self.mission_page)
 		self.reportBtn.clicked.connect(self.report_page)
@@ -418,8 +418,8 @@ class MainWindow(QMainWindow):
 		self.gestion.coberturas[self.n_cober].frame_a_modificar(frame1)
 		self.n_cober=self.n_cober+1
 
-	def disconnect_socket(self):
-		handler.on_disconnected()
+	# def disconnect_socket(self):
+	# 	handler.on_disconnected()
 
 	def iniciar_hilo2(self,commu):
 		self.commu_objeto.append(commu)
