@@ -35,7 +35,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication,  QVBoxLayout, QGridLayout
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import QFile, QEvent, Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot, QTimer
+from PyQt5.QtCore import pyqtSlot, QTimer, QSize
 
 from mavros_msgs.srv import *
 import time
@@ -104,7 +104,7 @@ class MainWindow(QMainWindow):
 		self.set_rate.clicked.connect(self.set_rate_hz)
 		self.generarTrayectBtn.clicked.connect(self.gen_tray)
 		self.iniciarTrayectBtn.clicked.connect(self.init_trayct)
-		self.drone_1.clicked.connect(self.disconnect_socket)
+		#self.drone_1.clicked.connect(self.disconnect_socket)
 		self.settingsBtn.clicked.connect(self.settings_page)
 		self.missionBtn.clicked.connect(self.mission_page)
 		self.reportBtn.clicked.connect(self.report_page)
@@ -264,9 +264,13 @@ class MainWindow(QMainWindow):
 		self.vision_field_text.setText("114.492")
 		self.vision_field_text_2.setText("98.7566")
 		self.max_height_text.setText("10")
-		self.max_speed_text.setText("5")
+		#self.max_speed_text.setText("1")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("1")
+
+		if not self.max_speed_text.text():
+			self.max_speed_text.setText("1")
+
 		######
 		overlap = self.overlap_text.text()
 		current_mision.set_ciudad(self.city_text.text())
@@ -414,8 +418,8 @@ class MainWindow(QMainWindow):
 		self.gestion.coberturas[self.n_cober].frame_a_modificar(frame1)
 		self.n_cober=self.n_cober+1
 
-	def disconnect_socket(self):
-		handler.on_disconnected()
+	# def disconnect_socket(self):
+	# 	handler.on_disconnected()
 
 	def iniciar_hilo2(self,commu):
 		self.commu_objeto.append(commu)
@@ -445,12 +449,14 @@ class MainWindow(QMainWindow):
 		self.missionBtn.setIcon(icon)
 		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
+		self.stackedWidget_5.setMaximumSize(QSize(16777215, 80))
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
 
 	def stop_mision(self):
-		pass
 		#self.thread.stop()
+		for i in range(len(dronV)):
+			self.gestion.coberturas[i].stop_mission()
 		
 		
 	def console(self,text):
