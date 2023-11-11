@@ -28,7 +28,12 @@ class config_module():
 
     def insertar_fotos(self, fotos):
         foto_dao = foto_dao_imp(conn)
-        foto_dao.insert_batch(fotos)
+        lista = []
+        for i in range(len(fotos)):
+            lista.append(fotos[i])
+            if len(lista)==10 or fotos[i]== fotos[-1]:
+                foto_dao.insert_batch(lista)
+                lista=[]
         
     def insertar_mision(self):
         mision_dao = mision_dao_imp(conn)

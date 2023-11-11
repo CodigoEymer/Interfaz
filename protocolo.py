@@ -18,11 +18,10 @@ from Database.dron.dron import dron
 from Database.foto.foto import foto
 
 class protocolo():
-    def __init__(self,parent, telemetriaV,dronV,fotoV, fotos, rate):
+    def __init__(self,parent, telemetriaV,dronV, fotos, rate):
             self.parent = parent
             self.telemetriaV = telemetriaV
             self.dronV = dronV
-            self.fotoV = fotoV
             self.fotos = fotos
             self.ns_unicos = []
             self.commu_modules= []
@@ -30,7 +29,6 @@ class protocolo():
             self.flag_insertTelemetria = {'valor': 1}
             rospy.Subscriber("diagnostics", DiagnosticArray,self.drone_data)
             self.rate = rate
-            print(protocolo)
             self.n_canal = 1               
 
     def modify_rate(self, rate):
@@ -46,9 +44,8 @@ class protocolo():
             fotoN = foto()
             self.telemetriaV.append(telemetriaN)
             self.dronV.append(dronN)
-            self.fotoV.append(fotoN)
             config = Insert_telemetria()
-            commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.fotoV[-1],self.n_canal,ns,config, self.fotos)
+            commu_module = communication_module(self.parent,self.telemetriaV[-1],self.dronV[-1],self.n_canal,ns,config, self.fotos)
             self.commu_modules.append(commu_module)
             self.ns_unicos.append(ns)
             self.n_drones = len(self.ns_unicos)

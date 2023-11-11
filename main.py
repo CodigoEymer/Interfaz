@@ -56,13 +56,13 @@ coords= []
 wp_recarga=[] 
 area= []
 db_user_list=[]
+cargue_manual = 0
 
 #telemetria = telemetria()
 #dron = dron()
 
 telemetriaV = []
 dronV = []
-fotoV = []
 
 colors=[
           "#8A00AD",
@@ -118,6 +118,7 @@ class MainWindow(QMainWindow):
 		self.userBtn_2.clicked.connect(self.config_user_page)
 		self.updateBtn.clicked.connect(self.update_user_data_up)
 		self.cancelUpdateBtn.clicked.connect(self.main_window)
+		self.cargarPuntos.clicked.connect(self.cargar_puntos)
 		self.stackedWidget.setCurrentWidget(self.signInWindowWidget)
 		self.layout = QVBoxLayout()
 		self.widget_10.setLayout(self.layout)
@@ -231,6 +232,7 @@ class MainWindow(QMainWindow):
 		self.main_window()
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.stackedWidget_4.setCurrentWidget(self.page)
+		self.stackedWidget_5.setMaximumSize(QSize(16777215, 80))
 		self.stackedWidget_5.setCurrentWidget(self.page_4)
 		
 		
@@ -247,7 +249,7 @@ class MainWindow(QMainWindow):
 				self.home_page()
 				rospy.init_node('srvComand_node', anonymous=True)
 				self.rate = rospy.Rate(2)
-				self.protocolo = protocolo(self,telemetriaV,dronV, fotoV, self.fotos, self.rate)
+				self.protocolo = protocolo(self,telemetriaV,dronV, self.fotos, self.rate)
 				self.error_label.setText("")
 				break
 			else:
@@ -269,7 +271,7 @@ class MainWindow(QMainWindow):
 		self.overlap_text.setText("1")
 
 		if not self.max_speed_text.text():
-			self.max_speed_text.setText("1")
+			self.max_speed_text.setText("5")
 
 		######
 		overlap = self.overlap_text.text()
@@ -385,7 +387,7 @@ class MainWindow(QMainWindow):
 	def startThread(self):
 		self.thread = Htelemetria.Worker(self.protocolo.commu_modules,self.gestion)
 		self.thread.dataLoaded.connect(self.setData)
-		self.thread.start()
+		#self.thread.start()
   
 	def setData(self, Posicion):
 		handler.broadcast(str(Posicion[0]))
@@ -449,7 +451,7 @@ class MainWindow(QMainWindow):
 		self.missionBtn.setIcon(icon)
 		self.missionBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
-		self.stackedWidget_5.setMaximumSize(QSize(16777215, 80))
+		self.stackedWidget_5.setMaximumSize(QSize(16777215, 200))
 		self.stackedWidget_4.setCurrentWidget(self.page_2)
 		self.stackedWidget_5.setCurrentWidget(self.page_3)
 
@@ -652,17 +654,80 @@ class MainWindow(QMainWindow):
 						if foto.get_id_dron()==id and foto.get_hora_captura()==hora:
 							foto.set_foto(data)
 		self.db_fotos()
+
+	def leer_datos(self,archivo):
+		with open(archivo, 'r') as file:
+			lines = file.readlines()
+
+		datos = {}
+		clave_actual = None
+		for line in lines:
+			line = line.strip()
+			if line in ['coords', 'area', 'wp_recarga']:
+				clave_actual = line
+				datos[clave_actual] = []
+			elif clave_actual:
+				valor = eval(line)
+				if clave_actual == 'area':
+					datos[clave_actual] = valor[0]
+				else:
+					datos[clave_actual].append(valor)
+
+		return datos
+
+	def seleccionar_archivo(self):
+		archivo = QFileDialog.getOpenFileName(
+			None, 
+			"Selecciona un archivo de texto", 
+			"", 
+			"Archivos de texto (*.txt)"
+		)[0]
+		return archivo
+	
+	def cargar_puntos(self):
+		global cargue_manual
+		global coords
+		global wp_recarga
+		global area
+		cargue_manual = 1
+		archivo = self.seleccionar_archivo()
+		if not archivo:
+			print("No se seleccionó ningún archivo.")
+			return
+
+		datos_leidos = self.leer_datos(archivo)
+
+		coords = datos_leidos.get('coords', [])
+		area = datos_leidos.get('area', 0)
+		wp_recarga = datos_leidos.get('wp_recarga', [])
+
+		print("coords: ", coords)
+		print("area: ", area)
+		print("wp_recarga: ", wp_recarga)
+		print("Cargue Manual")
 		
 def on_message_received(message):
-    coords_dict = json.loads(message)
+	global cargue_manual
 
-    global coords
-    global wp_recarga
-    global area
-    coords = coords_dict['wp_region'][0]
-    coords.pop()
-    area = coords_dict['area']
-    wp_recarga = coords_dict['wp_recarga']
+	if cargue_manual == 0:
+		if message=="hola":
+			print("HOLA")
+		else:
+			coords_dict = json.loads(message)
+
+			global coords
+			global wp_recarga
+			global area
+			coords = coords_dict['wp_region'][0]
+			coords.pop()
+			area = coords_dict['area']
+			wp_recarga = coords_dict['wp_recarga']
+			print("coords: ", coords)
+			print("wp_recarga: ", wp_recarga)
+			print("area: ", area)
+			print("cargue mapa")
+
+
 
 if __name__ == "__main__":
     app = QApplication([])

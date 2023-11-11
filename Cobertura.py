@@ -91,18 +91,18 @@ class Cobertura():
         text = self.ns+": Waypoint alcanzado #"+ str(data.wp_seq) 
         self.main.console(text)
         self.nWpActual = self.nWpActual+1
-        self.frameEstados.progress_bar.setValue(self.nWpActual)
         self.main.update_progress_bar()
         if data.wp_seq==self.long_tramo+3:
             self.main.console(self.ns+": Aterrizando.")
             self.modo_land()
             self.start_mision = 0
             self.f_land = 1
-            
         if data.wp_seq == 1:
             self.fcolorposse = "_"
         if data.wp_seq == self.long_tramo+2:
             self.fcolorposse = "/"
+        if self.frameEstados != None:
+            self.frameEstados.progress_bar.setValue(self.nWpActual)
             
 
     def pose_callback(self,data):

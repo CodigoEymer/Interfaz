@@ -10,6 +10,7 @@ import cv2
 import datetime as d
 import os
 import threading
+from Database.foto.foto import foto
 
 from diagnostic_msgs.msg import DiagnosticArray
 from sensor_msgs.msg import CameraInfo
@@ -20,7 +21,7 @@ lock_fotos = threading.Lock()
 class communication_module():
 
     flag_insertTelemetria = 1
-    def __init__(self, parent,telemetria,dron,foto,n_canal,ns,config, fotos):
+    def __init__(self, parent,telemetria,dron,n_canal,ns,config, fotos):
         self.config= config
         self.main = parent
         self.telemetria = telemetria
@@ -28,7 +29,6 @@ class communication_module():
         self.fotos= fotos
         self.dron = dron
         self.ns = ns
-        self.foto = foto
         self.Posicion = ["null","null","null"]
         self.flag_insertTelemetria_c = n_canal
         self.main.iniciar_hilo2(self)
@@ -66,15 +66,15 @@ class communication_module():
         else:
             # Save your OpenCV2 image as a jpeg 
             cv2.imwrite(Path+"/"+str(self.dron.get_id_dron())+"_"+str(hora_captura)+".jpg", cv2_img)
-
+        photo = foto()
         # TO DO: Agregar cordenadas y hora de captura
-        self.foto.set_id_dron(self.dron.get_id_dron())
-        self.foto.set_hora_captura(hora_captura)
-        self.foto.set_latitud_captura(self.telemetria.get_latitud())
-        self.foto.set_longitud_captura(self.telemetria.get_longitud())
-        self.foto.set_altitud_captura(self.telemetria.get_altitud())
+        photo.set_id_dron(self.dron.get_id_dron())
+        photo.set_hora_captura(hora_captura)
+        photo.set_latitud_captura(self.telemetria.get_latitud())
+        photo.set_longitud_captura(self.telemetria.get_longitud())
+        photo.set_altitud_captura(self.telemetria.get_altitud())
         with lock_fotos:
-            self.fotos.append(self.foto)
+            self.fotos.append(photo)
 
     def image_callback(self, image):
         self.image = image
