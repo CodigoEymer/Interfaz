@@ -138,14 +138,31 @@ class communication_module():
     def frame_a_modificar(self, frame):
         self.frame = frame
         self.topicos()
+        self.icons = self.initialize_icons()
 
+    def initialize_icons(self):
+        icons = {
+            "batteryVerde": QIcon('./icons/batteryVerde.svg'),
+            "batteryRojo": QIcon('./icons/batteryRojo.svg'),
+            "gpsVerde": QIcon('./icons/gpsVerde.svg'),
+            "gpsRojo": QIcon('./icons/gpsRojo.svg'),
+            "motorVerde": QIcon('./icons/motorVerde.svg'),
+            "motorRojo": QIcon('./icons/motorRojo.svg'),
+            "cpuVerde": QIcon('./icons/cpuVerde.svg'),
+            "cpuRojo": QIcon('./icons/cpuRojo.svg'),
+            "imuVerde": QIcon('./icons/imuVerde.svg'),
+            "imuRojo": QIcon('./icons/imuRojo.svg'),
+            "cameraVerde": QIcon('./icons/cameraVerde.svg'),
+            "cameraRojo": QIcon('./icons/cameraRojo.svg'),
+        }
+        return icons
     def camera_callback(self, data):
         height = data.height
         if height != "null":
             self.telemetria.set_salud_camara("Ok")
-            self.frame.cameraBtn.setIcon(QIcon('./icons/cameraVerde.svg'))
+            self.frame.cameraBtn.setIcon(QIcon(self.icons["cameraVerde"]))
         else:
-            self.frame.cameraBtn.setIcon(QIcon('./icons/cameraRojo.svg'))
+            self.frame.cameraBtn.setIcon(QIcon(self.icons["cameraRojo"]))
         
     def drone_data(self,data):
         if self.frame != None:
@@ -172,30 +189,30 @@ class communication_module():
             salud_bateria = data.status[4].values[17].value
             if salud_bateria == "Ok" and estado_conexion == 'connected':
                 self.telemetria.set_salud_bateria(salud_bateria)
-                self.frame.batteryBtn.setIcon(QIcon('./icons/batteryVerde.svg'))
+                self.frame.batteryBtn.setIcon(QIcon(self.icons["batteryVerde"]))
             else:
-                self.frame.batteryBtn.setIcon(QIcon('./icons/batteryRojo.svg'))
+                self.frame.batteryBtn.setIcon(QIcon(self.icons["batteryRojo"]))
 
 
             salud_gps = data.status[4].values[7].value
             if salud_gps == "Ok" and estado_conexion == 'connected':
                 self.telemetria.set_salud_gps(salud_gps)
-                self.frame.gpsBtn.setIcon(QIcon('./icons/gpsVerde.svg'))
+                self.frame.gpsBtn.setIcon(self.icons["gpsVerde"])
             else:
-                self.frame.gpsBtn.setIcon(QIcon('./icons/gpsRojo.svg'))   
+                self.frame.gpsBtn.setIcon(QIcon(self.icons["gpsRojo"]))   
 
             salud_motor = data.status[4].values[13].value
             if salud_motor == "Ok" and estado_conexion == 'connected':
                 self.telemetria.set_salud_motores(salud_motor)
-                self.frame.motorBtn.setIcon(QIcon('./icons/motorVerde.svg'))
+                self.frame.motorBtn.setIcon(QIcon(self.icons["motorVerde"]))
             else:
-                self.frame.motorBtn.setIcon(QIcon('./icons/motorRojo.svg'))
+                self.frame.motorBtn.setIcon(QIcon(self.icons["motorRojo"]))
             
             salud_auto = data.status[4].values[14].value
             if salud_auto == "Ok" and estado_conexion == 'connected':
-                self.frame.autopilotBtn.setIcon(QIcon('./icons/cpuVerde.svg'))
+                self.frame.autopilotBtn.setIcon(QIcon(self.icons["cpuVerde"]))
             else:
-                self.frame.autopilotBtn.setIcon(QIcon('./icons/cpuRojo.svg'))
+                self.frame.autopilotBtn.setIcon(QIcon(self.icons["cpuRojo"]))
 
             salud_gyro = data.status[4].values[3].value
             salud_magnetometro = data.status[4].values[5].value
@@ -204,7 +221,7 @@ class communication_module():
 
             if salud_gyro == "Ok" and salud_magnetometro == "Ok" and salud_acelerometro == "Ok" and salud_presion == "Ok" and estado_conexion == 'connected':
                 self.telemetria.set_salud_imu("Ok")
-                self.frame.imuBtn.setIcon(QIcon('./icons/imuVerde.svg'))
+                self.frame.imuBtn.setIcon(QIcon(self.icons["imuVerde"]))
             else:
-                self.frame.imuBtn.setIcon(QIcon('./icons/imuRojo.svg'))
+                self.frame.imuBtn.setIcon(QIcon(self.icons["imuRojo"]))
                     
