@@ -247,7 +247,7 @@ class MainWindow(QMainWindow):
 				self.user = user
 				self.main_window()
 				self.home_page()
-				rospy.init_node('srvComand_node', anonymous=True)
+				rospy.init_node('node_MasterDron', anonymous=True)
 				self.rate = rospy.Rate(2)
 				self.protocolo = protocolo(self,telemetriaV,dronV, self.fotos, self.rate)
 				self.error_label.setText("")

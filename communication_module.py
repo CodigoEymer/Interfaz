@@ -22,6 +22,23 @@ class communication_module():
 
     flag_insertTelemetria = 1
     def __init__(self, parent,telemetria,dron,n_canal,ns,config, fotos):
+        """
+        The __init__ function is called when the class is instantiated.
+        It sets up the attributes of an object, which are sometimes called properties.
+        These attributes are typically given as parameters to __init__.
+        
+        :param self: Represent the instance of the class
+        :param parent: Associate the object with its parent window
+        :param telemetria: Pass the telemetria data from the main window to this one
+        :param dron: Access the drone's functions
+        :param n_canal: Identify the channel in which the drone is connected
+        :param ns: Pass the namespace of the drone to be able to connect with it
+        :param config: Get the configuration of the program, which is stored in a json file
+        :param fotos: Pass the fotos list to the class, so that it can be modified by any function in this class
+        :return: The frame
+        :doc-author: Trelent
+        """
+        
         self.config= config
         self.main = parent
         self.telemetria = telemetria
@@ -36,6 +53,21 @@ class communication_module():
         self.frame=None
 
     def topicos(self):
+        """
+        Suscribe el dron a varios tópicos ROS para recibir información.
+
+        Este método se encarga de configurar la suscripción del dron a varios tópicos ROS
+        para recibir información importante de los siguientes tópicos:
+        
+        - /<namespace>/mavros/camera/camera_info: Información de la cámara.
+        - /<namespace>/mavros/global_position/raw/fix: Posición global.
+        - /<namespace>/mavros/imu/data: Datos de la IMU (Unidad de Medición Inercial).
+        - /<namespace>/mavros/mission/reached: Notificación de llegada a waypoints.
+        - /<namespace>/mavros/camera/image_raw: Imagen capturada por la cámara.
+
+        Los callbacks correspondientes son definidos para procesar los datos recibidos.
+        """
+        
         rospy.Subscriber("/"+self.ns+"/mavros/camera/camera_info", CameraInfo, self.camera_callback)
         rospy.Subscriber("/"+self.ns+"/mavros/global_position/raw/fix", NavSatFix, self.globalPositionCallback)
         rospy.Subscriber("/"+self.ns+"/mavros/imu/data", Imu, self.imu_callback)
@@ -46,6 +78,17 @@ class communication_module():
             
 
     def create_folder(self, path):
+        """
+        The create_folder function creates a folder at the specified path.
+        If the folder already exists, it does nothing. If there is an error creating
+        the folder, it prints out an error message.
+        
+        :param self: Represent the instance of the object itself
+        :param path: Specify the path of the folder that is to be created
+        :return: Nothing
+        :doc-author: Trelent
+        """
+        
         try:
             # If the folder does not exist, create it
             if not os.path.exists(path):
@@ -54,6 +97,23 @@ class communication_module():
             print("An error occurred while creating folder: ", e)
 
     def waypoint_reached_callback(self, msg):
+        """
+        Callback para manejar la llegada a un punto de ruta (waypoint).
+
+        Parámetros:
+        - msg: Mensaje que indica que se ha alcanzado un waypoint.
+
+        Este método se encarga de realizar las siguientes acciones:
+        1. Crea una carpeta para almacenar imágenes relacionadas con la misión del dron.
+        2. Captura una imagen y la guarda en la carpeta mencionada.
+        3. Crea un objeto 'photo' para almacenar información sobre la imagen capturada,
+        incluyendo el ID del dron, la hora de captura, latitud, longitud y altitud.
+        4. Agrega el objeto 'photo' a la lista de fotos.
+
+        Nota: Este método depende de la disponibilidad de datos como la imagen capturada,
+        la configuración del dron y la telemetría. Asegúrate de que estos datos estén disponibles
+        antes de llamar a este método.
+        """
         Path = "Images/mission:"+str(self.dron.get_id_mision())
         self.create_folder(Path)
         timestamp=d.datetime.now()
@@ -81,6 +141,18 @@ class communication_module():
         
         
     def imu_callback(self,data):
+        """
+        The imu_callback function is a callback function that receives the data from the imu topic and stores it in variables.
+            Args:
+                self (object): The object of this class.
+                data (Imu): The Imu message received from the imu topic.
+        
+        :param self: Represent the instance of the class
+        :param data: Get the data from the imu sensor
+        :return: The roll, pitch and yaw of the drone
+        :doc-author: Trelent
+        """
+        
         roll = data.orientation.x
         pitch = data.orientation.y
         yaw = data.orientation.z
@@ -89,6 +161,18 @@ class communication_module():
         self.telemetria.set_alabeo(roll)
 
     def globalPositionCallback(self,globalPositionCallback):
+        """
+        Callback para manejar la actualización de la posición global del dron.
+
+        Parámetros:
+        - globalPositionCallback: Objeto que contiene información de la posición global del dron.
+
+        Este método se encarga de procesar y actualizar la información de la posición global
+        del dron, incluyendo latitud, longitud, altitud y hora de actualización. Luego, actualiza
+        los atributos correspondientes en la clase 'telemetria' y, si está habilitado, almacena
+        los datos de telemetría en un vector y los inserta en una base de datos después de cierta
+        cantidad de actualizaciones.
+        """
         latitude = globalPositionCallback.latitude
         longitude = globalPositionCallback.longitude
         altitude = globalPositionCallback.altitude
@@ -112,6 +196,18 @@ class communication_module():
                 communication_module.flag_insertTelemetria= communication_module.flag_insertTelemetria+1
 
     def setFlightParameters(self, parameters, altura):
+        """
+        Configura los parámetros de vuelo del dron.
+
+        Parámetros:
+        - parameters: Lista que contiene los valores de los parámetros de vuelo, en el orden siguiente:
+        - WPNAV_ACCEL: Aceleración máxima permitida en cm/s^2.
+        - WPNAV_SPEED: Velocidad máxima permitida en cm/s.
+        - altura: Altura para el modo RTL (Return to Launch).
+
+        Este método configura los parámetros de vuelo del dron con los valores especificados,
+        incluyendo la aceleración máxima, velocidad máxima y altura para el modo RTL (Return to Launch).
+        """
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
             'WPNAV_SPEED' : parameters[1], #   50       20-2000  cm/s
@@ -124,6 +220,19 @@ class communication_module():
                 print("Falla al poner el parametro %s" %id)
         
     def set_param(self, id, value):
+        """
+        Configura un parámetro específico del dron.
+
+        Parámetros:
+        - id: Nombre del parámetro a configurar.
+        - value: Valor del parámetro.
+
+        Este método utiliza el servicio ROS para configurar un parámetro específico
+        del dron con el valor proporcionado.
+        
+        Servicios utilizados:
+        - /<namespace>/mavros/param/set: Servicio utilizado para configurar parámetros individuales del dron.
+        """
         rospy.wait_for_service("/"+self.ns+"/mavros/param/set")
         try:
             set_param_srv = rospy.ServiceProxy("/"+self.ns+"/mavros/param/set",ParamSet)
@@ -158,13 +267,24 @@ class communication_module():
         return icons
     def camera_callback(self, data):
         height = data.height
-        if height != "null":
+        if height != "null": # Si la altura no es nula se interpreta que la camara esta funcionando correctamente y pasa el icono de la camara a verde, de lo contrario queda rojo
             self.telemetria.set_salud_camara("Ok")
             self.frame.cameraBtn.setIcon(QIcon(self.icons["cameraVerde"]))
         else:
             self.frame.cameraBtn.setIcon(QIcon(self.icons["cameraRojo"]))
+
         
     def drone_data(self,data):
+        """ La función drone_data actualiza varios aspectos del estado del dron, incluyendo:
+
+        Identificación del hardware y tipo de dron.
+        Tipo de controladora y estado de salud de la controladora.
+        Voltaje inicial y porcentaje de batería.
+        Estado de la conexión.
+        Salud de la batería, GPS, motor, piloto automático, giroscopio, magnetómetro, acelerómetro y sensor de presión.
+
+        Para cada uno de estos estados, la función ajusta los iconos y textos de la interfaz de usuario para reflejar el estado actual del dron. """
+
         if self.frame != None:
             salud_gyro = ""
             salud_acelerometro = ""
