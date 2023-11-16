@@ -188,7 +188,15 @@ class Cobertura():
         self.set_waypoint(waypoints)
 
     def set_waypoint(self, waypoints):
-
+        """
+        The set_waypoint function is used to set the waypoints for a given drone.
+        
+        :param self: Refer to the class itself
+        :param waypoints: Send a list of waypoints to the ardupilot
+        :return: A flag that indicates if the waypoint was loaded or not
+        :doc-author: Trelent
+        """
+        
         # Wait for the service to become available
         rospy.wait_for_service("/"+self.ns+"/mavros/mission/push")
         try:
@@ -259,6 +267,14 @@ class Cobertura():
     #        self.main.console(self.ns+": Failed to set RTL altitude: %s"%e)
 
     def activate_rtl_mode(self):
+        """
+        The activate_rtl_mode function is used to activate the RTL mode of the drone.
+        
+        :param self: Refer to the object itself
+        :return: A serviceproxy object
+        :doc-author: Trelent
+        """
+        
         try:
             flightModeService = rospy.ServiceProxy("/"+self.ns+"/mavros/set_mode", mavros_msgs.srv.SetMode)
             flightModeService(custom_mode="RTL")

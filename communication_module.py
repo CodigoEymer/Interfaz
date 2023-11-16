@@ -54,16 +54,16 @@ class communication_module():
 
     def topicos(self):
         """
-        Suscribe el dron a varios tópicos ROS para recibir información.
+        Suscribe el dron a varios topicos ROS para recibir informacion.
 
-        Este método se encarga de configurar la suscripción del dron a varios tópicos ROS
-        para recibir información importante de los siguientes tópicos:
+        Este metodo se encarga de configurar la suscripcion del dron a varios topicos ROS
+        para recibir informacion importante de los siguientes topicos:
         
-        - /<namespace>/mavros/camera/camera_info: Información de la cámara.
-        - /<namespace>/mavros/global_position/raw/fix: Posición global.
-        - /<namespace>/mavros/imu/data: Datos de la IMU (Unidad de Medición Inercial).
-        - /<namespace>/mavros/mission/reached: Notificación de llegada a waypoints.
-        - /<namespace>/mavros/camera/image_raw: Imagen capturada por la cámara.
+        - /<namespace>/mavros/camera/camera_info: Informacion de la camara.
+        - /<namespace>/mavros/global_position/raw/fix: Posicion global.
+        - /<namespace>/mavros/imu/data: Datos de la IMU (Unidad de Medicion Inercial).
+        - /<namespace>/mavros/mission/reached: Notificacion de llegada a waypoints.
+        - /<namespace>/mavros/camera/image_raw: Imagen capturada por la camara.
 
         Los callbacks correspondientes son definidos para procesar los datos recibidos.
         """
@@ -100,19 +100,19 @@ class communication_module():
         """
         Callback para manejar la llegada a un punto de ruta (waypoint).
 
-        Parámetros:
+        Parametros:
         - msg: Mensaje que indica que se ha alcanzado un waypoint.
 
-        Este método se encarga de realizar las siguientes acciones:
-        1. Crea una carpeta para almacenar imágenes relacionadas con la misión del dron.
+        Este metodo se encarga de realizar las siguientes acciones:
+        1. Crea una carpeta para almacenar imagenes relacionadas con la mision del dron.
         2. Captura una imagen y la guarda en la carpeta mencionada.
-        3. Crea un objeto 'photo' para almacenar información sobre la imagen capturada,
+        3. Crea un objeto 'photo' para almacenar informacion sobre la imagen capturada,
         incluyendo el ID del dron, la hora de captura, latitud, longitud y altitud.
         4. Agrega el objeto 'photo' a la lista de fotos.
 
-        Nota: Este método depende de la disponibilidad de datos como la imagen capturada,
-        la configuración del dron y la telemetría. Asegúrate de que estos datos estén disponibles
-        antes de llamar a este método.
+        Nota: Este metodo depende de la disponibilidad de datos como la imagen capturada,
+        la configuracion del dron y la telemetria. Asegurate de que estos datos esten disponibles
+        antes de llamar a este metodo.
         """
         Path = "Images/mission:"+str(self.dron.get_id_mision())
         self.create_folder(Path)
@@ -162,15 +162,15 @@ class communication_module():
 
     def globalPositionCallback(self,globalPositionCallback):
         """
-        Callback para manejar la actualización de la posición global del dron.
+        Callback para manejar la actualizacion de la posicion global del dron.
 
-        Parámetros:
-        - globalPositionCallback: Objeto que contiene información de la posición global del dron.
+        Parametros:
+        - globalPositionCallback: Objeto que contiene informacion de la posicion global del dron.
 
-        Este método se encarga de procesar y actualizar la información de la posición global
-        del dron, incluyendo latitud, longitud, altitud y hora de actualización. Luego, actualiza
-        los atributos correspondientes en la clase 'telemetria' y, si está habilitado, almacena
-        los datos de telemetría en un vector y los inserta en una base de datos después de cierta
+        Este metodo se encarga de procesar y actualizar la informacion de la posicion global
+        del dron, incluyendo latitud, longitud, altitud y hora de actualizacion. Luego, actualiza
+        los atributos correspondientes en la clase 'telemetria' y, si esta habilitado, almacena
+        los datos de telemetria en un vector y los inserta en una base de datos despues de cierta
         cantidad de actualizaciones.
         """
         latitude = globalPositionCallback.latitude
@@ -197,16 +197,16 @@ class communication_module():
 
     def setFlightParameters(self, parameters, altura):
         """
-        Configura los parámetros de vuelo del dron.
+        Configura los parametros de vuelo del dron.
 
-        Parámetros:
-        - parameters: Lista que contiene los valores de los parámetros de vuelo, en el orden siguiente:
-        - WPNAV_ACCEL: Aceleración máxima permitida en cm/s^2.
-        - WPNAV_SPEED: Velocidad máxima permitida en cm/s.
+        Parametros:
+        - parameters: Lista que contiene los valores de los parametros de vuelo, en el orden siguiente:
+        - WPNAV_ACCEL: Aceleracion maxima permitida en cm/s^2.
+        - WPNAV_SPEED: Velocidad maxima permitida en cm/s.
         - altura: Altura para el modo RTL (Return to Launch).
 
-        Este método configura los parámetros de vuelo del dron con los valores especificados,
-        incluyendo la aceleración máxima, velocidad máxima y altura para el modo RTL (Return to Launch).
+        Este metodo configura los parametros de vuelo del dron con los valores especificados,
+        incluyendo la aceleracion maxima, velocidad maxima y altura para el modo RTL (Return to Launch).
         """
         params_to_set = {                  # Increment  Range    Units
             'WPNAV_ACCEL' : parameters[0], #   10       50-500   cm/s^2 
@@ -221,17 +221,17 @@ class communication_module():
         
     def set_param(self, id, value):
         """
-        Configura un parámetro específico del dron.
+        Configura un parametro especifico del dron.
 
-        Parámetros:
-        - id: Nombre del parámetro a configurar.
-        - value: Valor del parámetro.
+        Parametros:
+        - id: Nombre del parametro a configurar.
+        - value: Valor del parametro.
 
-        Este método utiliza el servicio ROS para configurar un parámetro específico
+        Este metodo utiliza el servicio ROS para configurar un parametro especifico
         del dron con el valor proporcionado.
         
         Servicios utilizados:
-        - /<namespace>/mavros/param/set: Servicio utilizado para configurar parámetros individuales del dron.
+        - /<namespace>/mavros/param/set: Servicio utilizado para configurar parametros individuales del dron.
         """
         rospy.wait_for_service("/"+self.ns+"/mavros/param/set")
         try:
@@ -275,15 +275,15 @@ class communication_module():
 
         
     def drone_data(self,data):
-        """ La función drone_data actualiza varios aspectos del estado del dron, incluyendo:
+        """ La funcion drone_data actualiza varios aspectos del estado del dron, incluyendo:
 
-        Identificación del hardware y tipo de dron.
+        Identificacion del hardware y tipo de dron.
         Tipo de controladora y estado de salud de la controladora.
-        Voltaje inicial y porcentaje de batería.
-        Estado de la conexión.
-        Salud de la batería, GPS, motor, piloto automático, giroscopio, magnetómetro, acelerómetro y sensor de presión.
+        Voltaje inicial y porcentaje de bateria.
+        Estado de la conexion.
+        Salud de la bateria, GPS, motor, piloto automatico, giroscopio, magnetometro, acelerometro y sensor de presion.
 
-        Para cada uno de estos estados, la función ajusta los iconos y textos de la interfaz de usuario para reflejar el estado actual del dron. """
+        Para cada uno de estos estados, la funcion ajusta los iconos y textos de la interfaz de usuario para reflejar el estado actual del dron. """
 
         if self.frame != None:
             salud_gyro = ""

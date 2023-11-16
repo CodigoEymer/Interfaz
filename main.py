@@ -265,13 +265,13 @@ class MainWindow(QMainWindow):
 		self.description_text.setText("sobrevolando canchas")
 		self.vision_field_text.setText("114.492")
 		self.vision_field_text_2.setText("98.7566")
-		self.max_height_text.setText("10")
+		self.max_height_text.setText("7")
 		#self.max_speed_text.setText("1")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("1")
 
 		if not self.max_speed_text.text():
-			self.max_speed_text.setText("5")
+			self.max_speed_text.setText("1")
 
 		######
 		overlap = self.overlap_text.text()
@@ -700,7 +700,8 @@ class MainWindow(QMainWindow):
 		coords = datos_leidos.get('coords', [])
 		area = datos_leidos.get('area', 0)
 		wp_recarga = datos_leidos.get('wp_recarga', [])
-
+		handler.broadcast("$"+str(coords))
+		
 		print("coords: ", coords)
 		print("area: ", area)
 		print("wp_recarga: ", wp_recarga)
