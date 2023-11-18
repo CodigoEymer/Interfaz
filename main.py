@@ -7,6 +7,7 @@ import resources_rc
 import json
 import datetime
 import Htelemetria
+import h_update
 import hilo_componente_mision
 import hilo_componente_estados
 from Database.usuarios.usuarios_dao_imp import usuarios_dao_imp,usuarios
@@ -42,6 +43,7 @@ import time
 import MySQLdb
 import json
 import threading
+import pdb 
 
 
 DB_HOST = '127.0.0.1' 
@@ -83,6 +85,7 @@ class MainWindow(QMainWindow):
 
 	def __init__(self):
 		
+		self.finish_mision = 0
 		self.flag_telemetria = 0
 		self.wp_tramos = None
 		self.cobertura = None
@@ -136,6 +139,11 @@ class MainWindow(QMainWindow):
 			self.html = str(self.file.readAll())
 			self.webView.setHtml(self.html)
 
+	def startThreadUpdate(self):
+		self.thread_update = h_update.Worker(self.finish_mision)
+		self.thread_update.flagU.connect(self.report_after_finish)
+		self.thread_update.start()
+			
 	def set_default_icons(self):
 		default = "background-color: rgb(203, 218, 216);"
 		self.settingsBtn.setIcon(QIcon('./icons/IconoConfiAzul.svg'))
@@ -251,6 +259,7 @@ class MainWindow(QMainWindow):
 				self.rate = rospy.Rate(2)
 				self.protocolo = protocolo(self,telemetriaV,dronV, self.fotos, self.rate)
 				self.error_label.setText("")
+				self.startThreadUpdate()
 				break
 			else:
 				self.error_label.setText("Usuario no registrado, por favor registrese")
@@ -271,7 +280,7 @@ class MainWindow(QMainWindow):
 		self.overlap_text.setText("1")
 
 		if not self.max_speed_text.text():
-			self.max_speed_text.setText("1")
+			self.max_speed_text.setText("5")
 
 		######
 		overlap = self.overlap_text.text()
@@ -285,10 +294,10 @@ class MainWindow(QMainWindow):
 		self.gestion = Gestion(dronV)
 		max_acce = self.max_acc_text.text()
 		max_speed = self.max_speed_text.text()
-		max_height = self.max_height_text.text()
+		self.max_height = self.max_height_text.text()
 		cvh = self.vision_field_text.text()
 		cvv = self.vision_field_text_2.text()
-		self.gestion.set_user_values(max_acce,max_speed,max_height,cvh,cvv)
+		self.gestion.set_user_values(max_acce,max_speed,self.max_height,cvh,cvv)
 
 		# peso = self.peso_text.text()
 		# factor_seguridad = self.factor_seguridad_text.text()
@@ -308,10 +317,6 @@ class MainWindow(QMainWindow):
 		current_mision.set_dimension(str(area))
 		current_wp_recarga.set_wp(str(wp_recarga))
 		self.config= config_module.config_module(str(self.user.get_id_usuario()),coords,current_wp_recarga,current_mision)
-		
-		self.config.insertar_mision()
-		self.config.insertar_wp_region()
-		self.config.insertar_wp_recarga()
 
 		parameters =[max_acce, int(max_speed)*100]
 		altura= int(self.max_height_text.text())
@@ -322,14 +327,14 @@ class MainWindow(QMainWindow):
 
 		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[0].get_velocidad_max()))
 
-		self.trayect = Trayectorias(coords,float(max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
-		matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno)
+		self.trayect = Trayectorias(coords,float(self.max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
+		self.matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno)
 		self.dist_label.setText(str(round(self.trayect.distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
 		counter = 0
 		self.num_pws = []
 		wpTotales = 0
-		for dron in matriz_general:
+		for dron in self.matriz_general:
 			cont_wp = 0
 			for tramo in dron:
 				for wp in tramo:
@@ -344,8 +349,7 @@ class MainWindow(QMainWindow):
 			wpTotales = wpTotales+cont_wp
 		self.progressBar_4.setMaximum(wpTotales)
 
-		self.gestion.insertar_drones(current_mision.get_id_mision(),matriz_general,max_height)
-		self.gestion.completar_telemetrias(telemetriaV)
+		
 		
 	def update_progress_bar(self):
 		self.value = self.value+1
@@ -354,11 +358,15 @@ class MainWindow(QMainWindow):
 
 	def db_fotos(self):
 		self.config.insertar_fotos(self.fotos)
-		self.report_after_finish()
+		#self.report_after_finish()
 
 
 	def init_trayct(self):
-		self.start_time = time.time()
+		self.config.insertar_mision()
+		self.config.insertar_wp_region()
+		self.config.insertar_wp_recarga()
+		self.gestion.insertar_drones(current_mision.get_id_mision(),self.matriz_general,self.max_height)
+		self.gestion.completar_telemetrias(telemetriaV)
 		self.value = 0
 		self.mission_page()
 		self.flag_telemetria = 1
@@ -402,7 +410,7 @@ class MainWindow(QMainWindow):
 		self.contador=self.contador+1
 		if self.n_drones == self.contador:
 			self.thread.stop()
-			self.report_after_finish()
+			self.finish_mision = 1
 
 	def mode(self,frame,mode):
 		frame.button2.setText(mode) 
@@ -615,23 +623,27 @@ class MainWindow(QMainWindow):
 				self.label_71.setText(str(j[0]))
 				self.label_76.setText(str(j[1]))
 
-	def report_after_finish(self):
-		self.set_default_icons()
-		icon = QIcon('./icons/IconoReporteGris.svg')
-		self.reportBtn.setIcon(icon)
-		self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
-		self.switchPagesStacked.setCurrentWidget(self.reportPage)
-		self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
-		self.show_general_info()
-		self.show_user_data()
-		self.show_mission_data(current_mision)
-		self.show_wp_path(self.trayect.matriz_wp_drones) #Hay que pasarlas a globales
+	def report_after_finish(self, saludo):
+		print("Lectura_________")
+		if(self.finish_mision == 1):
+			self.thread_update.stop()
+			self.set_default_icons()
+			icon = QIcon('./icons/IconoReporteGris.svg')
+			self.reportBtn.setIcon(icon)
+			self.reportBtn.setStyleSheet("background-color: rgb(3, 33, 77)")
+			self.switchPagesStacked.setCurrentWidget(self.reportPage)
+			#self.stackedWidget_2.setCurrentWidget(self.report_view_widget)
+			self.show_general_info()
+			self.show_user_data()
+			self.show_mission_data(current_mision)
+			self.show_wp_path(self.trayect.matriz_wp_drones) #Hay que pasarlas a globales
+			self.finish_mision = 0
+			
 
 	def show_general_info(self):
-		mission_time = time.time() - self.start_time
-		minutos= int(mission_time / 60)
-		segundos = int(mission_time % 60)
-		self.mission_time.setText(str(minutos)+":"+str(segundos))
+		self.config.insertar_hora_fin()
+		mission_time = self.config.tiempo_mision()
+		self.mission_time.setText(mission_time)
 		self.n_photos.setText(str(len(self.fotos))) 
 		#valores por definir
 		#self.n_recharges.setText(str())
@@ -727,7 +739,6 @@ def on_message_received(message):
 			print("wp_recarga: ", wp_recarga)
 			print("area: ", area)
 			print("cargue mapa")
-
 
 
 if __name__ == "__main__":

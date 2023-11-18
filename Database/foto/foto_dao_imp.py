@@ -2,6 +2,7 @@
 import MySQLdb
 import foto
 import dbconnection
+import pdb
 
         
 class foto_dao_imp:
@@ -20,15 +21,22 @@ class foto_dao_imp:
             self.fotos.append(foto1)
         cursor.close()
 
-    def insert_fotos(self,id_dron, photo, hora_captura,latitud_captura,longitud_captura,altitud_captura):
+    def insert_foto(self, fotoE):
         res_rows= 0
+        id_dron = str(fotoE.get_id_dron())
+        photo = str(fotoE.get_foto())
+        hora_captura = str(fotoE.get_hora_captura())
+        latitud_captura = str(fotoE.get_latitud_captura())
+        longitud_captura = str(fotoE.get_longitud_captura())
+        altitud_captura = str(fotoE.get_altitud_captura())
+
         query="INSERT INTO Foto SET id_dron='"+id_dron+"', foto='"+photo+"',hora_captura='"+hora_captura+"',latitud_captura='"+latitud_captura+"',longitud_captura='"+longitud_captura+"',altitud_captura='"+altitud_captura+"'"
         cursor = self.connection.cursor()
+        print(query)
         res_rows = cursor.execute(query)
         self.connection.commit()
-        clase = foto.foto(id_dron, photo, hora_captura,latitud_captura,longitud_captura,altitud_captura)
-        self.fotos.append(clase)
         cursor.close()
+        print("foto subida")
         return res_rows
     
     def insert_bash(self,fotos):

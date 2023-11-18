@@ -9,6 +9,8 @@ from Database.telemetria.telemetria_dao_imp import telemetria_dao_imp
 from Database.foto.foto_dao_imp import foto_dao_imp
 import MySQLdb
 import Trayectorias
+import pdb 
+import time
 
 DB_HOST = '127.0.0.1' 
 DB_USER = 'root' 
@@ -28,28 +30,29 @@ class config_module():
 
     def insertar_fotos(self, fotos):
         foto_dao = foto_dao_imp(conn)
-        lista = []
-        for i in range(len(fotos)):
-            lista.append(fotos[i])
-            if len(lista)==10 or fotos[i]== fotos[-1]:
-                foto_dao.insert_batch(lista)
-                lista=[]
+        for i in range(0, len(fotos), 5):
+            lote_fotos = fotos[i:i+5]
+            foto_dao.insert_batch(lote_fotos)
+            print(i)
+            print(len(lote_fotos))
+            time.sleep(0.5)
+
         
     def insertar_mision(self):
         mision_dao = mision_dao_imp(conn)
         date=d.date.today()
-        timestamp=d.datetime.now()
-        hora_inicio = timestamp.strftime("%H:%M:%S")
+        self.timestamp_init=d.datetime.now()
+        self.hora_inicio = self.timestamp_init.strftime("%H:%M:%S")
         fecha=str(date)
 
         self.mision.set_fecha(fecha)
-        self.mision.set_hora_inicio(hora_inicio)
-        self.mision.set_hora_fin(hora_inicio)
+        self.mision.set_hora_inicio(self.hora_inicio)
+        self.mision.set_hora_fin(self.hora_inicio)
         self.mision.set_id_usuario(self.id_usuario)
 
         mision_dao.insert_mission(self.mision)
         
-        current_mission = mision_dao.get_mission(fecha,hora_inicio)
+        current_mission = mision_dao.get_mission(fecha,self.hora_inicio)
         self.id_mision = str(current_mission.get_id_mision())
         self.mision.set_id_mision(self.id_mision)
 
@@ -58,6 +61,22 @@ class config_module():
         wp_list = self.coordenadas
         for wp in wp_list:
             wp_region_dao.insert_wp_region(self.id_mision,str(wp))
+            
+    def insertar_hora_fin(self):
+        mision_dao = mision_dao_imp(conn)
+        self.timestamp_fin=d.datetime.now()
+        self.hora_fin = self.timestamp_fin.strftime("%H:%M:%S")
+        mision_dao.update_fecha_fin(self.id_mision,self.hora_fin)
+
+    
+    def tiempo_mision(self):
+        tiempo = self.timestamp_fin - self.timestamp_init
+        # Formateando manualmente
+        horas = tiempo.seconds // 3600
+        minutos = (tiempo.seconds // 60) % 60
+        segundos = tiempo.seconds % 60
+        tiempo_mision = "{:02d}:{:02d}:{:02d}".format(horas, minutos, segundos)
+        return tiempo_mision
 
     def insertar_wp_recarga(self):
         self.wp_recarga.set_id_mision(self.id_mision)

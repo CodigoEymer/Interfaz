@@ -55,6 +55,7 @@ class Cobertura():
                 self.main.console(self.ns+": Desarmado")
                 self.f_land = 0
             if self.estado.armed==False and self.respuesta==1:
+                print("here")
                 self.main.stop_all()
                 self.respuesta=0
                 

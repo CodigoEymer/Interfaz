@@ -101,8 +101,12 @@ class mision_dao_imp():
         cursor.execute(query)
         self.connection.commit()
 
-    def update_fecha_fin(self, id_mission):
-        pass
+    def update_fecha_fin(self, id_mision, nueva_fecha_fin):
+        cursor = self.connection.cursor()
+        query = "UPDATE Mision SET hora_fin='" + nueva_fecha_fin + "' WHERE id_mision = '" + str(id_mision) + "'"
+        cursor.execute(query)
+        self.connection.commit()
+
 
 
     def delete_mission(self, mission):
