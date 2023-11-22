@@ -507,7 +507,7 @@ border-radius: 10px;</string>
                     <string notr="true">background-color: rgb(3, 33, 77);</string>
                    </property>
                    <property name="currentIndex">
-                    <number>2</number>
+                    <number>0</number>
                    </property>
                    <widget class="QWidget" name="ConfiPage">
                     <layout class="QVBoxLayout" name="verticalLayout_39">
@@ -596,7 +596,7 @@ border-radius: 10px;</string>
                                   <property name="geometry">
                                    <rect>
                                     <x>0</x>
-                                    <y>0</y>
+                                    <y>-180</y>
                                     <width>265</width>
                                     <height>495</height>
                                    </rect>

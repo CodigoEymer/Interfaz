@@ -30,12 +30,11 @@ class config_module():
 
     def insertar_fotos(self, fotos):
         foto_dao = foto_dao_imp(conn)
-        for i in range(0, len(fotos), 5):
-            lote_fotos = fotos[i:i+5]
+        for i in range(0, len(fotos), 10):
+            lote_fotos = fotos[i:i+10]
             foto_dao.insert_batch(lote_fotos)
             print(i)
             print(len(lote_fotos))
-            time.sleep(0.5)
 
         
     def insertar_mision(self):
@@ -87,6 +86,7 @@ class config_module():
         corriente_empuje = 1000*(peso*potenciaXKg)/voltaje_b
         autonomia_vuelo = capacidad_b*seguridad*60/(corriente_empuje*factor_seguridad)
         dwr = autonomia_vuelo*60*velocidad
+        print("Distancia:"+str(dwr)+" m")
         print("Autonomia: ",autonomia_vuelo)
         return dwr
     

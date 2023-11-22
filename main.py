@@ -241,6 +241,7 @@ class MainWindow(QMainWindow):
 		self.switchPagesStacked.setCurrentWidget(self.ConfiPage)
 		self.stackedWidget_4.setCurrentWidget(self.page)
 		self.stackedWidget_5.setMaximumSize(QSize(16777215, 80))
+		self.widget_30.setMaximumSize(QSize(16777215, 16777215))
 		self.stackedWidget_5.setCurrentWidget(self.page_4)
 		
 		
@@ -274,13 +275,13 @@ class MainWindow(QMainWindow):
 		self.description_text.setText("sobrevolando canchas")
 		self.vision_field_text.setText("114.492")
 		self.vision_field_text_2.setText("98.7566")
-		self.max_height_text.setText("7")
+		self.max_height_text.setText("11")
 		#self.max_speed_text.setText("1")
 		self.max_acc_text.setText("100")
 		self.overlap_text.setText("1")
 
 		if not self.max_speed_text.text():
-			self.max_speed_text.setText("5")
+			self.max_speed_text.setText("1")
 
 		######
 		overlap = self.overlap_text.text()
@@ -328,7 +329,7 @@ class MainWindow(QMainWindow):
 		distancia_wp_retorno = self.config.calcular_autonomia(float(peso),float(potenciaKg),float(Voltaje_b),float(capacidad_b),float(seguridad),float(factor_seguridad),float(dronV[0].get_velocidad_max()))
 
 		self.trayect = Trayectorias(coords,float(self.max_height), float(cvh),float(cvv),float(overlap),wp_recarga)
-		self.matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno)
+		self.matriz_general = self.trayect.generar_matriz(self.n_drones,distancia_wp_retorno/1000)
 		self.dist_label.setText(str(round(self.trayect.distancia_trayectoria*1000,2)))
 		self.area_label.setText(str(round(area,2)))
 		counter = 0
@@ -410,6 +411,7 @@ class MainWindow(QMainWindow):
 		self.contador=self.contador+1
 		if self.n_drones == self.contador:
 			self.thread.stop()
+			self.flag_telemetria=0
 			self.finish_mision = 1
 
 	def mode(self,frame,mode):
@@ -613,8 +615,8 @@ class MainWindow(QMainWindow):
 		self.label_49.setText(mision.get_nombre_ubicacion())
 		self.label_50.setText(mision.get_descripcion())
 		self.label_51.setText(str(mision.get_dimension())+" m2")
-		self.label_52.setText("TO DO")
-		self.label_53.setText("TO DO")
+		self.label_52.setText(str(self.mission_time_1))
+		self.label_53.setText(str(self.n_drones))
 		self.label_55.setText(str(mision.get_fecha()))
 
 	def show_wp_path(self,lista):
@@ -624,7 +626,6 @@ class MainWindow(QMainWindow):
 				self.label_76.setText(str(j[1]))
 
 	def report_after_finish(self, saludo):
-		print("Lectura_________")
 		if(self.finish_mision == 1):
 			self.thread_update.stop()
 			self.set_default_icons()
@@ -642,8 +643,8 @@ class MainWindow(QMainWindow):
 
 	def show_general_info(self):
 		self.config.insertar_hora_fin()
-		mission_time = self.config.tiempo_mision()
-		self.mission_time.setText(mission_time)
+		self.mission_time_1 = self.config.tiempo_mision()
+		self.mission_time.setText(self.mission_time_1)
 		self.n_photos.setText(str(len(self.fotos))) 
 		#valores por definir
 		#self.n_recharges.setText(str())
